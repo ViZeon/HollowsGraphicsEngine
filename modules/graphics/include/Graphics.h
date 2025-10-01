@@ -1,1 +1,7 @@
-// ...existing code...
+#pragma once
+
+class Graphics {
+public:
+    Graphics();
+    void render();
+};
