@@ -1,4 +1,4 @@
-require ("vendor/bin/premake/ext/premake-vscode-main/vscode.lua")
+require ("vendor/bin/premake/ext/premake-vscode-main/vscode")
 
 workspace "The_Hollows_Engine"
     architecture "x64"
