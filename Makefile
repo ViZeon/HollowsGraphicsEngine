@@ -10,21 +10,21 @@ endif
 
 ifeq ($(config),debug)
   Hollows_Engine_config = debug
-  Sandbox_config = debug
+  Assets_config = debug
 
 else ifeq ($(config),release)
   Hollows_Engine_config = release
-  Sandbox_config = release
+  Assets_config = release
 
 else ifeq ($(config),dist)
   Hollows_Engine_config = dist
-  Sandbox_config = dist
+  Assets_config = dist
 
 else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := Hollows_Engine Sandbox
+PROJECTS := Hollows_Engine Assets
 
 .PHONY: all clean help $(PROJECTS) 
 
@@ -36,15 +36,15 @@ ifneq (,$(Hollows_Engine_config))
 	@${MAKE} --no-print-directory -C src/engine -f Makefile config=$(Hollows_Engine_config)
 endif
 
-Sandbox:
-ifneq (,$(Sandbox_config))
-	@echo "==== Building Sandbox ($(Sandbox_config)) ===="
-	@${MAKE} --no-print-directory -C src/sandbox -f Makefile config=$(Sandbox_config)
+Assets: Hollows_Engine
+ifneq (,$(Assets_config))
+	@echo "==== Building Assets ($(Assets_config)) ===="
+	@${MAKE} --no-print-directory -C src/assets -f Makefile config=$(Assets_config)
 endif
 
 clean:
 	@${MAKE} --no-print-directory -C src/engine -f Makefile clean
-	@${MAKE} --no-print-directory -C src/sandbox -f Makefile clean
+	@${MAKE} --no-print-directory -C src/assets -f Makefile clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -58,6 +58,6 @@ help:
 	@echo "   all (default)"
 	@echo "   clean"
 	@echo "   Hollows_Engine"
-	@echo "   Sandbox"
+	@echo "   Assets"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

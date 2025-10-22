@@ -44,25 +44,25 @@ define POSTBUILDCMDS
 endef
 
 ifeq ($(config),debug)
-TARGETDIR = ../../bin/Debug-windows-x86_64/Sandbox
-TARGET = $(TARGETDIR)/Sandbox.exe
-OBJDIR = ../../bin-int/Debug-windows-x86_64/Sandbox
+TARGETDIR = ../../bin/Debug-windows-x86_64/Assets
+TARGET = $(TARGETDIR)/Assets.exe
+OBJDIR = ../../bin-int/Debug-windows-x86_64/Assets
 DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++23
 
 else ifeq ($(config),release)
-TARGETDIR = ../../bin/release-windows-x86_64/Sandbox
-TARGET = $(TARGETDIR)/Sandbox.exe
-OBJDIR = ../../bin-int/release-windows-x86_64/Sandbox
+TARGETDIR = ../../bin/release-windows-x86_64/Assets
+TARGET = $(TARGETDIR)/Assets.exe
+OBJDIR = ../../bin-int/release-windows-x86_64/Assets
 DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++23
 
 else ifeq ($(config),dist)
-TARGETDIR = ../../bin/Dist-windows-x86_64/Sandbox
-TARGET = $(TARGETDIR)/Sandbox.exe
-OBJDIR = ../../bin-int/Dist-windows-x86_64/Sandbox
+TARGETDIR = ../../bin/Dist-windows-x86_64/Assets
+TARGET = $(TARGETDIR)/Assets.exe
+OBJDIR = ../../bin-int/Dist-windows-x86_64/Assets
 DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++23
@@ -85,7 +85,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS) $(LDDEPS) | $(TARGETDIR)
 	$(PRELINKCMDS)
-	@echo Linking Sandbox
+	@echo Linking Assets
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -106,7 +106,7 @@ else
 endif
 
 clean:
-	@echo Cleaning Sandbox
+	@echo Cleaning Assets
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(GENERATED)

@@ -29,7 +29,7 @@ project "Hollows_Engine"
         "%{prj.name}/src/**.c"
     }
 --[[
-    includedir
+    includedirs
     {
         "%{prj.name}/vendor/spdlog/include"
     }
@@ -48,7 +48,7 @@ project "Hollows_Engine"
 
         postbuildcommands
         {
-            ("{COPYFILE}%{cfg.buildtarget.relpath} ../bin" .. outputdir .. "/Sandbox")
+            ("{COPYFILE}%{cfg.buildtarget.relpath} ../bin" .. outputdir .. "/Assets")
         }
 
     filter "configurations:Debug"
@@ -64,8 +64,8 @@ project "Hollows_Engine"
         optimize "On"
 
 
-project "Sandbox"
-    location "src/sandbox"
+project "Assets"
+    location "src/assets"
     kind "ConsoleApp"
     language "C++"
 
@@ -84,12 +84,12 @@ project "Sandbox"
     {
         --[["Hollows_Engine/vendor/spdlog/include",]] "src/engine"
     }
---[[
+
     links
     {
         "Hollows_Engine"
     }
-]]
+
 
     filter "system:windows"
         cppdialect "C++23"
