@@ -1,3 +1,5 @@
+require ("vendor/bin/premake/ext/premake-vscode-main/vscode.lua")
+
 workspace "The_Hollows_Engine"
     architecture "x64"
 
@@ -25,14 +27,14 @@ project "Hollows_Engine"
         "%{prj.name}/src/**.c"
     }
 
-    include
+    includedir
     {
         "%{prj.name}/vendor/spdlog/include"
     }
 
 
     filter "system:windows"
-        cppdilect "C++23"
+        cppdilect "C++20"
         staticruntime "On"
         systemversion "latest"
 
@@ -76,9 +78,9 @@ project "Sandbox"
         "%{prj.name}/src/**.c"
     }
 
-    include
+    includedir
     {
-        "%{prj.name}/vendor/spdlog/include", "Hollows_Engine/src"
+        "Hollows_Engine/vendor/spdlog/include", "Hollows_Engine/src"
     }
 
     links
@@ -88,7 +90,7 @@ project "Sandbox"
 
 
     filter "system:windows"
-        cppdilect "C++23"
+        cppdilect "C++20"
         staticruntime "On"
         systemversion "latest"
 
