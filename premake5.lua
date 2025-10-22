@@ -1,4 +1,6 @@
-require ("vendor/bin/premake/ext/premake-vscode-main/vscode")
+--_ACTION = -ACTION
+--require("vendor/bin/premake/ext/vscode")
+
 
 workspace "The_Hollows_Engine"
     architecture "x64"
@@ -13,7 +15,7 @@ workspace "The_Hollows_Engine"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Hollows_Engine"
-    location "THollows_Engine"
+    location "src/engine"
     kind "SharedLib"
     language "C++"
 
@@ -26,15 +28,15 @@ project "Hollows_Engine"
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/src/**.c"
     }
-
+--[[
     includedir
     {
         "%{prj.name}/vendor/spdlog/include"
     }
 
-
+]]
     filter "system:windows"
-        cppdilect "C++20"
+        cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
 
@@ -63,7 +65,7 @@ project "Hollows_Engine"
 
 
 project "Sandbox"
-    location "Sandbox"
+    location "src/sandbox"
     kind "ConsoleApp"
     language "C++"
 
@@ -78,19 +80,19 @@ project "Sandbox"
         "%{prj.name}/src/**.c"
     }
 
-    includedir
+    includedirs
     {
-        "Hollows_Engine/vendor/spdlog/include", "Hollows_Engine/src"
+        --[["Hollows_Engine/vendor/spdlog/include",]] "src/engine"
     }
-
+--[[
     links
     {
         "Hollows_Engine"
     }
-
+]]
 
     filter "system:windows"
-        cppdilect "C++20"
+        cppdialect "C++23"
         staticruntime "On"
         systemversion "latest"
 

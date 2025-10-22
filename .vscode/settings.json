@@ -1,0 +1,7 @@
+{
+    "makefile.alwaysPreConfigure": true,
+    "makefile.alwaysPostConfigure": true,
+    "makefile.configurations": [
+
+    ],
+}

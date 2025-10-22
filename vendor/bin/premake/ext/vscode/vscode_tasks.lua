@@ -3,10 +3,11 @@
 -- Aliases
 local p = premake
 local vscode = p.modules.vscode
-local tasks = vscode.tasks
+
 
 -- Define tasks object
 vscode.tasks = {}
+local tasks = vscode.tasks
 
 -- Task build functions
 function tasks.buildSolutionTask(wks)

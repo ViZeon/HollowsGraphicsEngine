@@ -1,7 +1,8 @@
 //#include "engine/include/Engine.h"
+    // src/main.cpp
+    #include <iostream>
 
-int main() {
-    Engine engine;
-    engine.run();
-    return 0;
-}
+    int main() {
+        std::cout << "Hello from Premake C++ project!" << std::endl;
+        return 0;
+    }
