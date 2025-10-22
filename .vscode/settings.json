@@ -1,0 +1,11 @@
+{
+    "C_Cpp.default.configuration": "Win32",
+    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.autocomplete": "default",
+    "C_Cpp.errorSquiggles": "enabled",
+    "C_Cpp.dimInactiveRegions": true,
+    "files.associations": {
+        "*.h": "c",
+        "*.hpp": "cpp"
+    }
+}

@@ -1,0 +1,63 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build engine (MinGW)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-I${workspaceFolder}/engine/include",
+                "-I${workspaceFolder}/include",
+                "${workspaceFolder}/engine/src/Engine.cpp",
+                "${workspaceFolder}/main.cpp",
+                "-o",
+                "${workspaceFolder}/build/engine.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "build engine (MSVC)",
+            "type": "shell",
+            "command": "cl",
+            "args": [
+                "/std:c++17",
+                "/I${workspaceFolder}/engine/include",
+                "/I${workspaceFolder}/include",
+                "${workspaceFolder}/engine/src/Engine.cpp",
+                "${workspaceFolder}/main.cpp",
+                "/Fe:${workspaceFolder}/build/engine.exe"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run engine",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/engine.exe",
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}
