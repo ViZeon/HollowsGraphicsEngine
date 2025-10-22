@@ -1,12 +1,4 @@
 #include "engine/include/Engine.h"
-<<<<<<< HEAD
-
-int main() {
-    Engine engine;
-    engine.run();
-    return 0;
-}
-=======
 #include "modules/graphics/include/Graphics.h"
 
 int main() {
@@ -16,4 +8,3 @@ int main() {
     graphics.render();
     return 0;
 }
->>>>>>> cca6736d323a27198cdda47ed2970682f9dada1b

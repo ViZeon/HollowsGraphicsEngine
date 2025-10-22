@@ -1,0 +1,13 @@
+# Archived Workflow Instructions
+- Keep workspace clean and uncluttered.
+- Prefer minimal, modular changes over large rewrites.
+- Record all decisions and requirements in the `AI` folder.
+- Use Markdown for documentation and instructions.
+- When in doubt, ask for clarification before making major changes.
+- Prioritize user’s stated design philosophy and workflow.
+- Automate repetitive tasks when possible, but confirm before bulk actions.
+- Keep all context and logs up to date for easy reference.
+- Before tackling any task, review the chat history and both AI instruction files for relevant context and decisions.
+- Regularly update instruction files with new insights, requirements, or decisions from the chat.
+- If unsure about how to proceed, ask the user for clarification before making changes.
+- Treat this as a standing instruction for all future work.

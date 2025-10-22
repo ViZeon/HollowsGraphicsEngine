@@ -1,0 +1,1 @@
+Archived instruction files and folders for reference. All active instructions are now in COPILOT_INSTRUCTIONS.md.
