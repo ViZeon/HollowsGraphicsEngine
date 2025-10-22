@@ -10,8 +10,8 @@ workspace "The_Hollows_Engine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-project "Engine"
-    location "Engine"
+project "Hollows_Engine"
+    location "THollows_Engine"
     kind "SharedLib"
     language "C++"
 
@@ -59,5 +59,52 @@ project "Engine"
         defines "HZ_DIST"
         optimize "On"
 
-    filter { "system:windows", "configurations:Release"}
-        buildoptions "/MT"
+
+project "Sandbox"
+    location "Sandbox"
+    kind "ConsoleApp"
+    language "C++"
+
+    
+    targetdir ("bin/"..outputdir.."/%{prj.name}")
+    objdir ("bin-int/"..outputdir.."/%{prj.name}")
+
+    files
+    {
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/src/**.c"
+    }
+
+    include
+    {
+        "%{prj.name}/vendor/spdlog/include", "Hollows_Engine/src"
+    }
+
+    links
+    {
+        "Hollows_Engine"
+    }
+
+
+    filter "system:windows"
+        cppdilect "C++23"
+        staticruntime "On"
+        systemversion "latest"
+
+        defines
+        {
+            "HZ_PLATFORM_WINDOWS"
+        }
+
+    filter "configurations:Debug"
+        defines "HZ_DEBUG"
+        symbols "On"
+
+    filter "configurations:Release"
+        defines "HZ_RELEASE"
+        optimize "On"
+
+    filter "configurations:Dist"
+        defines "HZ_DIST"
+        optimize "On"
