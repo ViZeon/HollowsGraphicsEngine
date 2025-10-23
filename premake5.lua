@@ -1,14 +1,10 @@
---_ACTION = -ACTION
---require("vendor/bin/premake/ext/vscode")
-
-
 workspace "The_Hollows_Engine"
     architecture "x64"
 
     configurations
     {
         "Debug",
-        "release",
+        "Release",
         "Dist"
     }
 
@@ -19,22 +15,16 @@ project "Hollows_Engine"
     kind "SharedLib"
     language "C++"
 
-    targetdir ("bin/"..outputdir.."/%{prj.name}")
-    objdir ("bin-int/"..outputdir.."/%{prj.name}")
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files
     {
-        "%{prj.location}/src/**.h",
-        "%{prj.location}/src/**.cpp",
-        "%{prj.location}/src/**.c"
-    }
---[[
-    includedirs
-    {
-        "%{prj.name}/vendor/spdlog/include"
+        "src/engine/**.h",
+        "src/engine/**.cpp",
+        "src/engine/**.c"
     }
 
-]]
     filter "system:windows"
         cppdialect "C++17"
         staticruntime "On"
@@ -48,7 +38,8 @@ project "Hollows_Engine"
 
         postbuildcommands
         {
-            ("{COPYFILE}%{cfg.buildtarget.relpath} ../bin" .. outputdir .. "/Assets")
+            ("{MKDIR} ../../bin/" .. outputdir .. "/Assets"),
+            ("{COPY} %{cfg.buildtarget.relpath} ../../bin/" .. outputdir .. "/Assets")
         }
 
     filter "configurations:Debug"
@@ -68,21 +59,20 @@ project "Assets"
     location "src/assets"
     kind "ConsoleApp"
     language "C++"
-
     
-    targetdir ("bin/"..outputdir.."/%{prj.name}")
-    objdir ("bin-int/"..outputdir.."/%{prj.name}")
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
     files
     {
-        "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp",
-        "%{prj.name}/src/**.c"
+        "src/assets/**.h",
+        "src/assets/**.cpp",
+        "src/assets/**.c"
     }
 
     includedirs
     {
-        --[["Hollows_Engine/vendor/spdlog/include",]] "src/engine"
+        "src/engine"
     }
 
     links
@@ -90,9 +80,8 @@ project "Assets"
         "Hollows_Engine"
     }
 
-
     filter "system:windows"
-        cppdialect "C++23"
+        cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
 

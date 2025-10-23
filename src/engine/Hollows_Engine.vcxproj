@@ -5,8 +5,8 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="release|x64">
-      <Configuration>release</Configuration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Dist|x64">
@@ -28,7 +28,7 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
@@ -46,7 +46,7 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='release|x64'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -60,10 +60,10 @@
     <TargetName>Hollows_Engine</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\..\bin\release-windows-x86_64\Hollows_Engine\</OutDir>
-    <IntDir>$(ProjectDir)..\..\bin-int\release-windows-x86_64\Hollows_Engine\</IntDir>
+    <OutDir>$(ProjectDir)..\..\bin\Release-windows-x86_64\Hollows_Engine\</OutDir>
+    <IntDir>$(ProjectDir)..\..\bin-int\Release-windows-x86_64\Hollows_Engine\</IntDir>
     <TargetName>Hollows_Engine</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
@@ -91,10 +91,11 @@
       <ImportLibrary>..\..\bin\Debug-windows-x86_64\Hollows_Engine\Hollows_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\bin\Debug-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\binDebug-windows-x86_64\Assets</Command>
+      <Command>IF NOT EXIST ..\..\bin\Debug-windows-x86_64\Assets (mkdir ..\..\bin\Debug-windows-x86_64\Assets)
+IF EXIST ..\..\bin\Debug-windows-x86_64\Hollows_Engine\Hollows_Engine.dll\ (xcopy /Q /E /Y /I ..\..\bin\Debug-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\..\bin\Debug-windows-x86_64\Assets &gt; nul) ELSE (xcopy /Q /Y /I ..\..\bin\Debug-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\..\bin\Debug-windows-x86_64\Assets &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -112,10 +113,11 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ImportLibrary>..\..\bin\release-windows-x86_64\Hollows_Engine\Hollows_Engine.lib</ImportLibrary>
+      <ImportLibrary>..\..\bin\Release-windows-x86_64\Hollows_Engine\Hollows_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\bin\release-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\binrelease-windows-x86_64\Assets</Command>
+      <Command>IF NOT EXIST ..\..\bin\Release-windows-x86_64\Assets (mkdir ..\..\bin\Release-windows-x86_64\Assets)
+IF EXIST ..\..\bin\Release-windows-x86_64\Hollows_Engine\Hollows_Engine.dll\ (xcopy /Q /E /Y /I ..\..\bin\Release-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\..\bin\Release-windows-x86_64\Assets &gt; nul) ELSE (xcopy /Q /Y /I ..\..\bin\Release-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\..\bin\Release-windows-x86_64\Assets &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -139,9 +141,16 @@
       <ImportLibrary>..\..\bin\Dist-windows-x86_64\Hollows_Engine\Hollows_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\bin\Dist-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\binDist-windows-x86_64\Assets</Command>
+      <Command>IF NOT EXIST ..\..\bin\Dist-windows-x86_64\Assets (mkdir ..\..\bin\Dist-windows-x86_64\Assets)
+IF EXIST ..\..\bin\Dist-windows-x86_64\Hollows_Engine\Hollows_Engine.dll\ (xcopy /Q /E /Y /I ..\..\bin\Dist-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\..\bin\Dist-windows-x86_64\Assets &gt; nul) ELSE (xcopy /Q /Y /I ..\..\bin\Dist-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\..\bin\Dist-windows-x86_64\Assets &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="test.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
