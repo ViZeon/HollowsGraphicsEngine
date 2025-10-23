@@ -18,23 +18,12 @@ endif
 # Configurations
 # #############################################
 
-ifeq ($(origin CC), default)
-  CC = clang
-endif
-ifeq ($(origin CXX), default)
-  CXX = clang++
-endif
-ifeq ($(origin AR), default)
-  AR = ar
-endif
-RESCOMP = windres
 INCLUDES +=
 FORCE_INCLUDE +=
-ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
+ALL_CPPFLAGS += $(CPPFLAGS) $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
 LIBS +=
 LDDEPS +=
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
 endef
@@ -43,38 +32,41 @@ endef
 
 ifeq ($(config),debug)
 TARGETDIR = ../../bin/Debug-windows-x86_64/Hollows_Engine
-TARGET = $(TARGETDIR)/Hollows_Engine.exe
+TARGET = $(TARGETDIR)/Hollows_Engine.dll
 OBJDIR = ../../bin-int/Debug-windows-x86_64/Hollows_Engine
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DHZ_DEBUG
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
+DEFINES += /D"_UNICODE" /D"UNICODE" /D"HZ_PLATFORM_WINDOWS" /D"HZ_BUILD_DLL" /D"HZ_DEBUG"
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) /MTd /Z7
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) /MTd /Z7 /std:c++17 /EHsc
+ALL_LDFLAGS += $(LDFLAGS) /NOLOGO /DLL /DEBUG
 define POSTBUILDCMDS
 	@echo Running postbuild commands
-	copy /B /Y ..\bin\Debug-windows-x86_64\Hollows_Engine\Hollows_Engine.exe ..\binDebug-windows-x86_64\Assets
+	copy /B /Y ..\bin\Debug-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\binDebug-windows-x86_64\Assets
 endef
 
 else ifeq ($(config),release)
 TARGETDIR = ../../bin/release-windows-x86_64/Hollows_Engine
-TARGET = $(TARGETDIR)/Hollows_Engine.exe
+TARGET = $(TARGETDIR)/Hollows_Engine.dll
 OBJDIR = ../../bin-int/release-windows-x86_64/Hollows_Engine
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DHZ_RELEASE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
+DEFINES += /D"_UNICODE" /D"UNICODE" /D"HZ_PLATFORM_WINDOWS" /D"HZ_BUILD_DLL" /D"HZ_RELEASE"
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) /Ot /MT
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) /Ot /MT /std:c++17 /EHsc
+ALL_LDFLAGS += $(LDFLAGS) /NOLOGO /DLL
 define POSTBUILDCMDS
 	@echo Running postbuild commands
-	copy /B /Y ..\bin\release-windows-x86_64\Hollows_Engine\Hollows_Engine.exe ..\binrelease-windows-x86_64\Assets
+	copy /B /Y ..\bin\release-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\binrelease-windows-x86_64\Assets
 endef
 
 else ifeq ($(config),dist)
 TARGETDIR = ../../bin/Dist-windows-x86_64/Hollows_Engine
-TARGET = $(TARGETDIR)/Hollows_Engine.exe
+TARGET = $(TARGETDIR)/Hollows_Engine.dll
 OBJDIR = ../../bin-int/Dist-windows-x86_64/Hollows_Engine
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DHZ_DIST
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
+DEFINES += /D"_UNICODE" /D"UNICODE" /D"HZ_PLATFORM_WINDOWS" /D"HZ_BUILD_DLL" /D"HZ_DIST"
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) /Ot /MT
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) /Ot /MT /std:c++17 /EHsc
+ALL_LDFLAGS += $(LDFLAGS) /NOLOGO /DLL
 define POSTBUILDCMDS
 	@echo Running postbuild commands
-	copy /B /Y ..\bin\Dist-windows-x86_64\Hollows_Engine\Hollows_Engine.exe ..\binDist-windows-x86_64\Assets
+	copy /B /Y ..\bin\Dist-windows-x86_64\Hollows_Engine\Hollows_Engine.dll ..\binDist-windows-x86_64\Assets
 endef
 
 endif

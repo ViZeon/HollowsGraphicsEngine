@@ -18,23 +18,10 @@ endif
 # Configurations
 # #############################################
 
-ifeq ($(origin CC), default)
-  CC = clang
-endif
-ifeq ($(origin CXX), default)
-  CXX = clang++
-endif
-ifeq ($(origin AR), default)
-  AR = ar
-endif
-RESCOMP = windres
 INCLUDES += -I../engine
 FORCE_INCLUDE +=
-ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
+ALL_CPPFLAGS += $(CPPFLAGS) $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-LIBS +=
-LDDEPS +=
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
 endef
@@ -47,25 +34,34 @@ ifeq ($(config),debug)
 TARGETDIR = ../../bin/Debug-windows-x86_64/Assets
 TARGET = $(TARGETDIR)/Assets.exe
 OBJDIR = ../../bin-int/Debug-windows-x86_64/Assets
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_DEBUG
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++23
+DEFINES += /D"_UNICODE" /D"UNICODE" /D"HZ_PLATFORM_WINDOWS" /D"HZ_DEBUG"
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) /MTd /Z7
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) /MTd /Z7 /std:c++latest /EHsc
+LIBS += ../../bin/Debug-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
+LDDEPS += ../../bin/Debug-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
+ALL_LDFLAGS += $(LDFLAGS) /NOLOGO /DEBUG
 
 else ifeq ($(config),release)
 TARGETDIR = ../../bin/release-windows-x86_64/Assets
 TARGET = $(TARGETDIR)/Assets.exe
 OBJDIR = ../../bin-int/release-windows-x86_64/Assets
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_RELEASE
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++23
+DEFINES += /D"_UNICODE" /D"UNICODE" /D"HZ_PLATFORM_WINDOWS" /D"HZ_RELEASE"
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) /Ot /MT
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) /Ot /MT /std:c++latest /EHsc
+LIBS += ../../bin/release-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
+LDDEPS += ../../bin/release-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
+ALL_LDFLAGS += $(LDFLAGS) /NOLOGO
 
 else ifeq ($(config),dist)
 TARGETDIR = ../../bin/Dist-windows-x86_64/Assets
 TARGET = $(TARGETDIR)/Assets.exe
 OBJDIR = ../../bin-int/Dist-windows-x86_64/Assets
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_DIST
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++23
+DEFINES += /D"_UNICODE" /D"UNICODE" /D"HZ_PLATFORM_WINDOWS" /D"HZ_DIST"
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) /Ot /MT
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) /Ot /MT /std:c++latest /EHsc
+LIBS += ../../bin/Dist-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
+LDDEPS += ../../bin/Dist-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
+ALL_LDFLAGS += $(LDFLAGS) /NOLOGO
 
 endif
 

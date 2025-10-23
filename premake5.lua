@@ -24,9 +24,9 @@ project "Hollows_Engine"
 
     files
     {
-        "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp",
-        "%{prj.name}/src/**.c"
+        "%{prj.location}/src/**.h",
+        "%{prj.location}/src/**.cpp",
+        "%{prj.location}/src/**.c"
     }
 --[[
     includedirs

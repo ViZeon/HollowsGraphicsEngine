@@ -1,2 +1,2 @@
-call vendor\bin\premake\premake5.exe --cc=clang gmake 
+call vendor\bin\premake\premake5.exe vs2022 
 PAUSE
