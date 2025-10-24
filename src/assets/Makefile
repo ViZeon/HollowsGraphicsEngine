@@ -47,7 +47,7 @@ TARGET = $(TARGETDIR)/Assets.exe
 OBJDIR = ../../bin-int/Debug-windows-x86_64/Assets
 DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++23
 LIBS += ../../bin/Debug-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
 LDDEPS += ../../bin/Debug-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
 
@@ -57,7 +57,7 @@ TARGET = $(TARGETDIR)/Assets.exe
 OBJDIR = ../../bin-int/Release-windows-x86_64/Assets
 DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++23
 LIBS += ../../bin/Release-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
 LDDEPS += ../../bin/Release-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
 
@@ -67,7 +67,7 @@ TARGET = $(TARGETDIR)/Assets.exe
 OBJDIR = ../../bin-int/Dist-windows-x86_64/Assets
 DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++23
 LIBS += ../../bin/Dist-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
 LDDEPS += ../../bin/Dist-windows-x86_64/Hollows_Engine/Hollows_Engine.lib
 

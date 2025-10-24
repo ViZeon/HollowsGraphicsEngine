@@ -9,14 +9,17 @@ ifndef verbose
 endif
 
 ifeq ($(config),debug)
+  SDL3_static_config = debug
   Hollows_Engine_config = debug
   Assets_config = debug
 
 else ifeq ($(config),release)
+  SDL3_static_config = release
   Hollows_Engine_config = release
   Assets_config = release
 
 else ifeq ($(config),dist)
+  SDL3_static_config = dist
   Hollows_Engine_config = dist
   Assets_config = dist
 
@@ -24,13 +27,19 @@ else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := Hollows_Engine Assets
+PROJECTS := SDL3-static Hollows_Engine Assets
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-Hollows_Engine:
+SDL3-static:
+ifneq (,$(SDL3_static_config))
+	@echo "==== Building SDL3-static ($(SDL3_static_config)) ===="
+	@${MAKE} --no-print-directory -C vendor/lib/SDL -f Makefile config=$(SDL3_static_config)
+endif
+
+Hollows_Engine: SDL3-static
 ifneq (,$(Hollows_Engine_config))
 	@echo "==== Building Hollows_Engine ($(Hollows_Engine_config)) ===="
 	@${MAKE} --no-print-directory -C src/engine -f Makefile config=$(Hollows_Engine_config)
@@ -43,6 +52,7 @@ ifneq (,$(Assets_config))
 endif
 
 clean:
+	@${MAKE} --no-print-directory -C vendor/lib/SDL -f Makefile clean
 	@${MAKE} --no-print-directory -C src/engine -f Makefile clean
 	@${MAKE} --no-print-directory -C src/assets -f Makefile clean
 
@@ -57,6 +67,7 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
+	@echo "   SDL3-static"
 	@echo "   Hollows_Engine"
 	@echo "   Assets"
 	@echo ""

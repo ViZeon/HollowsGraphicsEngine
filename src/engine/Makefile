@@ -28,11 +28,11 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES +=
+INCLUDES += -I../../vendor/lib/SDL/include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-LIBS +=
+LIBS += -lwinmm -limm32 -lversion -lsetupapi
 LDDEPS +=
 LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
@@ -44,10 +44,10 @@ ifeq ($(config),debug)
 TARGETDIR = ../../bin/Debug-windows-x86_64/Hollows_Engine
 TARGET = $(TARGETDIR)/Hollows_Engine.dll
 OBJDIR = ../../bin-int/Debug-windows-x86_64/Hollows_Engine
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DHZ_DEBUG
+DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DSDL_STATIC_LIB -DHZ_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,--out-implib="../../bin/Debug-windows-x86_64/Hollows_Engine/Hollows_Engine.lib"
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++23
+ALL_LDFLAGS += $(LDFLAGS) -L../../vendor/lib/SDL/build/Debug -L/usr/lib64 -m64 -shared -Wl,--out-implib="../../bin/Debug-windows-x86_64/Hollows_Engine/Hollows_Engine.lib"
 define POSTBUILDCMDS
 	@echo Running postbuild commands
 	IF NOT EXIST ..\..\bin\Debug-windows-x86_64\Assets (mkdir ..\..\bin\Debug-windows-x86_64\Assets)
@@ -58,10 +58,10 @@ else ifeq ($(config),release)
 TARGETDIR = ../../bin/Release-windows-x86_64/Hollows_Engine
 TARGET = $(TARGETDIR)/Hollows_Engine.dll
 OBJDIR = ../../bin-int/Release-windows-x86_64/Hollows_Engine
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DHZ_RELEASE
+DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DSDL_STATIC_LIB -DHZ_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,--out-implib="../../bin/Release-windows-x86_64/Hollows_Engine/Hollows_Engine.lib"
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++23
+ALL_LDFLAGS += $(LDFLAGS) -L../../vendor/lib/SDL/build/Release -L/usr/lib64 -m64 -shared -Wl,--out-implib="../../bin/Release-windows-x86_64/Hollows_Engine/Hollows_Engine.lib"
 define POSTBUILDCMDS
 	@echo Running postbuild commands
 	IF NOT EXIST ..\..\bin\Release-windows-x86_64\Assets (mkdir ..\..\bin\Release-windows-x86_64\Assets)
@@ -72,10 +72,10 @@ else ifeq ($(config),dist)
 TARGETDIR = ../../bin/Dist-windows-x86_64/Hollows_Engine
 TARGET = $(TARGETDIR)/Hollows_Engine.dll
 OBJDIR = ../../bin-int/Dist-windows-x86_64/Hollows_Engine
-DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DHZ_DIST
+DEFINES += -DHZ_PLATFORM_WINDOWS -DHZ_BUILD_DLL -DSDL_STATIC_LIB -DHZ_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
-ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,--out-implib="../../bin/Dist-windows-x86_64/Hollows_Engine/Hollows_Engine.lib"
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++23
+ALL_LDFLAGS += $(LDFLAGS) -L../../vendor/lib/SDL/build/Dist -L/usr/lib64 -m64 -shared -Wl,--out-implib="../../bin/Dist-windows-x86_64/Hollows_Engine/Hollows_Engine.lib"
 define POSTBUILDCMDS
 	@echo Running postbuild commands
 	IF NOT EXIST ..\..\bin\Dist-windows-x86_64\Assets (mkdir ..\..\bin\Dist-windows-x86_64\Assets)

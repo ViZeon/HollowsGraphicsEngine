@@ -13,13 +13,14 @@ os.execute("conan install . --profile=" .. profile .. " --build=missing")
 workspace "The_Hollows_Engine"
     architecture "x64"
 
-    include "vendor/SDL"
     configurations
     {
         "Debug",
         "Release",
         "Dist"
     }
+    
+    include "vendor/lib/SDL"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -30,6 +31,9 @@ project "Hollows_Engine"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    
+    -- Add this line to specify import library location
+    implibdir ("bin/" .. outputdir .. "/%{prj.name}")
 
     files
     {
@@ -38,22 +42,22 @@ project "Hollows_Engine"
         "src/engine/**.c"
     }
 
-    conan_basic_setup()
-
     filter "system:windows"
-        cppdialect "C++17"
+        cppdialect "C++23"
         staticruntime "On"
         systemversion "latest"
 
         defines
         {
-            "Z",
-            "HZ_BUILD_DLL"
+            "HZ_PLATFORM_WINDOWS",
+            "HZ_BUILD_DLL",
+            "SDL_STATIC_LIB"
         }
-
-        links { "SDL3" }
-        includedirs { "vendor/SDL/include" }
         
+        links { "SDL3-static", "winmm", "imm32", "version", "setupapi" }
+        includedirs { "vendor/lib/SDL/include" }
+        libdirs { "vendor/lib/SDL/build/%{cfg.buildcfg}" }
+
         postbuildcommands
         {
             ("{MKDIR} ../../bin/" .. outputdir .. "/Assets"),
@@ -88,7 +92,7 @@ project "Assets"
         "src/assets/**.c"
     }
 
-    conan_basic_setup()
+    --conan_basic_setup()
 
     includedirs
     {
@@ -101,7 +105,7 @@ project "Assets"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
+        cppdialect "C++23"
         staticruntime "On"
         systemversion "latest"
 
