@@ -81,26 +81,23 @@ project "Assets"
     location "src/assets"
     kind "ConsoleApp"
     language "C++"
-    
+
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-    files
-    {
+    dependson { "Hollows_Engine" } -- ensures engine builds first
+
+    files {
         "src/assets/**.h",
         "src/assets/**.cpp",
         "src/assets/**.c"
     }
 
-    --conan_basic_setup()
-
-    includedirs
-    {
-        "src/engine"
+    includedirs {
+        "src/engine" -- includes test.h etc.
     }
 
-    links
-    {
+    links {
         "Hollows_Engine"
     }
 
@@ -108,10 +105,8 @@ project "Assets"
         cppdialect "C++23"
         staticruntime "On"
         systemversion "latest"
-
-        defines
-        {
-            "HZ_PLATFORM_WINDOWS"
+        defines {
+            "HZ_PLATFORM_WINDOWS" -- ❌ do NOT define HZ_BUILD_DLL here
         }
 
     filter "configurations:Debug"
