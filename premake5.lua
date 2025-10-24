@@ -1,8 +1,19 @@
-require("conandeps")
+--require("conandeps")
+
+
+newoption {
+    trigger = "conan-profile",
+    value = "PROFILE",
+    description = "Conan profile to use"
+}
+
+local profile = _OPTIONS["conan-profile"] or "default"
+os.execute("conan install . --profile=" .. profile .. " --build=missing")
 
 workspace "The_Hollows_Engine"
     architecture "x64"
 
+    include "vendor/SDL"
     configurations
     {
         "Debug",
@@ -75,7 +86,7 @@ project "Assets"
     }
 
     conan_basic_setup()
-    
+
     includedirs
     {
         "src/engine"
