@@ -1,3 +1,5 @@
+require("conandeps")
+
 workspace "The_Hollows_Engine"
     architecture "x64"
 
@@ -25,6 +27,8 @@ project "Hollows_Engine"
         "src/engine/**.c"
     }
 
+    conan_basic_setup()
+
     filter "system:windows"
         cppdialect "C++17"
         staticruntime "On"
@@ -32,7 +36,7 @@ project "Hollows_Engine"
 
         defines
         {
-            "HZ_PLATFORM_WINDOWS",
+            "Z",
             "HZ_BUILD_DLL"
         }
 
@@ -70,6 +74,8 @@ project "Assets"
         "src/assets/**.c"
     }
 
+    conan_basic_setup()
+    
     includedirs
     {
         "src/engine"
