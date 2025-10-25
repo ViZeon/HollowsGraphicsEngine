@@ -10,6 +10,9 @@
 local profile = _OPTIONS["conan-profile"] or "default"
 os.execute("conan install . --profile=" .. profile .. " --build=missing")
 ]]
+require('export-compile-commands')
+
+
 workspace "The_Hollows_Engine"
     architecture "x64"
 
@@ -46,8 +49,6 @@ project "Hollows_Engine"
         cppdialect "C++23"
         staticruntime "On"
         systemversion "latest"
-
-    flags { "ExportCompileCommands" }
 
         defines
         {
