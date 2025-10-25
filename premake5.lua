@@ -109,7 +109,7 @@ project "Assets"
         staticruntime "On"
         systemversion "latest"
         defines {
-            "HZ_PLATFORM_WINDOWS" -- ❌ do NOT define HZ_BUILD_DLL here
+            "HZ_PLATFORM_WINDOWS" 
         }
 
     filter "configurations:Debug"

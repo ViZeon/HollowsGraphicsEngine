@@ -11,7 +11,99 @@
 			"file": "premake5.lua",
 			"settings":
 			{
-				"buffer_size": 2793,
+				"buffer_size": 2756,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			},
+			"undo_stack":
+			[
+				[
+					3,
+					1,
+					"insert",
+					{
+						"characters": "\n\n"
+					},
+					"AwAAAOcKAAAAAAAA8AoAAAAAAAAAAAAA8AoAAAAAAAD5CgAAAAAAAAAAAADoCgAAAAAAAOgKAAAAAAAACAAAACAgICAgICAg",
+					"AQAAAAAAAAABAAAA5woAAAAAAADnCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					4,
+					3,
+					"left_delete",
+					null,
+					"AwAAAO0KAAAAAAAA7QoAAAAAAAAEAAAAICAgIOkKAAAAAAAA6QoAAAAAAAAEAAAAICAgIOgKAAAAAAAA6AoAAAAAAAABAAAACg",
+					"AQAAAAAAAAABAAAA8QoAAAAAAADxCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					5,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAOgKAAAAAAAA6QoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA6AoAAAAAAADoCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					6,
+					1,
+					"paste",
+					null,
+					"AQAAAOkKAAAAAAAAwQsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA6QoAAAAAAADpCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					9,
+					1,
+					"insert",
+					{
+						"characters": "//"
+					},
+					"AgAAAGwLAAAAAAAAbQsAAAAAAAAAAAAAbQsAAAAAAABuCwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAbAsAAAAAAABsCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					10,
+					2,
+					"left_delete",
+					null,
+					"AgAAAG0LAAAAAAAAbQsAAAAAAAABAAAAL2wLAAAAAAAAbAsAAAAAAAABAAAALw",
+					"AQAAAAAAAAABAAAAbgsAAAAAAABuCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					11,
+					1,
+					"insert",
+					{
+						"characters": "--"
+					},
+					"AgAAAGwLAAAAAAAAbQsAAAAAAAAAAAAAbQsAAAAAAABuCwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAbAsAAAAAAABsCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					14,
+					2,
+					"left_delete",
+					null,
+					"AgAAAOkKAAAAAAAA6QoAAAAAAADaAAAAbmV3YWN0aW9uIHsKICAgIHRyaWdnZXIgPSAiY29tcGlsZS1jb21tYW5kcyIsCiAgICBkZXNjcmlwdGlvbiA9ICJHZW5lcmF0ZSBjb21waWxlX2NvbW1hbmRzLmpzb24iLAogICAgZXhlY3V0ZSA9IGZ1bmN0aW9uKCkKICAgICAgICAtLW9zLmV4ZWN1dGUoInByZW1ha2U1IGdtYWtlMiIpCiAgICAgICAgb3MuZXhlY3V0ZSgiY29tcGlsZWRiIG1ha2UgLUMgYnVpbGQiKQogICAgZW5kCn3oCgAAAAAAAOgKAAAAAAAAAQAAAAo",
+					"AQAAAAAAAAABAAAAwwsAAAAAAADpCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					19,
+					1,
+					"left_delete",
+					null,
+					"AQAAALwJAAAAAAAAvAkAAAAAAAAmAAAALS0g4p2MIGRvIE5PVCBkZWZpbmUgSFpfQlVJTERfRExMIGhlcmU",
+					"AQAAAAAAAAABAAAAvAkAAAAAAADgCQAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		},
+		{
+			"file": "src/assets/Application.cpp",
+			"settings":
+			{
+				"buffer_size": 84,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			},
@@ -22,51 +114,221 @@
 					1,
 					"insert",
 					{
-						"characters": "\n"
+						"characters": "\n$"
 					},
-					"AQAAABIEAAAAAAAAGwQAAAAAAAAAAAAA",
-					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAASBAAAAAAAABIEAAAAAAAAAAAAAAAA8L8"
+					"AgAAABEAAAAAAAAAEgAAAAAAAAAAAAAAEgAAAAAAAAATAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABEAAAAAAAAAEQAAAAAAAAAAAAAAAADwvw"
 				],
 				[
 					6,
 					1,
 					"left_delete",
 					null,
-					"AQAAABcEAAAAAAAAFwQAAAAAAAAEAAAAICAgIA",
-					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAbBAAAAAAAABsEAAAAAAAAAAAAAAAA8L8"
+					"AQAAABIAAAAAAAAAEgAAAAAAAAABAAAAJA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABMAAAAAAAAAEwAAAAAAAAAAAAAAAADwvw"
 				],
 				[
 					7,
 					1,
 					"insert",
 					{
-						"characters": "\n"
+						"characters": "#in"
 					},
-					"AgAAABcEAAAAAAAAHAQAAAAAAAAAAAAAEwQAAAAAAAATBAAAAAAAAAQAAAAgICAg",
-					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAXBAAAAAAAABcEAAAAAAAAAAAAAAAA8L8"
+					"AwAAABIAAAAAAAAAEwAAAAAAAAAAAAAAEwAAAAAAAAAUAAAAAAAAAAAAAAAUAAAAAAAAABUAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABIAAAAAAAAAEgAAAAAAAAAAAAAAAADwvw"
 				],
 				[
 					8,
 					1,
-					"paste",
-					null,
-					"AQAAABgEAAAAAAAAOQQAAAAAAAAAAAAA",
-					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAYBAAAAAAAABgEAAAAAAAAAAAAAAAA8L8"
+					"insert_completion",
+					{
+						"completion": "include",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "include"
+					},
+					"AgAAABMAAAAAAAAAEwAAAAAAAAACAAAAaW4TAAAAAAAAABoAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABUAAAAAAAAAFQAAAAAAAAAAAAAAAADwvw"
 				],
 				[
-					3,
+					9,
 					1,
-					"revert",
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAABoAAAAAAAAAGwAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABoAAAAAAAAAGgAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					10,
+					1,
+					"insert_snippet",
+					{
+						"contents": "\"$0\""
+					},
+					"AQAAABsAAAAAAAAAHQAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABsAAAAAAAAAGwAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					11,
+					1,
+					"insert",
+					{
+						"characters": "sd"
+					},
+					"AgAAABwAAAAAAAAAHQAAAAAAAAAAAAAAHQAAAAAAAAAeAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABwAAAAAAAAAHAAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					12,
+					2,
+					"left_delete",
 					null,
-					"AgAAAAAAAAAAAAAAAAAAAAAAAADrCgAALS1yZXF1aXJlKCJjb25hbmRlcHMiKQoKCi0tW1tuZXdvcHRpb24gewogICAgdHJpZ2dlciA9ICJjb25hbi1wcm9maWxlIiwKICAgIHZhbHVlID0gIlBST0ZJTEUiLAogICAgZGVzY3JpcHRpb24gPSAiQ29uYW4gcHJvZmlsZSB0byB1c2UiCn0KCmxvY2FsIHByb2ZpbGUgPSBfT1BUSU9OU1siY29uYW4tcHJvZmlsZSJdIG9yICJkZWZhdWx0Igpvcy5leGVjdXRlKCJjb25hbiBpbnN0YWxsIC4gLS1wcm9maWxlPSIgLi4gcHJvZmlsZSAuLiAiIC0tYnVpbGQ9bWlzc2luZyIpCl1dCndvcmtzcGFjZSAiVGhlX0hvbGxvd3NfRW5naW5lIgogICAgYXJjaGl0ZWN0dXJlICJ4NjQiCgogICAgY29uZmlndXJhdGlvbnMKICAgIHsKICAgICAgICAiRGVidWciLAogICAgICAgICJSZWxlYXNlIiwKICAgICAgICAiRGlzdCIKICAgIH0KICAgIAogICAgaW5jbHVkZSAidmVuZG9yL2xpYi9TREwiCgpvdXRwdXRkaXIgPSAiJXtjZmcuYnVpbGRjZmd9LSV7Y2ZnLnN5c3RlbX0tJXtjZmcuYXJjaGl0ZWN0dXJlfSIKCnByb2plY3QgIkhvbGxvd3NfRW5naW5lIgogICAgbG9jYXRpb24gInNyYy9lbmdpbmUiCiAgICBraW5kICJTaGFyZWRMaWIiCiAgICBsYW5ndWFnZSAiQysrIgoKICAgIHRhcmdldGRpciAoImJpbi8iIC4uIG91dHB1dGRpciAuLiAiLyV7cHJqLm5hbWV9IikKICAgIG9iamRpciAoImJpbi1pbnQvIiAuLiBvdXRwdXRkaXIgLi4gIi8le3Byai5uYW1lfSIpCiAgICAKICAgIC0tIEFkZCB0aGlzIGxpbmUgdG8gc3BlY2lmeSBpbXBvcnQgbGlicmFyeSBsb2NhdGlvbgogICAgaW1wbGliZGlyICgiYmluLyIgLi4gb3V0cHV0ZGlyIC4uICIvJXtwcmoubmFtZX0iKQoKICAgIGZpbGVzCiAgICB7CiAgICAgICAgInNyYy9lbmdpbmUvKiouaCIsCiAgICAgICAgInNyYy9lbmdpbmUvKiouY3BwIiwKICAgICAgICAic3JjL2VuZ2luZS8qKi5jIgogICAgfQoKICAgIGZpbHRlciAic3lzdGVtOndpbmRvd3MiCiAgICAgICAgY3BwZGlhbGVjdCAiQysrMjMiCiAgICAgICAgc3RhdGljcnVudGltZSAiT24iCiAgICAgICAgc3lzdGVtdmVyc2lvbiAibGF0ZXN0IgoKICAgIGZsYWdzIHsgIkV4cG9ydENvbXBpbGVDb21tYW5kcyIgfQoKICAgICAgICBkZWZpbmVzCiAgICAgICAgewogICAgICAgICAgICAiSFpfUExBVEZPUk1fV0lORE9XUyIsCiAgICAgICAgICAgICJIWl9CVUlMRF9ETEwiLAogICAgICAgICAgICAiU0RMX1NUQVRJQ19MSUIiCiAgICAgICAgfQogICAgICAgIAogICAgICAgIGxpbmtzIHsgIlNETDMtc3RhdGljIiwgIndpbm1tIiwgImltbTMyIiwgInZlcnNpb24iLCAic2V0dXBhcGkiIH0KICAgICAgICBpbmNsdWRlZGlycyB7ICJ2ZW5kb3IvbGliL1NETC9pbmNsdWRlIiB9CiAgICAgICAgbGliZGlycyB7ICJ2ZW5kb3IvbGliL1NETC9idWlsZC8le2NmZy5idWlsZGNmZ30iIH0KCiAgICAgICAgcG9zdGJ1aWxkY29tbWFuZHMKICAgICAgICB7CiAgICAgICAgICAgICgie01LRElSfSAuLi8uLi9iaW4vIiAuLiBvdXRwdXRkaXIgLi4gIi9Bc3NldHMiKSwKICAgICAgICAgICAgKCJ7Q09QWX0gJXtjZmcuYnVpbGR0YXJnZXQucmVscGF0aH0gLi4vLi4vYmluLyIgLi4gb3V0cHV0ZGlyIC4uICIvQXNzZXRzIikKICAgICAgICB9CgogICAgZmlsdGVyICJjb25maWd1cmF0aW9uczpEZWJ1ZyIKICAgICAgICBkZWZpbmVzICJIWl9ERUJVRyIKICAgICAgICBzeW1ib2xzICJPbiIKCiAgICBmaWx0ZXIgImNvbmZpZ3VyYXRpb25zOlJlbGVhc2UiCiAgICAgICAgZGVmaW5lcyAiSFpfUkVMRUFTRSIKICAgICAgICBvcHRpbWl6ZSAiT24iCgogICAgZmlsdGVyICJjb25maWd1cmF0aW9uczpEaXN0IgogICAgICAgIGRlZmluZXMgIkhaX0RJU1QiCiAgICAgICAgb3B0aW1pemUgIk9uIgoKCnByb2plY3QgIkFzc2V0cyIKICAgIGxvY2F0aW9uICJzcmMvYXNzZXRzIgogICAga2luZCAiQ29uc29sZUFwcCIKICAgIGxhbmd1YWdlICJDKysiCgogICAgdGFyZ2V0ZGlyICgiYmluLyIgLi4gb3V0cHV0ZGlyIC4uICIvJXtwcmoubmFtZX0iKQogICAgb2JqZGlyICgiYmluLWludC8iIC4uIG91dHB1dGRpciAuLiAiLyV7cHJqLm5hbWV9IikKCiAgICBkZXBlbmRzb24geyAiSG9sbG93c19FbmdpbmUiIH0gLS0gZW5zdXJlcyBlbmdpbmUgYnVpbGRzIGZpcnN0CgogICAgZmlsZXMgewogICAgICAgICJzcmMvYXNzZXRzLyoqLmgiLAogICAgICAgICJzcmMvYXNzZXRzLyoqLmNwcCIsCiAgICAgICAgInNyYy9hc3NldHMvKiouYyIKICAgIH0KCiAgICBpbmNsdWRlZGlycyB7CiAgICAgICAgInNyYy9lbmdpbmUiIC0tIGluY2x1ZGVzIHRlc3QuaCBldGMuCiAgICB9CgogICAgbGlua3MgewogICAgICAgICJIb2xsb3dzX0VuZ2luZSIKICAgIH0KCiAgICBmaWx0ZXIgInN5c3RlbTp3aW5kb3dzIgogICAgICAgIGNwcGRpYWxlY3QgIkMrKzIzIgogICAgICAgIHN0YXRpY3J1bnRpbWUgIk9uIgogICAgICAgIHN5c3RlbXZlcnNpb24gImxhdGVzdCIKICAgICAgICBkZWZpbmVzIHsKICAgICAgICAgICAgIkhaX1BMQVRGT1JNX1dJTkRPV1MiIC0tIOKdjCBkbyBOT1QgZGVmaW5lIEhaX0JVSUxEX0RMTCBoZXJlCiAgICAgICAgfQoKICAgIGZpbHRlciAiY29uZmlndXJhdGlvbnM6RGVidWciCiAgICAgICAgZGVmaW5lcyAiSFpfREVCVUciCiAgICAgICAgc3ltYm9scyAiT24iCgogICAgZmlsdGVyICJjb25maWd1cmF0aW9uczpSZWxlYXNlIgogICAgICAgIGRlZmluZXMgIkhaX1JFTEVBU0UiCiAgICAgICAgb3B0aW1pemUgIk9uIgoKICAgIGZpbHRlciAiY29uZmlndXJhdGlvbnM6RGlzdCIKICAgICAgICBkZWZpbmVzICJIWl9ESVNUIgogICAgICAgIG9wdGltaXplICJPbiIAAAAAAAAAAOkKAAAAAAAAAAAAAA",
-					"AQAAAAAAAAABAAAAgAMAAAAAAACAAwAAAAAAAAAAAAAAAPC/"
+					"AgAAAB0AAAAAAAAAHQAAAAAAAAABAAAAZBwAAAAAAAAAHAAAAAAAAAABAAAAcw",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAB4AAAAAAAAAHgAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					13,
+					1,
+					"insert",
+					{
+						"characters": "sd"
+					},
+					"AgAAABwAAAAAAAAAHQAAAAAAAAAAAAAAHQAAAAAAAAAeAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABwAAAAAAAAAHAAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					14,
+					2,
+					"left_delete",
+					null,
+					"AgAAAB0AAAAAAAAAHQAAAAAAAAABAAAAZBwAAAAAAAAAHAAAAAAAAAABAAAAcw",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAB4AAAAAAAAAHgAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					18,
+					1,
+					"insert",
+					{
+						"characters": "//"
+					},
+					"AgAAABIAAAAAAAAAEwAAAAAAAAAAAAAAEwAAAAAAAAAUAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABIAAAAAAAAAEgAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					19,
+					2,
+					"left_delete",
+					null,
+					"AgAAABMAAAAAAAAAEwAAAAAAAAABAAAALxIAAAAAAAAAEgAAAAAAAAABAAAALw",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABQAAAAAAAAAFAAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					22,
+					1,
+					"insert",
+					{
+						"characters": "sd"
+					},
+					"AgAAABwAAAAAAAAAHQAAAAAAAAAAAAAAHQAAAAAAAAAeAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABwAAAAAAAAAHAAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					23,
+					2,
+					"left_delete",
+					null,
+					"AgAAAB0AAAAAAAAAHQAAAAAAAAABAAAAZBwAAAAAAAAAHAAAAAAAAAABAAAAcw",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAB4AAAAAAAAAHgAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					29,
+					1,
+					"insert",
+					{
+						"characters": "//"
+					},
+					"AgAAABIAAAAAAAAAEwAAAAAAAAAAAAAAEwAAAAAAAAAUAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABIAAAAAAAAAEgAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					6,
+					2,
+					"left_delete",
+					null,
+					"AgAAABMAAAAAAAAAEwAAAAAAAAABAAAALxIAAAAAAAAAEgAAAAAAAAABAAAALw",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAUAAAAAAAAABQAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					9,
+					1,
+					"insert",
+					{
+						"characters": "s"
+					},
+					"AQAAABwAAAAAAAAAHQAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAcAAAAAAAAABwAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					10,
+					1,
+					"insert",
+					{
+						"characters": "d"
+					},
+					"AQAAAB0AAAAAAAAAHgAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAdAAAAAAAAAB0AAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					14,
+					1,
+					"left_delete",
+					null,
+					"AQAAABIAAAAAAAAAEgAAAAAAAAABAAAAIw",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAATAAAAAAAAABMAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					15,
+					1,
+					"insert",
+					{
+						"characters": "//"
+					},
+					"AgAAABIAAAAAAAAAEwAAAAAAAAAAAAAAEwAAAAAAAAAUAAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAASAAAAAAAAABIAAAAAAAAAAAAAAAAA8L8"
 				]
 			]
+		},
+		{
+			"file": "Hollows Engine.sublime-project",
+			"settings":
+			{
+				"buffer_size": 47,
+				"line_ending": "Windows"
+			}
 		}
 	],
-	"build_system": "",
+	"build_system": "Packages/Makefile/Make.sublime-build",
 	"build_system_choices":
 	[
+		[
+			[
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				]
+			],
+			[
+				"Packages/Makefile/Make.sublime-build",
+				""
+			]
+		]
 	],
 	"build_varint": "",
 	"command_palette":
@@ -76,8 +338,24 @@
 		"selected_items":
 		[
 			[
+				"lsp",
+				"Preferences: LSP Settings"
+			],
+			[
+				"pac",
+				"Package Control: List Packages"
+			],
+			[
+				"clang",
+				"Package Control: Install Package"
+			],
+			[
+				"clang lsp",
+				"Package Control: Install Package"
+			],
+			[
 				"pa",
-				"Package Control: Remove Package"
+				"Package Control: Install Package"
 			],
 			[
 				"git",
@@ -85,10 +363,6 @@
 			],
 			[
 				"packa",
-				"Package Control: Install Package"
-			],
-			[
-				"pac",
 				"Package Control: Install Package"
 			],
 			[
@@ -120,14 +394,24 @@
 	},
 	"expanded_folders":
 	[
-		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine"
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/assets",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/bin",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/bin/premake",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/bin/premake/modules",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/lib"
 	],
 	"file_history":
 	[
+		"/C/Users/Zeon/AppData/Roaming/Sublime Text/Packages/User/CompileDBMake.sublime-build",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/generate_project_gmake_clang.bat",
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine/premake5.lua"
 	],
 	"find":
 	{
-		"height": 0.0
+		"height": 45.0
 	},
 	"find_in_files":
 	{
@@ -141,6 +425,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			" \n",
+			" --"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -165,32 +451,115 @@
 				{
 					"buffer": 0,
 					"file": "premake5.lua",
-					"selected": true,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2793,
+						"buffer_size": 2756,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								929,
-								929
+								2492,
+								2492
 							]
 						],
 						"settings":
 						{
+							"lsp_uri": "file:///D:/Work/Game%20Engine/The%20Hollows/HollowsGraphicsEngine/premake5.lua",
 							"syntax": "Packages/Lua/Lua.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 324.0,
+						"translation.y": 1909.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/assets/Application.cpp",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 84,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14,
+								14
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html, text.xml"
+								},
+								{
+									"rhs_empty": true,
+									"selector": "punctuation.accessor"
+								},
+								{
+									"characters": ".<>:\"/*",
+									"selector": "punctuation.accessor | (meta.preprocessor.include string - punctuation.definition.string.end)",
+									"server": "clangd"
+								}
+							],
+							"lsp_active": true,
+							"lsp_uri": "file:///D:/Work/Game%20Engine/The%20Hollows/HollowsGraphicsEngine/src/assets/Application.cpp",
+							"show_definitions": false,
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Hollows Engine.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 47,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"lsp_uri": "file:///D:/Work/Game%20Engine/The%20Hollows/HollowsGraphicsEngine/Hollows%20Engine.sublime-project",
+							"syntax": "Packages/JSON/JSON.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"stack_multiselect": false,
 					"type": "text"
 				}
@@ -199,7 +568,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 0.0
+		"height": 45.0
 	},
 	"input":
 	{
@@ -228,7 +597,28 @@
 		]
 	},
 	"menu_visible": true,
+	"output.LSP Log Panel":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
 	"output.Terminus":
+	{
+		"height": 130.0,
+		"history":
+		[
+		]
+	},
+	"output.diagnostics":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.exec":
 	{
 		"height": 130.0,
 		"history":
@@ -242,11 +632,18 @@
 		[
 		]
 	},
-	"pinned_build_system": "",
+	"output.mdpopups":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"pinned_build_system": "Packages/User/CompileDBMake.sublime-build",
 	"project": "Hollows Engine.sublime-project",
 	"replace":
 	{
-		"height": 0.0
+		"height": 86.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -279,12 +676,13 @@
 	"selected_group": 0,
 	"settings":
 	{
+		"lsp_show_inlay_hints": false
 	},
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 240.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
