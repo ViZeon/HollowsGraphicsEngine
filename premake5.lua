@@ -47,6 +47,8 @@ project "Hollows_Engine"
         staticruntime "On"
         systemversion "latest"
 
+    flags { "ExportCompileCommands" }
+
         defines
         {
             "HZ_PLATFORM_WINDOWS",
