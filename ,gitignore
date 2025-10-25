@@ -1,0 +1,22 @@
+# CMake / build system
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Premake leftovers
+bin/
+bin-int/
+
+# IDE / Editor
+*.sublime-workspace
+*.sublime-project
+.vscode/
+.idea/
+
+# Windows
+*.exe
+*.dll
+*.pdb
+Thumbs.db
