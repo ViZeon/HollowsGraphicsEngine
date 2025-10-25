@@ -1,6 +1,6 @@
 [submodule "vendor/lib/SDL"]
 	path = vendor/lib/SDL
 	url = https://github.com/libsdl-org/SDL.git
-[submodule "vendor/lib/premake-export-compile-commands"]
-	path = vendor/lib/premake-export-compile-commands
+[submodule "vendor/bin/premake/modules/export-compile-commands"]
+	path = vendor/bin/premake/modules/export-compile-commands
 	url = https://github.com/tarruda/premake-export-compile-commands
