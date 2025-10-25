@@ -1,0 +1,292 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "premake5.lua",
+			"settings":
+			{
+				"buffer_size": 2793,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			},
+			"undo_stack":
+			[
+				[
+					5,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAABIEAAAAAAAAGwQAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAASBAAAAAAAABIEAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					6,
+					1,
+					"left_delete",
+					null,
+					"AQAAABcEAAAAAAAAFwQAAAAAAAAEAAAAICAgIA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAbBAAAAAAAABsEAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					7,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AgAAABcEAAAAAAAAHAQAAAAAAAAAAAAAEwQAAAAAAAATBAAAAAAAAAQAAAAgICAg",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAXBAAAAAAAABcEAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					8,
+					1,
+					"paste",
+					null,
+					"AQAAABgEAAAAAAAAOQQAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAYBAAAAAAAABgEAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					3,
+					1,
+					"revert",
+					null,
+					"AgAAAAAAAAAAAAAAAAAAAAAAAADrCgAALS1yZXF1aXJlKCJjb25hbmRlcHMiKQoKCi0tW1tuZXdvcHRpb24gewogICAgdHJpZ2dlciA9ICJjb25hbi1wcm9maWxlIiwKICAgIHZhbHVlID0gIlBST0ZJTEUiLAogICAgZGVzY3JpcHRpb24gPSAiQ29uYW4gcHJvZmlsZSB0byB1c2UiCn0KCmxvY2FsIHByb2ZpbGUgPSBfT1BUSU9OU1siY29uYW4tcHJvZmlsZSJdIG9yICJkZWZhdWx0Igpvcy5leGVjdXRlKCJjb25hbiBpbnN0YWxsIC4gLS1wcm9maWxlPSIgLi4gcHJvZmlsZSAuLiAiIC0tYnVpbGQ9bWlzc2luZyIpCl1dCndvcmtzcGFjZSAiVGhlX0hvbGxvd3NfRW5naW5lIgogICAgYXJjaGl0ZWN0dXJlICJ4NjQiCgogICAgY29uZmlndXJhdGlvbnMKICAgIHsKICAgICAgICAiRGVidWciLAogICAgICAgICJSZWxlYXNlIiwKICAgICAgICAiRGlzdCIKICAgIH0KICAgIAogICAgaW5jbHVkZSAidmVuZG9yL2xpYi9TREwiCgpvdXRwdXRkaXIgPSAiJXtjZmcuYnVpbGRjZmd9LSV7Y2ZnLnN5c3RlbX0tJXtjZmcuYXJjaGl0ZWN0dXJlfSIKCnByb2plY3QgIkhvbGxvd3NfRW5naW5lIgogICAgbG9jYXRpb24gInNyYy9lbmdpbmUiCiAgICBraW5kICJTaGFyZWRMaWIiCiAgICBsYW5ndWFnZSAiQysrIgoKICAgIHRhcmdldGRpciAoImJpbi8iIC4uIG91dHB1dGRpciAuLiAiLyV7cHJqLm5hbWV9IikKICAgIG9iamRpciAoImJpbi1pbnQvIiAuLiBvdXRwdXRkaXIgLi4gIi8le3Byai5uYW1lfSIpCiAgICAKICAgIC0tIEFkZCB0aGlzIGxpbmUgdG8gc3BlY2lmeSBpbXBvcnQgbGlicmFyeSBsb2NhdGlvbgogICAgaW1wbGliZGlyICgiYmluLyIgLi4gb3V0cHV0ZGlyIC4uICIvJXtwcmoubmFtZX0iKQoKICAgIGZpbGVzCiAgICB7CiAgICAgICAgInNyYy9lbmdpbmUvKiouaCIsCiAgICAgICAgInNyYy9lbmdpbmUvKiouY3BwIiwKICAgICAgICAic3JjL2VuZ2luZS8qKi5jIgogICAgfQoKICAgIGZpbHRlciAic3lzdGVtOndpbmRvd3MiCiAgICAgICAgY3BwZGlhbGVjdCAiQysrMjMiCiAgICAgICAgc3RhdGljcnVudGltZSAiT24iCiAgICAgICAgc3lzdGVtdmVyc2lvbiAibGF0ZXN0IgoKICAgIGZsYWdzIHsgIkV4cG9ydENvbXBpbGVDb21tYW5kcyIgfQoKICAgICAgICBkZWZpbmVzCiAgICAgICAgewogICAgICAgICAgICAiSFpfUExBVEZPUk1fV0lORE9XUyIsCiAgICAgICAgICAgICJIWl9CVUlMRF9ETEwiLAogICAgICAgICAgICAiU0RMX1NUQVRJQ19MSUIiCiAgICAgICAgfQogICAgICAgIAogICAgICAgIGxpbmtzIHsgIlNETDMtc3RhdGljIiwgIndpbm1tIiwgImltbTMyIiwgInZlcnNpb24iLCAic2V0dXBhcGkiIH0KICAgICAgICBpbmNsdWRlZGlycyB7ICJ2ZW5kb3IvbGliL1NETC9pbmNsdWRlIiB9CiAgICAgICAgbGliZGlycyB7ICJ2ZW5kb3IvbGliL1NETC9idWlsZC8le2NmZy5idWlsZGNmZ30iIH0KCiAgICAgICAgcG9zdGJ1aWxkY29tbWFuZHMKICAgICAgICB7CiAgICAgICAgICAgICgie01LRElSfSAuLi8uLi9iaW4vIiAuLiBvdXRwdXRkaXIgLi4gIi9Bc3NldHMiKSwKICAgICAgICAgICAgKCJ7Q09QWX0gJXtjZmcuYnVpbGR0YXJnZXQucmVscGF0aH0gLi4vLi4vYmluLyIgLi4gb3V0cHV0ZGlyIC4uICIvQXNzZXRzIikKICAgICAgICB9CgogICAgZmlsdGVyICJjb25maWd1cmF0aW9uczpEZWJ1ZyIKICAgICAgICBkZWZpbmVzICJIWl9ERUJVRyIKICAgICAgICBzeW1ib2xzICJPbiIKCiAgICBmaWx0ZXIgImNvbmZpZ3VyYXRpb25zOlJlbGVhc2UiCiAgICAgICAgZGVmaW5lcyAiSFpfUkVMRUFTRSIKICAgICAgICBvcHRpbWl6ZSAiT24iCgogICAgZmlsdGVyICJjb25maWd1cmF0aW9uczpEaXN0IgogICAgICAgIGRlZmluZXMgIkhaX0RJU1QiCiAgICAgICAgb3B0aW1pemUgIk9uIgoKCnByb2plY3QgIkFzc2V0cyIKICAgIGxvY2F0aW9uICJzcmMvYXNzZXRzIgogICAga2luZCAiQ29uc29sZUFwcCIKICAgIGxhbmd1YWdlICJDKysiCgogICAgdGFyZ2V0ZGlyICgiYmluLyIgLi4gb3V0cHV0ZGlyIC4uICIvJXtwcmoubmFtZX0iKQogICAgb2JqZGlyICgiYmluLWludC8iIC4uIG91dHB1dGRpciAuLiAiLyV7cHJqLm5hbWV9IikKCiAgICBkZXBlbmRzb24geyAiSG9sbG93c19FbmdpbmUiIH0gLS0gZW5zdXJlcyBlbmdpbmUgYnVpbGRzIGZpcnN0CgogICAgZmlsZXMgewogICAgICAgICJzcmMvYXNzZXRzLyoqLmgiLAogICAgICAgICJzcmMvYXNzZXRzLyoqLmNwcCIsCiAgICAgICAgInNyYy9hc3NldHMvKiouYyIKICAgIH0KCiAgICBpbmNsdWRlZGlycyB7CiAgICAgICAgInNyYy9lbmdpbmUiIC0tIGluY2x1ZGVzIHRlc3QuaCBldGMuCiAgICB9CgogICAgbGlua3MgewogICAgICAgICJIb2xsb3dzX0VuZ2luZSIKICAgIH0KCiAgICBmaWx0ZXIgInN5c3RlbTp3aW5kb3dzIgogICAgICAgIGNwcGRpYWxlY3QgIkMrKzIzIgogICAgICAgIHN0YXRpY3J1bnRpbWUgIk9uIgogICAgICAgIHN5c3RlbXZlcnNpb24gImxhdGVzdCIKICAgICAgICBkZWZpbmVzIHsKICAgICAgICAgICAgIkhaX1BMQVRGT1JNX1dJTkRPV1MiIC0tIOKdjCBkbyBOT1QgZGVmaW5lIEhaX0JVSUxEX0RMTCBoZXJlCiAgICAgICAgfQoKICAgIGZpbHRlciAiY29uZmlndXJhdGlvbnM6RGVidWciCiAgICAgICAgZGVmaW5lcyAiSFpfREVCVUciCiAgICAgICAgc3ltYm9scyAiT24iCgogICAgZmlsdGVyICJjb25maWd1cmF0aW9uczpSZWxlYXNlIgogICAgICAgIGRlZmluZXMgIkhaX1JFTEVBU0UiCiAgICAgICAgb3B0aW1pemUgIk9uIgoKICAgIGZpbHRlciAiY29uZmlndXJhdGlvbnM6RGlzdCIKICAgICAgICBkZWZpbmVzICJIWl9ESVNUIgogICAgICAgIG9wdGltaXplICJPbiIAAAAAAAAAAOkKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAgAMAAAAAAACAAwAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"pa",
+				"Package Control: Remove Package"
+			],
+			[
+				"git",
+				"git: commit"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"ter",
+				"Terminus: Open Default Shell in Panel"
+			],
+			[
+				"pack",
+				"Install Package Control"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Work/Game Engine/The Hollows/HollowsGraphicsEngine"
+	],
+	"file_history":
+	[
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "premake5.lua",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2793,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								929,
+								929
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 324.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.Terminus":
+	{
+		"height": 130.0,
+		"history":
+		[
+		]
+	},
+	"output.find_results":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"pinned_build_system": "",
+	"project": "Hollows Engine.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
