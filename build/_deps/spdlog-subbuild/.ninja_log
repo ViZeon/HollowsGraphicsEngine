@@ -3,35 +3,35 @@
 5	311	7830996903264309	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-mkdir	9fd3c3f3500f18d1
 312	323054	7831000130262908	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-download	ec1c248297292a5d
 312	323054	7831000130262908	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-download	ec1c248297292a5d
-183	1893	7831016993184684	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update	2f487be87dd717cc
-183	1893	7831016993184684	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update	2f487be87dd717cc
-1893	2363	7831017014068829	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch	cb77ed1d52080025
-1893	2363	7831017014068829	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch	cb77ed1d52080025
-2363	2782	7831017018969683	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure	7721ccf5d7798e6f
-2363	2782	7831017018969683	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure	7721ccf5d7798e6f
-2782	3143	7831017022620579	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build	8dd0312aa8b321ff
-2782	3143	7831017022620579	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build	8dd0312aa8b321ff
-3143	3617	7831017027051715	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install	6322501e78ab7393
-3143	3617	7831017027051715	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install	6322501e78ab7393
-3617	4116	7831017032132475	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test	7782e5d4738fc25a
-3617	4116	7831017032132475	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test	7782e5d4738fc25a
-4116	4714	7831017038291722	CMakeFiles/spdlog-populate-complete	e0f8c2c7173aee63
-4116	4714	7831017038291722	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-done	e0f8c2c7173aee63
-4116	4714	7831017038291722	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate-complete	e0f8c2c7173aee63
-4116	4714	7831017038291722	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-done	e0f8c2c7173aee63
-11	4954	7831018274334324	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update	2f487be87dd717cc
-11	4954	7831018274334324	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update	2f487be87dd717cc
-4954	5974	7831018333011706	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch	cb77ed1d52080025
-4954	5974	7831018333011706	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch	cb77ed1d52080025
-5974	6577	7831018339703814	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure	7721ccf5d7798e6f
-5974	6577	7831018339703814	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure	7721ccf5d7798e6f
-6577	7116	7831018345165176	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build	8dd0312aa8b321ff
-6577	7116	7831018345165176	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build	8dd0312aa8b321ff
-7117	7531	7831018349311297	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install	6322501e78ab7393
-7117	7531	7831018349311297	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install	6322501e78ab7393
-7532	8043	7831018354502567	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test	7782e5d4738fc25a
-7532	8043	7831018354502567	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test	7782e5d4738fc25a
-8043	9008	7831018363979632	CMakeFiles/spdlog-populate-complete	e0f8c2c7173aee63
-8043	9008	7831018363979632	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-done	e0f8c2c7173aee63
-8043	9008	7831018363979632	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate-complete	e0f8c2c7173aee63
-8043	9008	7831018363979632	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-done	e0f8c2c7173aee63
+9	596	7832657630825802	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update	2f487be87dd717cc
+9	596	7832657630825802	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update	2f487be87dd717cc
+597	902	7832657638327716	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch	cb77ed1d52080025
+597	902	7832657638327716	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch	cb77ed1d52080025
+902	1137	7832657641938644	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure	7721ccf5d7798e6f
+902	1137	7832657641938644	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure	7721ccf5d7798e6f
+1137	1426	7832657644779362	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build	8dd0312aa8b321ff
+1137	1426	7832657644779362	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build	8dd0312aa8b321ff
+1426	1655	7832657647139947	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install	6322501e78ab7393
+1426	1655	7832657647139947	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install	6322501e78ab7393
+1655	1865	7832657649220484	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test	7782e5d4738fc25a
+1655	1865	7832657649220484	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test	7782e5d4738fc25a
+1865	2171	7832657652307700	CMakeFiles/spdlog-populate-complete	e0f8c2c7173aee63
+1865	2171	7832657652307700	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-done	e0f8c2c7173aee63
+1865	2171	7832657652307700	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate-complete	e0f8c2c7173aee63
+1865	2171	7832657652307700	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-done	e0f8c2c7173aee63
+5	614	7832658528382655	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update	2f487be87dd717cc
+5	614	7832658528382655	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-update	2f487be87dd717cc
+614	762	7832658535848463	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch	cb77ed1d52080025
+614	762	7832658535848463	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-patch	cb77ed1d52080025
+762	995	7832658538109048	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure	7721ccf5d7798e6f
+762	995	7832658538109048	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-configure	7721ccf5d7798e6f
+996	1311	7832658540129540	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build	8dd0312aa8b321ff
+996	1311	7832658540129540	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-build	8dd0312aa8b321ff
+1312	1637	7832658544560688	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install	6322501e78ab7393
+1312	1637	7832658544560688	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-install	6322501e78ab7393
+1637	1809	7832658546231103	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test	7782e5d4738fc25a
+1637	1809	7832658546231103	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-test	7782e5d4738fc25a
+1809	2112	7832658549301875	CMakeFiles/spdlog-populate-complete	e0f8c2c7173aee63
+1809	2112	7832658549301875	spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-done	e0f8c2c7173aee63
+1809	2112	7832658549301875	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/CMakeFiles/spdlog-populate-complete	e0f8c2c7173aee63
+1809	2112	7832658549301875	D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/src/spdlog-populate-stamp/spdlog-populate-done	e0f8c2c7173aee63

@@ -59,11 +59,31 @@ include(${CPM_DOWNLOAD_LOCATION})
 # =========================================================
 # Dependencies
 # =========================================================
+add_compile_definitions(SPDLOG_USE_STD_FORMAT)
 CPMAddPackage("gh:gabime/spdlog@1.14.1")
+#CPMAddPackage("gh:nicbarker/clay@0.14")
+#    Name Clay
+#    GITHUB_REPOSITORY nicbarker/clay
+#    GIT_TAG 0.14)
 
-# SDL vendor library
+# =========================================================
+# SDL3 (Git Submodule Integration)
+# =========================================================
+# If you want static linking (recommended for a single-engine DLL):
+set(SDL_STATIC ON CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+
+# If you prefer dynamic linking (optional):
+# set(SDL_STATIC OFF CACHE BOOL "" FORCE)
+# set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+
+# Add SDL3 as a submodule project
 add_subdirectory(vendor/lib/SDL)
 
+# SDL3 defines modern CMake targets:
+# - SDL3::SDL3 (auto-aliased to static/shared depending on your config)
+# - SDL3::SDL3-static
+# - SDL3::SDL3-shared
 # =========================================================
 # Hollows Engine (Shared Library)
 # =========================================================
@@ -81,12 +101,8 @@ target_include_directories(Hollows_Engine
         ${CMAKE_SOURCE_DIR}/vendor/lib/SDL/include
 )
 
-target_link_directories(Hollows_Engine PRIVATE
-    ${CMAKE_SOURCE_DIR}/vendor/lib/SDL/build/${CMAKE_BUILD_TYPE}
-)
-
 target_link_libraries(Hollows_Engine
-    SDL3-static
+    SDL3::SDL3
     spdlog::spdlog
     winmm
     imm32
