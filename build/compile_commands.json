@@ -7,9 +7,9 @@
 },
 {
   "directory": "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build",
-  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DHZ_DEBUG -DHZ_PLATFORM_WINDOWS -DSPDLOG_COMPILED_LIB -DSPDLOG_USE_STD_FORMAT -I\"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/engine\" -I\"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src\" -I\"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/lib/SDL/include\" -I\"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision\" -isystem \"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-src/include\" -O0 -g -Xclang -gcodeview -std=gnu++23 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -Wextra -Wpedantic -o CMakeFiles\\Assets.dir\\src\\assets\\HollowsApp.cpp.obj -c \"D:\\Work\\Game Engine\\The Hollows\\HollowsGraphicsEngine\\src\\assets\\HollowsApp.cpp\"",
-  "file": "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/assets/HollowsApp.cpp",
-  "output": "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/CMakeFiles/Assets.dir/src/assets/HollowsApp.cpp.obj"
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DHZ_DEBUG -DHZ_PLATFORM_WINDOWS -DSPDLOG_COMPILED_LIB -DSPDLOG_USE_STD_FORMAT -I\"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/engine\" -I\"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src\" -I\"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/lib/SDL/include\" -I\"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision\" -isystem \"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-src/include\" -O0 -g -Xclang -gcodeview -std=gnu++23 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -Wextra -Wpedantic -o CMakeFiles\\Assets.dir\\src\\assets\\Client.cpp.obj -c \"D:\\Work\\Game Engine\\The Hollows\\HollowsGraphicsEngine\\src\\assets\\Client.cpp\"",
+  "file": "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/assets/Client.cpp",
+  "output": "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/CMakeFiles/Assets.dir/src/assets/Client.cpp.obj"
 },
 {
   "directory": "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build",
