@@ -97,6 +97,7 @@ add_library(Hollows_Engine SHARED ${ENGINE_SOURCES})
 
 target_include_directories(Hollows_Engine
     PUBLIC
+        ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_SOURCE_DIR}/src/engine
         ${CMAKE_SOURCE_DIR}/vendor/lib/SDL/include
 )

@@ -7,6 +7,7 @@
         #define HOLLOWS_API __declspec(dllimport)
     #endif
 #else
+    #error The Hollows Engine is currently limited to Windows
     #define HOLLOWS_API
 #endif
 

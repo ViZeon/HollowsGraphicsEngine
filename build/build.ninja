@@ -49,12 +49,12 @@ cmake_ninja_workdir = D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/b
 
 build cmake_object_order_depends_target_Hollows_Engine: phony || cmake_object_order_depends_target_SDL3-shared cmake_object_order_depends_target_spdlog
 
-build CMakeFiles/Hollows_Engine.dir/src/engine/test.cpp.obj: CXX_COMPILER__Hollows_Engine_unscanned_Debug D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/src/engine/test.cpp || cmake_object_order_depends_target_Hollows_Engine
+build CMakeFiles/Hollows_Engine.dir/src/engine/Application.cpp.obj: CXX_COMPILER__Hollows_Engine_unscanned_Debug D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/src/engine/Application.cpp || cmake_object_order_depends_target_Hollows_Engine
   CONFIG = Debug
   DEFINES = -DHZ_BUILD_DLL -DHZ_DEBUG -DHZ_PLATFORM_WINDOWS -DHollows_Engine_EXPORTS -DSDL_STATIC_LIB -DSPDLOG_COMPILED_LIB -DSPDLOG_USE_STD_FORMAT
-  DEP_FILE = CMakeFiles\Hollows_Engine.dir\src\engine\test.cpp.obj.d
+  DEP_FILE = CMakeFiles\Hollows_Engine.dir\src\engine\Application.cpp.obj.d
   FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++23 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -Wextra -Wpedantic
-  INCLUDES = -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/engine" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/lib/SDL/include" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision" -isystem "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-src/include"
+  INCLUDES = -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/engine" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/lib/SDL/include" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision" -isystem "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-src/include"
   OBJECT_DIR = CMakeFiles\Hollows_Engine.dir
   OBJECT_FILE_DIR = CMakeFiles\Hollows_Engine.dir\src\engine
   TARGET_COMPILE_PDB = CMakeFiles\Hollows_Engine.dir\
@@ -68,7 +68,7 @@ build CMakeFiles/Hollows_Engine.dir/src/engine/test.cpp.obj: CXX_COMPILER__Hollo
 #############################################
 # Link the shared library D:\Work\Game Engine\The Hollows\HollowsGraphicsEngine\bin\Debug-Windows-x64\Hollows_Engine.dll
 
-build D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Hollows_Engine.dll D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Hollows_Engine.lib: CXX_SHARED_LIBRARY_LINKER__Hollows_Engine_Debug CMakeFiles/Hollows_Engine.dir/src/engine/test.cpp.obj | D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/spdlogd.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/vendor/lib/SDL/src/dynapi/SDL_dynapi.sym || D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3.dll D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/spdlogd.lib
+build D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Hollows_Engine.dll D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Hollows_Engine.lib: CXX_SHARED_LIBRARY_LINKER__Hollows_Engine_Debug CMakeFiles/Hollows_Engine.dir/src/engine/Application.cpp.obj | D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/spdlogd.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/vendor/lib/SDL/src/dynapi/SDL_dynapi.sym || D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3.dll D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/spdlogd.lib
   CONFIG = Debug
   LANGUAGE_COMPILE_FLAGS = -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
   LINK_FLAGS = -shared -fuse-ld=lld-link
@@ -91,12 +91,12 @@ build D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows
 
 build cmake_object_order_depends_target_Assets: phony || cmake_object_order_depends_target_Hollows_Engine cmake_object_order_depends_target_SDL3-shared cmake_object_order_depends_target_spdlog
 
-build CMakeFiles/Assets.dir/src/assets/Application.cpp.obj: CXX_COMPILER__Assets_unscanned_Debug D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/src/assets/Application.cpp || cmake_object_order_depends_target_Assets
+build CMakeFiles/Assets.dir/src/assets/HollowsApp.cpp.obj: CXX_COMPILER__Assets_unscanned_Debug D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/src/assets/HollowsApp.cpp || cmake_object_order_depends_target_Assets
   CONFIG = Debug
   DEFINES = -DHZ_DEBUG -DHZ_PLATFORM_WINDOWS -DSPDLOG_COMPILED_LIB -DSPDLOG_USE_STD_FORMAT
-  DEP_FILE = CMakeFiles\Assets.dir\src\assets\Application.cpp.obj.d
+  DEP_FILE = CMakeFiles\Assets.dir\src\assets\HollowsApp.cpp.obj.d
   FLAGS = -O0 -g -Xclang -gcodeview -std=gnu++23 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -Wextra -Wpedantic
-  INCLUDES = -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/engine" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/lib/SDL/include" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision" -isystem "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-src/include"
+  INCLUDES = -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src/engine" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/src" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/lib/SDL/include" -I"D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision" -isystem "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-src/include"
   OBJECT_DIR = CMakeFiles\Assets.dir
   OBJECT_FILE_DIR = CMakeFiles\Assets.dir\src\assets
   TARGET_COMPILE_PDB = CMakeFiles\Assets.dir\
@@ -110,7 +110,7 @@ build CMakeFiles/Assets.dir/src/assets/Application.cpp.obj: CXX_COMPILER__Assets
 #############################################
 # Link the executable D:\Work\Game Engine\The Hollows\HollowsGraphicsEngine\bin\Debug-Windows-x64\Assets.exe
 
-build D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Assets.exe: CXX_EXECUTABLE_LINKER__Assets_Debug CMakeFiles/Assets.dir/src/assets/Application.cpp.obj | D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Hollows_Engine.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/spdlogd.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/vendor/lib/SDL/src/dynapi/SDL_dynapi.sym || D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Hollows_Engine.dll D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3.dll D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/spdlogd.lib
+build D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Assets.exe: CXX_EXECUTABLE_LINKER__Assets_Debug CMakeFiles/Assets.dir/src/assets/HollowsApp.cpp.obj | D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Hollows_Engine.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/spdlogd.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3.lib D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/vendor/lib/SDL/src/dynapi/SDL_dynapi.sym || D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/Hollows_Engine.dll D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3.dll D$:/Work/Game$ Engine/The$ Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/spdlogd.lib
   CONFIG = Debug
   FLAGS = -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd
   LINK_FLAGS = -Xlinker /subsystem:console -fuse-ld=lld-link
