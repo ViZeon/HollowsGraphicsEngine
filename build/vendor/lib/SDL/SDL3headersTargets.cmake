@@ -50,7 +50,7 @@ unset(_cmake_expected_targets)
 add_library(SDL3::Headers INTERFACE IMPORTED)
 
 set_target_properties(SDL3::Headers PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision;D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/vendor/lib/SDL/include"
+  INTERFACE_INCLUDE_DIRECTORIES "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision;D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/SDL/include"
 )
 
 # This file does not depend on other imported targets which have

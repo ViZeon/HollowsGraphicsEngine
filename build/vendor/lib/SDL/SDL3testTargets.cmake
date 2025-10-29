@@ -59,7 +59,7 @@ set_target_properties(SDL3::SDL3_test PROPERTIES
 set_property(TARGET SDL3::SDL3_test APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
 set_target_properties(SDL3::SDL3_test PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "C"
-  IMPORTED_LOCATION_DEBUG "D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3_test.lib"
+  IMPORTED_LOCATION_DEBUG "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/bin/Debug-Windows-x64/SDL3_test.lib"
   )
 
 # Make sure the targets which have been exported in some other

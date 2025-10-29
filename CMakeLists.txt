@@ -1,42 +1,43 @@
 cmake_minimum_required(VERSION 3.20)
 
 # =========================================================
-# Project Setup
+# Compiler Setup (BEFORE project() call)
 # =========================================================
-# Prefer Clang, but allow others (MSVC, GCC) if not found.
-if(NOT CMAKE_C_COMPILER AND NOT CMAKE_CXX_COMPILER)
-    find_program(CLANG_EXE clang++)
+if(NOT DEFINED CMAKE_C_COMPILER)
+    find_program(CLANG_EXE clang)
     if(CLANG_EXE)
-        message(STATUS "🔧 Using Clang as default compiler: ${CLANG_EXE}")
-        set(CMAKE_C_COMPILER clang CACHE STRING "C compiler" FORCE)
-        set(CMAKE_CXX_COMPILER clang++ CACHE STRING "C++ compiler" FORCE)
-    else()
-        message(STATUS "🧩 Clang not found, using system default compiler")
+        set(CMAKE_C_COMPILER ${CLANG_EXE})
     endif()
 endif()
 
-project(The_Hollows_Engine LANGUAGES CXX)
+if(NOT DEFINED CMAKE_CXX_COMPILER)
+    find_program(CLANGXX_EXE clang++)
+    if(CLANGXX_EXE)
+        set(CMAKE_CXX_COMPILER ${CLANGXX_EXE})
+    endif()
+endif()
+
+message(STATUS "🔧 Compiler Configuration:")
+message(STATUS "   C Compiler: ${CMAKE_C_COMPILER}")
+message(STATUS "   C++ Compiler: ${CMAKE_CXX_COMPILER}")
+
+# =========================================================
+# Project Setup
+# =========================================================
+project(The_Hollows_Engine LANGUAGES CXX C)
 
 # =========================================================
 # Global Settings
 # =========================================================
-
-# Generate compile_commands.json for clangd / VSCode / Sublime
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# C++23 and safe defaults
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-# Custom configurations
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Dist" CACHE STRING "" FORCE)
 
-# Architecture
 set(ARCH "x64")
 set(OUTPUT_DIR "${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${ARCH}")
 
-# Output directories
 foreach(TYPE RUNTIME ARCHIVE LIBRARY)
     set(CMAKE_${TYPE}_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${OUTPUT_DIR})
 endforeach()
@@ -61,35 +62,79 @@ include(${CPM_DOWNLOAD_LOCATION})
 # =========================================================
 add_compile_definitions(SPDLOG_USE_STD_FORMAT)
 CPMAddPackage("gh:gabime/spdlog@1.14.1")
-#CPMAddPackage("gh:nicbarker/clay@0.14")
-#    Name Clay
-#    GITHUB_REPOSITORY nicbarker/clay
-#    GIT_TAG 0.14)
 
 # =========================================================
-# SDL3 (Git Submodule Integration)
+# Auto-fetch and update all git submodules (recursive)
 # =========================================================
-# If you want static linking (recommended for a single-engine DLL):
-set(SDL_STATIC ON CACHE BOOL "" FORCE)
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+    message(STATUS "🔁 Ensuring all git submodules are up to date...")
+    execute_process(
+        COMMAND git submodule update --init --recursive
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        RESULT_VARIABLE GIT_SUBMODULE_RESULT
+#        OUTPUT_QUIET ERROR_QUIET
+    )
+    if(NOT GIT_SUBMODULE_RESULT EQUAL 0)
+        message(WARNING "⚠️ Failed to auto-update git submodules (you may need to run it manually).")
+    endif()
+endif()
 
-# If you prefer dynamic linking (optional):
-# set(SDL_STATIC OFF CACHE BOOL "" FORCE)
-# set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+# =========================================================
+# Major Dependencies (need special handling)
+# =========================================================
+# SDL
+if(EXISTS "${CMAKE_SOURCE_DIR}/vendor/lib/SDL/CMakeLists.txt")
+    message(STATUS "🎮 Adding SDL3")
+    set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+    set(SDL_STATIC ON CACHE BOOL "" FORCE)
+    add_subdirectory(vendor/lib/SDL EXCLUDE_FROM_ALL)
+endif()
 
-# Add SDL3 as a submodule project
-add_subdirectory(vendor/lib/SDL)
+# Diligent Engine
+if(EXISTS "${CMAKE_SOURCE_DIR}/vendor/lib/DiligentEngine/CMakeLists.txt")
+    message(STATUS "🎨 Adding Diligent Engine")
+    add_subdirectory(vendor/lib/DiligentEngine EXCLUDE_FROM_ALL)
+endif()
 
-# SDL3 defines modern CMake targets:
-# - SDL3::SDL3 (auto-aliased to static/shared depending on your config)
-# - SDL3::SDL3-static
-# - SDL3::SDL3-shared
+# =========================================================
+# Auto-Add Other Submodules (excluding SDL and Diligent)
+# =========================================================
+set(VENDOR_LIB_DIR "${CMAKE_SOURCE_DIR}/vendor/lib")
+set(AUTO_LINK_TARGETS "")
+set(SKIP_SUBMODULES "SDL;DiligentEngine")
+
+if(EXISTS ${VENDOR_LIB_DIR})
+    file(GLOB SUBMODULE_DIRS RELATIVE ${VENDOR_LIB_DIR} ${VENDOR_LIB_DIR}/*)
+    foreach(SUBMOD ${SUBMODULE_DIRS})
+        # Skip already-added submodules
+        if(SUBMOD IN_LIST SKIP_SUBMODULES)
+            continue()
+        endif()
+        
+        set(SUBMOD_PATH "${VENDOR_LIB_DIR}/${SUBMOD}")
+        if(EXISTS "${SUBMOD_PATH}/CMakeLists.txt")
+            message(STATUS "🧩 Adding submodule: ${SUBMOD}")
+            add_subdirectory(${SUBMOD_PATH} EXCLUDE_FROM_ALL)
+
+            # Capture targets added by the submodule
+            get_property(NEW_TARGETS DIRECTORY ${SUBMOD_PATH} PROPERTY BUILDSYSTEM_TARGETS)
+            if(NEW_TARGETS)
+                list(APPEND AUTO_LINK_TARGETS ${NEW_TARGETS})
+                message(STATUS "   ↳ Found targets: ${NEW_TARGETS}")
+            endif()
+        endif()
+    endforeach()
+endif()
+
+list(REMOVE_DUPLICATES AUTO_LINK_TARGETS)
+
 # =========================================================
 # Hollows Engine (Shared Library)
 # =========================================================
 file(GLOB_RECURSE ENGINE_SOURCES
     src/engine/*.cpp
     src/engine/*.c
+    src/engine/*.hpp
     src/engine/*.h
 )
 
@@ -99,12 +144,19 @@ target_include_directories(Hollows_Engine
     PUBLIC
         ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_SOURCE_DIR}/src/engine
-        ${CMAKE_SOURCE_DIR}/vendor/lib/SDL/include
+        ${CMAKE_SOURCE_DIR}/vendor/lib
 )
 
-target_link_libraries(Hollows_Engine
-    SDL3::SDL3
+# Link automatically detected submodule targets
+foreach(TGT ${AUTO_LINK_TARGETS})
+    message(STATUS "🔗 Auto-linking submodule target: ${TGT}")
+    target_link_libraries(Hollows_Engine PRIVATE ${TGT})
+endforeach()
+
+# Also link manual external libs
+target_link_libraries(Hollows_Engine PRIVATE
     spdlog::spdlog
+    SDL3::SDL3-static
     winmm
     imm32
     version
@@ -141,7 +193,6 @@ file(GLOB_RECURSE ASSET_SOURCES
 
 add_executable(Assets ${ASSET_SOURCES})
 add_dependencies(Assets Hollows_Engine)
-
 target_include_directories(Assets PRIVATE ${CMAKE_SOURCE_DIR}/src/engine)
 target_link_libraries(Assets PRIVATE Hollows_Engine spdlog::spdlog)
 

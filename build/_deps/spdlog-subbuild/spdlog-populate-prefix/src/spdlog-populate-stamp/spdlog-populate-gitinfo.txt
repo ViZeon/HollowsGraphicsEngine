@@ -3,9 +3,9 @@
 # No other meaning or use of this file is supported.
 
 method=git
-command=C:/Program Files/CMake/bin/cmake.exe;-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE;-P;D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/tmp/spdlog-populate-gitclone.cmake
-source_dir=D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps/spdlog-src
-work_dir=D:/Work/Game Engine/The Hollows/HollowsGraphicsEngine/build/_deps
+command=C:/Program Files/CMake/bin/cmake.exe;-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE;-P;D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/_deps/spdlog-subbuild/spdlog-populate-prefix/tmp/spdlog-populate-gitclone.cmake
+source_dir=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/_deps/spdlog-src
+work_dir=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/_deps
 repository=https://github.com/gabime/spdlog.git
 remote=origin
 init_submodules=TRUE

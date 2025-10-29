@@ -23,7 +23,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -S"D:\Work\Game Engine\The Hollows\HollowsGraphicsEngine\build\_deps\spdlog-subbuild" -B"D:\Work\Game Engine\The Hollows\HollowsGraphicsEngine\build\_deps\spdlog-subbuild"
+  command = "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SD:\Work\GameEngine\TheHollows\HollowsGraphicsEngine\build\_deps\spdlog-subbuild -BD:\Work\GameEngine\TheHollows\HollowsGraphicsEngine\build\_deps\spdlog-subbuild
   description = Re-running CMake...
   generator = 1
 
