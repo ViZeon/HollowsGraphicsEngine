@@ -1,3 +1,6 @@
 [submodule "vendor/lib/SDL"]
 	path = vendor/lib/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "vendor/lib/DiligentEngine"]
+	path = vendor/lib/DiligentEngine
+	url = https://github.com/DiligentGraphics/DiligentEngine.git
