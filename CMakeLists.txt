@@ -80,53 +80,85 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
 endif()
 
 # =========================================================
-# Major Dependencies (need special handling)
-# =========================================================
-# SDL
-if(EXISTS "${CMAKE_SOURCE_DIR}/vendor/lib/SDL/CMakeLists.txt")
-    message(STATUS "🎮 Adding SDL3")
-    set(SDL_SHARED OFF CACHE BOOL "" FORCE)
-    set(SDL_STATIC ON CACHE BOOL "" FORCE)
-    add_subdirectory(vendor/lib/SDL EXCLUDE_FROM_ALL)
-endif()
-
-# Diligent Engine
-if(EXISTS "${CMAKE_SOURCE_DIR}/vendor/lib/DiligentEngine/CMakeLists.txt")
-    message(STATUS "🎨 Adding Diligent Engine")
-    add_subdirectory(vendor/lib/DiligentEngine EXCLUDE_FROM_ALL)
-endif()
-
-# =========================================================
-# Auto-Add Other Submodules (excluding SDL and Diligent)
+# Automatic Submodule Detection and Configuration
 # =========================================================
 set(VENDOR_LIB_DIR "${CMAKE_SOURCE_DIR}/vendor/lib")
-set(AUTO_LINK_TARGETS "")
-set(SKIP_SUBMODULES "SDL;DiligentEngine")
+set(ALL_SUBMODULE_TARGETS "")
 
-if(EXISTS ${VENDOR_LIB_DIR})
-    file(GLOB SUBMODULE_DIRS RELATIVE ${VENDOR_LIB_DIR} ${VENDOR_LIB_DIR}/*)
-    foreach(SUBMOD ${SUBMODULE_DIRS})
-        # Skip already-added submodules
-        if(SUBMOD IN_LIST SKIP_SUBMODULES)
+# Function to filter targets - keeps libraries and excludes test/sample executables
+function(filter_linkable_targets TARGET_LIST OUTPUT_VAR)
+    set(FILTERED "")
+    foreach(TGT ${TARGET_LIST})
+        if(NOT TARGET ${TGT})
             continue()
         endif()
         
-        set(SUBMOD_PATH "${VENDOR_LIB_DIR}/${SUBMOD}")
-        if(EXISTS "${SUBMOD_PATH}/CMakeLists.txt")
-            message(STATUS "🧩 Adding submodule: ${SUBMOD}")
-            add_subdirectory(${SUBMOD_PATH} EXCLUDE_FROM_ALL)
+        get_target_property(TGT_TYPE ${TGT} TYPE)
+        
+        # Include static/shared/interface libraries
+        if(TGT_TYPE MATCHES "STATIC_LIBRARY|SHARED_LIBRARY|INTERFACE_LIBRARY|MODULE_LIBRARY")
+            list(APPEND FILTERED ${TGT})
+        # Exclude executables that look like tests/samples/examples
+        elseif(TGT_TYPE STREQUAL "EXECUTABLE")
+            string(TOLOWER ${TGT} TGT_LOWER)
+            if(NOT (TGT_LOWER MATCHES "test|sample|example|demo|tutorial"))
+                list(APPEND FILTERED ${TGT})
+            endif()
+        endif()
+    endforeach()
+    set(${OUTPUT_VAR} ${FILTERED} PARENT_SCOPE)
+endfunction()
 
-            # Capture targets added by the submodule
-            get_property(NEW_TARGETS DIRECTORY ${SUBMOD_PATH} PROPERTY BUILDSYSTEM_TARGETS)
-            if(NEW_TARGETS)
-                list(APPEND AUTO_LINK_TARGETS ${NEW_TARGETS})
-                message(STATUS "   ↳ Found targets: ${NEW_TARGETS}")
+if(EXISTS ${VENDOR_LIB_DIR})
+    file(GLOB SUBMODULE_DIRS ${VENDOR_LIB_DIR}/*)
+    
+    foreach(SUBMOD_PATH ${SUBMODULE_DIRS})
+        if(NOT IS_DIRECTORY ${SUBMOD_PATH})
+            continue()
+        endif()
+        
+        get_filename_component(SUBMOD_NAME ${SUBMOD_PATH} NAME)
+        
+        if(EXISTS "${SUBMOD_PATH}/CMakeLists.txt")
+            message(STATUS "🧩 Adding submodule: ${SUBMOD_NAME}")
+            
+            # Configure known submodules with their specific options
+            if(SUBMOD_NAME STREQUAL "SDL")
+                set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+                set(SDL_STATIC ON CACHE BOOL "" FORCE)
+                set(SDL_TEST_LIBRARY OFF CACHE BOOL "" FORCE)
+            elseif(SUBMOD_NAME STREQUAL "DiligentEngine")
+                set(DILIGENT_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
+                set(DILIGENT_BUILD_UNITY_PLUGIN OFF CACHE BOOL "" FORCE)
+                set(DILIGENT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+            endif()
+            
+            add_subdirectory(${SUBMOD_PATH} EXCLUDE_FROM_ALL)
+            
+            # Capture all targets from this submodule
+            get_property(SUBMOD_TARGETS DIRECTORY ${SUBMOD_PATH} PROPERTY BUILDSYSTEM_TARGETS)
+            
+            if(SUBMOD_TARGETS)
+                # Filter to only linkable targets
+                filter_linkable_targets("${SUBMOD_TARGETS}" FILTERED_TARGETS)
+                
+                if(FILTERED_TARGETS)
+                    message(STATUS "   ↳ Linkable targets: ${FILTERED_TARGETS}")
+                    list(APPEND ALL_SUBMODULE_TARGETS ${FILTERED_TARGETS})
+                else()
+                    message(STATUS "   ↳ No linkable targets found")
+                endif()
+            else()
+                message(STATUS "   ↳ No targets detected")
             endif()
         endif()
     endforeach()
 endif()
 
-list(REMOVE_DUPLICATES AUTO_LINK_TARGETS)
+# Remove duplicates
+if(ALL_SUBMODULE_TARGETS)
+    list(REMOVE_DUPLICATES ALL_SUBMODULE_TARGETS)
+endif()
 
 # =========================================================
 # Hollows Engine (Shared Library)
@@ -147,16 +179,22 @@ target_include_directories(Hollows_Engine
         ${CMAKE_SOURCE_DIR}/vendor/lib
 )
 
-# Link automatically detected submodule targets
-foreach(TGT ${AUTO_LINK_TARGETS})
-    message(STATUS "🔗 Auto-linking submodule target: ${TGT}")
-    target_link_libraries(Hollows_Engine PRIVATE ${TGT})
-endforeach()
+# Automatically link all detected submodule targets
+if(ALL_SUBMODULE_TARGETS)
+    message(STATUS "🔗 Auto-linking submodule targets to Hollows_Engine:")
+    foreach(TGT ${ALL_SUBMODULE_TARGETS})
+        if(TARGET ${TGT})
+            message(STATUS "   ↳ ${TGT}")
+            target_link_libraries(Hollows_Engine PRIVATE ${TGT})
+        endif()
+    endforeach()
+else()
+    message(WARNING "⚠️ No submodule targets detected for linking!")
+endif()
 
-# Also link manual external libs
+# Link additional system/external dependencies
 target_link_libraries(Hollows_Engine PRIVATE
     spdlog::spdlog
-    SDL3::SDL3-static
     winmm
     imm32
     version

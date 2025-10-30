@@ -21,6 +21,18 @@ ALLOW_EXTERNAL_SPIRV_TOOLS:BOOL=OFF
 //Path to a program.
 AR:FILEPATH=AR-NOTFOUND
 
+//Path to a program.
+AWK:FILEPATH=AWK-NOTFOUND
+
+//Value Computed by CMake
+Atmosphere_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Samples/Atmosphere
+
+//Value Computed by CMake
+Atmosphere_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Atmosphere_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Samples/Atmosphere
+
 //Build external dependencies in /External
 BUILD_EXTERNAL:BOOL=ON
 
@@ -32,6 +44,33 @@ CMAKE_ADDR2LINE:FILEPATH=CMAKE_ADDR2LINE-NOTFOUND
 
 //Path to a program.
 CMAKE_AR:FILEPATH=C:/Program Files/LLVM/bin/llvm-ar.exe
+
+//ASM compiler
+CMAKE_ASM_COMPILER:FILEPATH=C:/Program Files/LLVM/bin/clang.exe
+
+//LLVM archiver
+CMAKE_ASM_COMPILER_AR:FILEPATH=C:/Program Files/LLVM/bin/llvm-ar.exe
+
+//`clang-scan-deps` dependency scanner
+CMAKE_ASM_COMPILER_CLANG_SCAN_DEPS:FILEPATH=C:/Program Files/LLVM/bin/clang-scan-deps.exe
+
+//Generate index for LLVM archive
+CMAKE_ASM_COMPILER_RANLIB:FILEPATH=C:/Program Files/LLVM/bin/llvm-ranlib.exe
+
+//Flags used by the ASM compiler during all build types.
+CMAKE_ASM_FLAGS:STRING=
+
+//Flags used by the ASM compiler during DEBUG builds.
+CMAKE_ASM_FLAGS_DEBUG:STRING=
+
+//Flags used by the ASM compiler during MINSIZEREL builds.
+CMAKE_ASM_FLAGS_MINSIZEREL:STRING=
+
+//Flags used by the ASM compiler during RELEASE builds.
+CMAKE_ASM_FLAGS_RELEASE:STRING=
+
+//Flags used by the ASM compiler during RELWITHDEBINFO builds.
+CMAKE_ASM_FLAGS_RELWITHDEBINFO:STRING=
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel ...
@@ -374,8 +413,34 @@ CPM_USE_LOCAL_PACKAGES:BOOL=OFF
 // nested level.
 CPM_USE_NAMED_CACHE_DIRECTORIES:BOOL=OFF
 
+//File containing extra configuration settings
+DFA_XTRA:FILEPATH=
+
+//args source directory
+DILIGENT_ARGS_DIR:PATH=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/args
+
+//Build documentation
+DILIGENT_BUILD_DOCS:BOOL=OFF
+
+//Build DiligentFX module
+DILIGENT_BUILD_FX:BOOL=ON
+
+//Build DiligentSamples module
+DILIGENT_BUILD_SAMPLES:BOOL=OFF
+
+//Build only SampleBase project
+DILIGENT_BUILD_SAMPLE_BASE_ONLY:BOOL=OFF
+
 //Build Diligent Engine tests
 DILIGENT_BUILD_TESTS:BOOL=OFF
+
+//Build DiligentTools module
+DILIGENT_BUILD_TOOLS:BOOL=ON
+
+DILIGENT_BUILD_UNITY_PLUGIN:BOOL=OFF
+
+//Build Windows GUI applications using the console subsystem
+DILIGENT_BUILD_WIN32_GUI_AS_CONSOLE:BOOL=OFF
 
 //Common Clang compile options
 DILIGENT_CLANG_COMPILE_OPTIONS:STRING=
@@ -386,8 +451,18 @@ DILIGENT_CLANG_DEBUG_COMPILE_OPTIONS:STRING=
 //Additional Clang compile options for release configurations
 DILIGENT_CLANG_RELEASE_COMPILE_OPTIONS:STRING=-mavx2
 
+//imgui source directory
+DILIGENT_DEAR_IMGUI_PATH:PATH=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/imgui
+
+//Include cross-origin isolation service worker in each emscripten
+// build
+DILIGENT_EMSCRIPTEN_INCLUDE_COI_SERVICE_WORKER:BOOL=OFF
+
 //Strip debug information from WebAsm binaries
 DILIGENT_EMSCRIPTEN_STRIP_DEBUG_INFO:BOOL=OFF
+
+//Enable Draco compression support in GLTF loader
+DILIGENT_ENABLE_DRACO:BOOL=OFF
 
 //Enable some optimizations for SPIRV-Tools, glslang, SPIRV-Cross
 // and related projects in debug build to improve performance
@@ -395,6 +470,15 @@ DILIGENT_IMPROVE_SPIRV_TOOLS_DEBUG_PERF:BOOL=ON
 
 //Install DiligentCore module headers and libraries
 DILIGENT_INSTALL_CORE:BOOL=ON
+
+//Install DiligentFX module headers and libraries
+DILIGENT_INSTALL_FX:BOOL=ON
+
+//Enable installation of samples and tutorials
+DILIGENT_INSTALL_SAMPLES:BOOL=ON
+
+//Install DiligentTool module headers and libraries
+DILIGENT_INSTALL_TOOLS:BOOL=ON
 
 //Do not build archiver
 DILIGENT_NO_ARCHIVER:BOOL=OFF
@@ -420,11 +504,20 @@ DILIGENT_NO_METAL:BOOL=OFF
 //Disable OpenGL/GLES backend
 DILIGENT_NO_OPENGL:BOOL=OFF
 
+//Do not build Render State Packager
+DILIGENT_NO_RENDER_STATE_PACKAGER:BOOL=OFF
+
 //Disable Vulkan backend
 DILIGENT_NO_VULKAN:BOOL=OFF
 
 //Disable WebGPU backend
 DILIGENT_NO_WEBGPU:BOOL=ON
+
+//nuklear source directory
+DILIGENT_NUKLEAR_DIR:PATH=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/ThirdParty/Nuklear
+
+//Use rapidjson parser in GLTF loader
+DILIGENT_USE_RAPIDJSON:BOOL=OFF
 
 //Available .NET SDK versions
 DOT_NET_SDK_VERSIONS:STRING=10.0.100;1.25451.107
@@ -433,16 +526,28 @@ DOT_NET_SDK_VERSIONS:STRING=10.0.100;1.25451.107
 Diligent-Archiver-static_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsAccessories;general;Diligent-ShaderTools;general;Diligent-GraphicsEngineVk-static;general;Diligent-GraphicsEngineOpenGL-static;general;spirv-cross-core;general;spirv-cross-glsl;general;GLEW::glew;general;opengl32.lib;
 
 //Value Computed by CMake
-Diligent-Archiver_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/Archiver
+Diligent-Archiver_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/Archiver
 
 //Value Computed by CMake
 Diligent-Archiver_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-Diligent-Archiver_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/Archiver
+Diligent-Archiver_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/Archiver
 
 //Value Computed by CMake
-Diligent-BasicPlatform_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Platforms/Basic
+Diligent-AssetLoader_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/AssetLoader
+
+//Value Computed by CMake
+Diligent-AssetLoader_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+Diligent-AssetLoader_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsAccessories;general;Diligent-GraphicsTools;general;Diligent-TextureLoader;
+
+//Value Computed by CMake
+Diligent-AssetLoader_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/AssetLoader
+
+//Value Computed by CMake
+Diligent-BasicPlatform_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Platforms/Basic
 
 //Value Computed by CMake
 Diligent-BasicPlatform_IS_TOP_LEVEL:STATIC=OFF
@@ -451,10 +556,10 @@ Diligent-BasicPlatform_IS_TOP_LEVEL:STATIC=OFF
 Diligent-BasicPlatform_LIB_DEPENDS:STATIC=general;Diligent-Primitives;
 
 //Value Computed by CMake
-Diligent-BasicPlatform_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Platforms/Basic
+Diligent-BasicPlatform_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Platforms/Basic
 
 //Value Computed by CMake
-Diligent-Common_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Common
+Diligent-Common_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Common
 
 //Value Computed by CMake
 Diligent-Common_IS_TOP_LEVEL:STATIC=OFF
@@ -463,10 +568,10 @@ Diligent-Common_IS_TOP_LEVEL:STATIC=OFF
 Diligent-Common_LIB_DEPENDS:STATIC=general;Diligent-TargetPlatform;
 
 //Value Computed by CMake
-Diligent-Common_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Common
+Diligent-Common_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Common
 
 //Value Computed by CMake
-Diligent-GraphicsAccessories_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/GraphicsAccessories
+Diligent-GraphicsAccessories_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsAccessories
 
 //Value Computed by CMake
 Diligent-GraphicsAccessories_IS_TOP_LEVEL:STATIC=OFF
@@ -475,10 +580,10 @@ Diligent-GraphicsAccessories_IS_TOP_LEVEL:STATIC=OFF
 Diligent-GraphicsAccessories_LIB_DEPENDS:STATIC=general;Diligent-Common;
 
 //Value Computed by CMake
-Diligent-GraphicsAccessories_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/GraphicsAccessories
+Diligent-GraphicsAccessories_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsAccessories
 
 //Value Computed by CMake
-Diligent-GraphicsEngineNextGenBase_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/GraphicsEngineNextGenBase
+Diligent-GraphicsEngineNextGenBase_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsEngineNextGenBase
 
 //Value Computed by CMake
 Diligent-GraphicsEngineNextGenBase_IS_TOP_LEVEL:STATIC=OFF
@@ -487,34 +592,34 @@ Diligent-GraphicsEngineNextGenBase_IS_TOP_LEVEL:STATIC=OFF
 Diligent-GraphicsEngineNextGenBase_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsAccessories;general;Diligent-GraphicsEngine;
 
 //Value Computed by CMake
-Diligent-GraphicsEngineNextGenBase_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/GraphicsEngineNextGenBase
+Diligent-GraphicsEngineNextGenBase_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsEngineNextGenBase
 
 //Dependencies for the target
 Diligent-GraphicsEngineOpenGL-static_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-TargetPlatform;general;Diligent-GraphicsEngine;general;Diligent-ShaderTools;general;Diligent-HLSL2GLSLConverterLib;general;GLEW::glew;general;opengl32.lib;
 
 //Value Computed by CMake
-Diligent-GraphicsEngineOpenGL_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/GraphicsEngineOpenGL
+Diligent-GraphicsEngineOpenGL_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsEngineOpenGL
 
 //Value Computed by CMake
 Diligent-GraphicsEngineOpenGL_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-Diligent-GraphicsEngineOpenGL_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/GraphicsEngineOpenGL
+Diligent-GraphicsEngineOpenGL_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsEngineOpenGL
 
 //Dependencies for the target
 Diligent-GraphicsEngineVk-static_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-TargetPlatform;general;Diligent-GraphicsEngineNextGenBase;general;Diligent-ShaderTools;general;SPIRV-Tools-opt;general;volk::volk;
 
 //Value Computed by CMake
-Diligent-GraphicsEngineVk_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/GraphicsEngineVulkan
+Diligent-GraphicsEngineVk_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsEngineVulkan
 
 //Value Computed by CMake
 Diligent-GraphicsEngineVk_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-Diligent-GraphicsEngineVk_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/GraphicsEngineVulkan
+Diligent-GraphicsEngineVk_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsEngineVulkan
 
 //Value Computed by CMake
-Diligent-GraphicsEngine_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/GraphicsEngine
+Diligent-GraphicsEngine_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsEngine
 
 //Value Computed by CMake
 Diligent-GraphicsEngine_IS_TOP_LEVEL:STATIC=OFF
@@ -523,10 +628,10 @@ Diligent-GraphicsEngine_IS_TOP_LEVEL:STATIC=OFF
 Diligent-GraphicsEngine_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsAccessories;
 
 //Value Computed by CMake
-Diligent-GraphicsEngine_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/GraphicsEngine
+Diligent-GraphicsEngine_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsEngine
 
 //Value Computed by CMake
-Diligent-GraphicsTools_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/GraphicsTools
+Diligent-GraphicsTools_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsTools
 
 //Value Computed by CMake
 Diligent-GraphicsTools_IS_TOP_LEVEL:STATIC=OFF
@@ -535,10 +640,10 @@ Diligent-GraphicsTools_IS_TOP_LEVEL:STATIC=OFF
 Diligent-GraphicsTools_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsAccessories;general;Diligent-ShaderTools;general;Diligent-GraphicsEngine;general;xxHash::xxhash;general;Diligent-GraphicsEngineVk-static;general;Diligent-GraphicsEngineOpenGL-static;
 
 //Value Computed by CMake
-Diligent-GraphicsTools_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/GraphicsTools
+Diligent-GraphicsTools_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/GraphicsTools
 
 //Value Computed by CMake
-Diligent-HLSL2GLSLConverterLib_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/HLSL2GLSLConverterLib
+Diligent-HLSL2GLSLConverterLib_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/HLSL2GLSLConverterLib
 
 //Value Computed by CMake
 Diligent-HLSL2GLSLConverterLib_IS_TOP_LEVEL:STATIC=OFF
@@ -547,19 +652,79 @@ Diligent-HLSL2GLSLConverterLib_IS_TOP_LEVEL:STATIC=OFF
 Diligent-HLSL2GLSLConverterLib_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsEngine;general;Diligent-ShaderTools;
 
 //Value Computed by CMake
-Diligent-HLSL2GLSLConverterLib_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/HLSL2GLSLConverterLib
+Diligent-HLSL2GLSLConverterLib_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/HLSL2GLSLConverterLib
 
 //Value Computed by CMake
-Diligent-Primitives_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Primitives
+Diligent-Imgui_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/Imgui
+
+//Value Computed by CMake
+Diligent-Imgui_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+Diligent-Imgui_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsAccessories;general;Diligent-GraphicsTools;
+
+//Value Computed by CMake
+Diligent-Imgui_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/Imgui
+
+//Value Computed by CMake
+Diligent-NativeAppBase_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/NativeApp
+
+//Value Computed by CMake
+Diligent-NativeAppBase_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+Diligent-NativeAppBase_LIB_DEPENDS:STATIC=general;Diligent-Common;
+
+//Value Computed by CMake
+Diligent-NativeAppBase_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/NativeApp
+
+//Value Computed by CMake
+Diligent-Primitives_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Primitives
 
 //Value Computed by CMake
 Diligent-Primitives_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-Diligent-Primitives_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Primitives
+Diligent-Primitives_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Primitives
 
 //Value Computed by CMake
-Diligent-ShaderTools_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Graphics/ShaderTools
+Diligent-RenderStateNotation_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/RenderStateNotation
+
+//Value Computed by CMake
+Diligent-RenderStateNotation_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+Diligent-RenderStateNotation_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsAccessories;general;Diligent-GraphicsTools;
+
+//Value Computed by CMake
+Diligent-RenderStateNotation_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/RenderStateNotation
+
+//Dependencies for the target
+Diligent-RenderStatePackagerLib_LIB_DEPENDS:STATIC=general;Diligent-GraphicsAccessories;general;Diligent-Archiver-static;general;Diligent-RenderStateNotation;
+
+//Value Computed by CMake
+Diligent-RenderStatePackager_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/RenderStatePackager
+
+//Value Computed by CMake
+Diligent-RenderStatePackager_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Diligent-RenderStatePackager_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/RenderStatePackager
+
+//Value Computed by CMake
+Diligent-SampleBase_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/SampleBase
+
+//Value Computed by CMake
+Diligent-SampleBase_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+Diligent-SampleBase_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsTools;general;Diligent-TextureLoader;general;Diligent-TargetPlatform;general;Diligent-Imgui;general;Diligent-GraphicsAccessories;general;Diligent-GraphicsEngineOpenGL-shared;general;Diligent-GraphicsEngineVk-shared;general;Diligent-NativeAppBase;
+
+//Value Computed by CMake
+Diligent-SampleBase_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/SampleBase
+
+//Value Computed by CMake
+Diligent-ShaderTools_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Graphics/ShaderTools
 
 //Value Computed by CMake
 Diligent-ShaderTools_IS_TOP_LEVEL:STATIC=OFF
@@ -568,10 +733,22 @@ Diligent-ShaderTools_IS_TOP_LEVEL:STATIC=OFF
 Diligent-ShaderTools_LIB_DEPENDS:STATIC=general;Diligent-GraphicsAccessories;general;Diligent-Common;general;Diligent-HLSL2GLSLConverterLib;general;spirv-cross-core;general;SPIRV-Tools-opt;general;SPIRV;general;glslang;
 
 //Value Computed by CMake
-Diligent-ShaderTools_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Graphics/ShaderTools
+Diligent-ShaderTools_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Graphics/ShaderTools
 
 //Value Computed by CMake
-Diligent-Win32Platform_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/Platforms/Win32
+Diligent-TextureLoader_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/TextureLoader
+
+//Value Computed by CMake
+Diligent-TextureLoader_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+Diligent-TextureLoader_LIB_DEPENDS:STATIC=general;Diligent-Common;general;Diligent-GraphicsAccessories;general;Diligent-GraphicsTools;general;PNG::PNG;general;TIFF::TIFF;general;ZLIB::ZLIB;general;JPEG::JPEG;
+
+//Value Computed by CMake
+Diligent-TextureLoader_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/TextureLoader
+
+//Value Computed by CMake
+Diligent-Win32Platform_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/Platforms/Win32
 
 //Value Computed by CMake
 Diligent-Win32Platform_IS_TOP_LEVEL:STATIC=OFF
@@ -580,16 +757,37 @@ Diligent-Win32Platform_IS_TOP_LEVEL:STATIC=OFF
 Diligent-Win32Platform_LIB_DEPENDS:STATIC=general;Diligent-BasicPlatform;general;Shlwapi.lib;
 
 //Value Computed by CMake
-Diligent-Win32Platform_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/Platforms/Win32
+Diligent-Win32Platform_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/Platforms/Win32
 
 //Value Computed by CMake
-DiligentCore_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine
+DiligentCore_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore
 
 //Value Computed by CMake
 DiligentCore_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-DiligentCore_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine
+DiligentCore_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore
+
+//Value Computed by CMake
+DiligentEngine_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine
+
+//Value Computed by CMake
+DiligentEngine_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+DiligentEngine_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine
+
+//Value Computed by CMake
+DiligentFX_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentFX
+
+//Value Computed by CMake
+DiligentFX_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+DiligentFX_LIB_DEPENDS:STATIC=general;Diligent-GraphicsEngine;general;Diligent-GraphicsTools;general;Diligent-AssetLoader;general;Diligent-TextureLoader;general;Diligent-Imgui;
+
+//Value Computed by CMake
+DiligentFX_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentFX
 
 //Enables Exceptions
 ENABLE_EXCEPTIONS:BOOL=OFF
@@ -633,11 +831,18 @@ FETCHCONTENT_FULLY_DISCONNECTED:BOOL=OFF
 FETCHCONTENT_QUIET:BOOL=ON
 
 //When not empty, overrides where to find pre-populated content
+// for GLTFAssets
+FETCHCONTENT_SOURCE_DIR_GLTFASSETS:PATH=
+
+//When not empty, overrides where to find pre-populated content
 // for spdlog
 FETCHCONTENT_SOURCE_DIR_SPDLOG:PATH=
 
 //Enables UPDATE_DISCONNECTED behavior for all content population
 FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
+
+//Enables UPDATE_DISCONNECTED behavior just for population of GLTFAssets
+FETCHCONTENT_UPDATES_DISCONNECTED_GLTFASSETS:BOOL=OFF
 
 //Enables UPDATE_DISCONNECTED behavior just for population of spdlog
 FETCHCONTENT_UPDATES_DISCONNECTED_SPDLOG:BOOL=OFF
@@ -645,11 +850,108 @@ FETCHCONTENT_UPDATES_DISCONNECTED_SPDLOG:BOOL=OFF
 //Git command line client
 GIT_EXECUTABLE:FILEPATH=C:/Program Files/Git/cmd/git.exe
 
+//Value Computed by CMake
+GLFWDemo_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Samples/GLFWDemo
+
+//Value Computed by CMake
+GLFWDemo_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+GLFWDemo_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Samples/GLFWDemo
+
+//Value Computed by CMake
+GLFW_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/ThirdParty/glfw
+
+//Build support for Win32
+GLFW_BUILD_WIN32:BOOL=ON
+
+//Value Computed by CMake
+GLFW_IS_TOP_LEVEL:STATIC=OFF
+
+//Library type override for GLFW (SHARED, STATIC, OBJECT, or empty
+// to follow BUILD_SHARED_LIBS)
+GLFW_LIBRARY_TYPE:STRING=
+
+//Value Computed by CMake
+GLFW_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/ThirdParty/glfw
+
+//Force use of high-performance GPU on hybrid systems
+GLFW_USE_HYBRID_HPG:BOOL=OFF
+
 //Enable glslang installation
 GLSLANG_ENABLE_INSTALL:BOOL=OFF
 
 //Enable glslang testing
 GLSLANG_TESTS:BOOL=OFF
+
+//Value Computed by CMake
+GLTFViewer_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Samples/GLTFViewer
+
+//Value Computed by CMake
+GLTFViewer_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+GLTFViewer_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Samples/GLTFViewer
+
+//Dependencies for the target
+GhostCubePlugin-shared_LIB_DEPENDS:STATIC=general;Diligent-TargetPlatform;general;Diligent-Common;general;Diligent-GraphicsAccessories;general;Diligent-GraphicsTools;general;Diligent-GraphicsEngineOpenGL-static;
+
+//Value Computed by CMake
+GhostCubePlugin_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/UnityPlugin/GhostCubePlugin/PluginSource
+
+//Value Computed by CMake
+GhostCubePlugin_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+GhostCubePlugin_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/UnityPlugin/GhostCubePlugin/PluginSource
+
+//Value Computed by CMake
+GhostCubeScene_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/UnityPlugin/GhostCubeScene
+
+//Value Computed by CMake
+GhostCubeScene_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+GhostCubeScene_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/UnityPlugin/GhostCubeScene
+
+//Value Computed by CMake
+HLSL2GLSLConverter_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/HLSL2GLSLConverter
+
+//Value Computed by CMake
+HLSL2GLSLConverter_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+HLSL2GLSLConverter_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/HLSL2GLSLConverter
+
+//imGuIZMO.quat source directory
+IMGUIZMO_QUAT_PATH:PATH=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/imGuIZMO.quat
+
+//Value Computed by CMake
+ImguiDemo_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Samples/ImguiDemo
+
+//Value Computed by CMake
+ImguiDemo_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+ImguiDemo_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Samples/ImguiDemo
+
+//Value Computed by CMake
+LibJpeg_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/libjpeg-9e
+
+//Value Computed by CMake
+LibJpeg_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+LibJpeg_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/libjpeg-9e
+
+//Value Computed by CMake
+LibTiff_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/libtiff
+
+//Value Computed by CMake
+LibTiff_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+LibTiff_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/libtiff
 
 //Extra compile options of LibUSB
 LibUSB_COMPILE_OPTIONS:STRING=
@@ -669,11 +971,53 @@ LibUSB_LINK_LIBRARIES:STRING=
 //Maximum .NET SDK version
 MAX_DOT_NET_SDK_VERSION:STRING=10.0.100
 
+//Value Computed by CMake
+NuklearDemo_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Samples/NuklearDemo
+
+//Value Computed by CMake
+NuklearDemo_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+NuklearDemo_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Samples/NuklearDemo
+
 //Arguments to supply to pkg-config
 PKG_CONFIG_ARGN:STRING=
 
 //pkg-config executable
 PKG_CONFIG_EXECUTABLE:FILEPATH=PKG_CONFIG_EXECUTABLE-NOTFOUND
+
+//Custom zlib location, else find_package is used
+PNG_BUILD_ZLIB:BOOL=ON
+
+//Enable debug output
+PNG_DEBUG:BOOL=OFF
+
+//Postfix to append to library file names under the Debug configuration
+PNG_DEBUG_POSTFIX:STRING=d
+
+//[Deprecated; please use PNG_TOOLS]
+PNG_EXECUTABLES:BOOL=ON
+
+//Enable hardware optimizations
+PNG_HARDWARE_OPTIMIZATIONS:BOOL=ON
+
+//Enable INTEL_SSE optimizations: on|off; on is default
+PNG_INTEL_SSE:STRING=on
+
+//Prefix to prepend to the API function names
+PNG_PREFIX:STRING=
+
+//Build libpng as a shared library
+PNG_SHARED:BOOL=OFF
+
+//Build libpng as a static library
+PNG_STATIC:BOOL=ON
+
+//Build the libpng tests
+PNG_TESTS:BOOL=OFF
+
+//Build the libpng tools
+PNG_TOOLS:BOOL=OFF
 
 //Value Computed by CMake
 SDL3_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL
@@ -916,14 +1260,11 @@ SDL_STATIC:BOOL=ON
 //Use iconv() from system-installed libraries
 SDL_SYSTEM_ICONV:BOOL=OFF
 
-//Build the test directory
-SDL_TESTS:BOOL=OFF
-
 //Timeout multiplier to account for really slow machines
 SDL_TESTS_TIMEOUT_MULTIPLIER:STRING=1
 
 //Build the SDL3_test library
-SDL_TEST_LIBRARY:BOOL=ON
+SDL_TEST_LIBRARY:BOOL=OFF
 
 //Enable the Tray subsystem
 SDL_TRAY:BOOL=ON
@@ -1044,13 +1385,13 @@ SPDLOG_WCHAR_FILENAMES:BOOL=OFF
 SPDLOG_WCHAR_SUPPORT:BOOL=OFF
 
 //Value Computed by CMake
-SPIRV-Cross_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/ThirdParty/SPIRV-Cross
+SPIRV-Cross_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/SPIRV-Cross
 
 //Value Computed by CMake
 SPIRV-Cross_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-SPIRV-Cross_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/ThirdParty/SPIRV-Cross
+SPIRV-Cross_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/SPIRV-Cross
 
 //Allow timers via clock_gettime on supported platforms
 SPIRV_ALLOW_TIMERS:BOOL=ON
@@ -1163,6 +1504,15 @@ SPIRV_TOOLS_INSTALL_EMACS_HELPERS:BOOL=OFF
 SPIRV_WERROR:BOOL=OFF
 
 //Value Computed by CMake
+Shadows_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Samples/Shadows
+
+//Value Computed by CMake
+Shadows_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Shadows_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Samples/Shadows
+
+//Value Computed by CMake
 The_Hollows_Engine_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build
 
 //Value Computed by CMake
@@ -1170,6 +1520,288 @@ The_Hollows_Engine_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 The_Hollows_Engine_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine
+
+//Value Computed by CMake
+Tutorial00_HelloWin32_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial00_HelloWin32
+
+//Value Computed by CMake
+Tutorial00_HelloWin32_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial00_HelloWin32_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial00_HelloWin32
+
+//Value Computed by CMake
+Tutorial01_HelloTriangle_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial01_HelloTriangle
+
+//Value Computed by CMake
+Tutorial01_HelloTriangle_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial01_HelloTriangle_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial01_HelloTriangle
+
+//Value Computed by CMake
+Tutorial02_Cube_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial02_Cube
+
+//Value Computed by CMake
+Tutorial02_Cube_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial02_Cube_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial02_Cube
+
+//Value Computed by CMake
+Tutorial03_Texturing-C_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial03_Texturing-C
+
+//Value Computed by CMake
+Tutorial03_Texturing-C_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial03_Texturing-C_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial03_Texturing-C
+
+//Value Computed by CMake
+Tutorial03_Texturing_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial03_Texturing
+
+//Value Computed by CMake
+Tutorial03_Texturing_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial03_Texturing_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial03_Texturing
+
+//Value Computed by CMake
+Tutorial04_Instancing_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial04_Instancing
+
+//Value Computed by CMake
+Tutorial04_Instancing_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial04_Instancing_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial04_Instancing
+
+//Value Computed by CMake
+Tutorial05_TextureArray_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial05_TextureArray
+
+//Value Computed by CMake
+Tutorial05_TextureArray_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial05_TextureArray_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial05_TextureArray
+
+//Value Computed by CMake
+Tutorial06_Multithreading_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial06_Multithreading
+
+//Value Computed by CMake
+Tutorial06_Multithreading_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial06_Multithreading_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial06_Multithreading
+
+//Value Computed by CMake
+Tutorial07_GeometryShader_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial07_GeometryShader
+
+//Value Computed by CMake
+Tutorial07_GeometryShader_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial07_GeometryShader_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial07_GeometryShader
+
+//Value Computed by CMake
+Tutorial08_Tessellation_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial08_Tessellation
+
+//Value Computed by CMake
+Tutorial08_Tessellation_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial08_Tessellation_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial08_Tessellation
+
+//Value Computed by CMake
+Tutorial09_Quads_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial09_Quads
+
+//Value Computed by CMake
+Tutorial09_Quads_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial09_Quads_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial09_Quads
+
+//Value Computed by CMake
+Tutorial10_DataStreaming_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial10_DataStreaming
+
+//Value Computed by CMake
+Tutorial10_DataStreaming_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial10_DataStreaming_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial10_DataStreaming
+
+//Value Computed by CMake
+Tutorial11_ResourceUpdates_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial11_ResourceUpdates
+
+//Value Computed by CMake
+Tutorial11_ResourceUpdates_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial11_ResourceUpdates_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial11_ResourceUpdates
+
+//Value Computed by CMake
+Tutorial12_RenderTarget_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial12_RenderTarget
+
+//Value Computed by CMake
+Tutorial12_RenderTarget_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial12_RenderTarget_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial12_RenderTarget
+
+//Value Computed by CMake
+Tutorial13_ShadowMap_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial13_ShadowMap
+
+//Value Computed by CMake
+Tutorial13_ShadowMap_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial13_ShadowMap_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial13_ShadowMap
+
+//Value Computed by CMake
+Tutorial14_ComputeShader_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial14_ComputeShader
+
+//Value Computed by CMake
+Tutorial14_ComputeShader_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial14_ComputeShader_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial14_ComputeShader
+
+//Value Computed by CMake
+Tutorial15_MultipleWindows_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial15_MultipleWindows
+
+//Value Computed by CMake
+Tutorial15_MultipleWindows_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial15_MultipleWindows_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial15_MultipleWindows
+
+//Value Computed by CMake
+Tutorial16_BindlessResources_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial16_BindlessResources
+
+//Value Computed by CMake
+Tutorial16_BindlessResources_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial16_BindlessResources_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial16_BindlessResources
+
+//Value Computed by CMake
+Tutorial17_MSAA_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial17_MSAA
+
+//Value Computed by CMake
+Tutorial17_MSAA_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial17_MSAA_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial17_MSAA
+
+//Value Computed by CMake
+Tutorial18_Queries_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial18_Queries
+
+//Value Computed by CMake
+Tutorial18_Queries_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial18_Queries_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial18_Queries
+
+//Value Computed by CMake
+Tutorial19_RenderPasses_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial19_RenderPasses
+
+//Value Computed by CMake
+Tutorial19_RenderPasses_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial19_RenderPasses_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial19_RenderPasses
+
+//Value Computed by CMake
+Tutorial20_MeshShader_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial20_MeshShader
+
+//Value Computed by CMake
+Tutorial20_MeshShader_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial20_MeshShader_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial20_MeshShader
+
+//Value Computed by CMake
+Tutorial21_RayTracing_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial21_RayTracing
+
+//Value Computed by CMake
+Tutorial21_RayTracing_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial21_RayTracing_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial21_RayTracing
+
+//Value Computed by CMake
+Tutorial22_HybridRendering_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial22_HybridRendering
+
+//Value Computed by CMake
+Tutorial22_HybridRendering_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial22_HybridRendering_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial22_HybridRendering
+
+//Value Computed by CMake
+Tutorial23_CommandQueues_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial23_CommandQueues
+
+//Value Computed by CMake
+Tutorial23_CommandQueues_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial23_CommandQueues_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial23_CommandQueues
+
+//Value Computed by CMake
+Tutorial24_VRS_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial24_VRS
+
+//Value Computed by CMake
+Tutorial24_VRS_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial24_VRS_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial24_VRS
+
+//Value Computed by CMake
+Tutorial25_StatePackager_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial25_StatePackager
+
+//Value Computed by CMake
+Tutorial25_StatePackager_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial25_StatePackager_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial25_StatePackager
+
+//Value Computed by CMake
+Tutorial26_StateCache_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial26_StateCache
+
+//Value Computed by CMake
+Tutorial26_StateCache_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial26_StateCache_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial26_StateCache
+
+//Value Computed by CMake
+Tutorial27_PostProcessing_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial27_PostProcessing
+
+//Value Computed by CMake
+Tutorial27_PostProcessing_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial27_PostProcessing_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial27_PostProcessing
+
+//Value Computed by CMake
+Tutorial29_OIT_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial29_OIT
+
+//Value Computed by CMake
+Tutorial29_OIT_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Tutorial29_OIT_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/Tutorials/Tutorial29_OIT
+
+//Value Computed by CMake
+UnityEmulator_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentSamples/UnityPlugin/UnityEmulator
+
+//Value Computed by CMake
+UnityEmulator_IS_TOP_LEVEL:STATIC=OFF
+
+//Dependencies for the target
+UnityEmulator_LIB_DEPENDS:STATIC=general;Diligent-NativeAppBase;general;Diligent-Common;general;Diligent-GraphicsEngine;general;Diligent-GraphicsTools;general;Diligent-TargetPlatform;general;glew-static;general;Diligent-GraphicsEngineOpenGL-static;
+
+//Value Computed by CMake
+UnityEmulator_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentSamples/UnityPlugin/UnityEmulator
 
 //Use C++ namespace for vk* functions
 VOLK_NAMESPACE:BOOL=OFF
@@ -1198,23 +1830,50 @@ XXHASH_BUILD_XXHSUM:BOOL=OFF
 
 XXHASH_BUNDLED_MODE:BOOL=ON
 
+//Build minizip library
+ZLIB_BUILD_MINIZIP:BOOL=OFF
+
 //Value Computed by CMake
-glew-static_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/ThirdParty/glew
+ZLib_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/ThirdParty
+
+//Value Computed by CMake
+ZLib_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+ZLib_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/ThirdParty
+
+//Value Computed by CMake
+glew-static_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/glew
 
 //Value Computed by CMake
 glew-static_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-glew-static_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/ThirdParty/glew
+glew-static_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/glew
 
 //Value Computed by CMake
-glslang_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/ThirdParty/glslang
+glslang_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/glslang
 
 //Value Computed by CMake
 glslang_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-glslang_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/ThirdParty/glslang
+glslang_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/glslang
+
+//Enable linker version script
+ld-version-script:BOOL=ON
+
+//Value Computed by CMake
+libpng_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/libpng
+
+//Value Computed by CMake
+libpng_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+libpng_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/libpng
+
+//Dependencies for the target
+png_static_LIB_DEPENDS:STATIC=general;ZLIB::ZLIB;
 
 //Value Computed by CMake
 spdlog_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/_deps/spdlog-build
@@ -1229,31 +1888,31 @@ spdlog_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/bui
 spirv-cross-glsl_LIB_DEPENDS:STATIC=general;spirv-cross-core;
 
 //Value Computed by CMake
-spirv-tools_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/ThirdParty/SPIRV-Tools
+spirv-tools_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/SPIRV-Tools
 
 //Value Computed by CMake
 spirv-tools_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-spirv-tools_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/ThirdParty/SPIRV-Tools
+spirv-tools_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/SPIRV-Tools
 
 //Value Computed by CMake
-volk_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/ThirdParty/volk
+volk_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/volk
 
 //Value Computed by CMake
 volk_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-volk_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/ThirdParty/volk
+volk_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/volk
 
 //Value Computed by CMake
-xxHash_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/ThirdParty/xxHash/build/cmake
+xxHash_BINARY_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/xxHash/build/cmake
 
 //Value Computed by CMake
 xxHash_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-xxHash_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/ThirdParty/xxHash/build/cmake
+xxHash_SOURCE_DIR:STATIC=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/ThirdParty/xxHash/build/cmake
 
 
 ########################
@@ -1267,11 +1926,30 @@ ARCHIVER_SUPPORTED:INTERNAL=TRUE
 //Build shared libraries
 BUILD_SHARED_LIBS:INTERNAL=OFF
 //clang-format executable path
-CLANG_FORMAT_EXECUTABLE:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/BuildTools/FormatValidation/clang-format_10.0.0.exe
+CLANG_FORMAT_EXECUTABLE:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/BuildTools/FormatValidation/clang-format_10.0.0.exe
 //ADVANCED property for variable: CMAKE_ADDR2LINE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_COMPILER
+CMAKE_ASM_COMPILER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_COMPILER_AR
+CMAKE_ASM_COMPILER_AR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_COMPILER_CLANG_SCAN_DEPS
+CMAKE_ASM_COMPILER_CLANG_SCAN_DEPS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_COMPILER_RANLIB
+CMAKE_ASM_COMPILER_RANLIB-ADVANCED:INTERNAL=1
+CMAKE_ASM_COMPILER_WORKS:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_FLAGS
+CMAKE_ASM_FLAGS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_FLAGS_DEBUG
+CMAKE_ASM_FLAGS_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_FLAGS_MINSIZEREL
+CMAKE_ASM_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_FLAGS_RELEASE
+CMAKE_ASM_FLAGS_RELEASE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_FLAGS_RELWITHDEBINFO
+CMAKE_ASM_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //This is the directory where this CMakeCache.txt was created
 CMAKE_CACHEFILE_DIR:INTERNAL=d:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build
 //Major version of cmake used to create the current loaded cache
@@ -1416,7 +2094,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=46
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=74
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -1532,18 +2210,26 @@ D3D12_SUPPORTED:INTERNAL=FALSE
 DEBUG_CONFIGURATIONS:INTERNAL=DEBUG
 DILIGENT_CORE_COMMIT_HASH:INTERNAL=1c3ac22f
 //Diligent Core installation directory
-DILIGENT_CORE_DIR:INTERNAL=vendor/lib/DiligentEngine
+DILIGENT_CORE_DIR:INTERNAL=vendor/lib/DiligentEngine/DiligentCore
 //DiligentCore module is found
 DILIGENT_CORE_FOUND:INTERNAL=TRUE
 //Core libraries installation list
 DILIGENT_CORE_INSTALL_LIBS_LIST:INTERNAL=Diligent-Primitives;Diligent-BasicPlatform;Diligent-Win32Platform;Diligent-Common;Diligent-GraphicsAccessories;Diligent-GraphicsEngine;Diligent-HLSL2GLSLConverterLib;Diligent-ShaderTools;Diligent-GraphicsEngineNextGenBase;Diligent-GraphicsEngineVk-static;Diligent-GraphicsEngineOpenGL-static;Diligent-Archiver-static;Diligent-GraphicsTools
 //DiligentCore module source directory
-DILIGENT_CORE_SOURCE_DIR:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine
+DILIGENT_CORE_SOURCE_DIR:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore
 DILIGENT_DXCOMPILER_FOR_SPIRV_PATH:INTERNAL=
+//DiligentFX module is found
+DILIGENT_FX_FOUND:INTERNAL=TRUE
+//DiligentSamples module is found
+DILIGENT_SAMPLES_FOUND:INTERNAL=TRUE
+//DiligentTools module is found
+DILIGENT_TOOLS_FOUND:INTERNAL=TRUE
+//Diligent tools libraries installation list
+DILIGENT_TOOLS_INSTALL_LIBS_LIST:INTERNAL=LibJpeg;LibTiff;ZLib;png_static;Diligent-TextureLoader;Diligent-AssetLoader;Diligent-Imgui;Diligent-RenderStateNotation
 //Use SPIRV Toolchain
 DILIGENT_USE_SPIRV_TOOLCHAIN:INTERNAL=TRUE
 //File2String utility
-FILE2STRING_PATH:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/BuildTools/File2Include/script.py
+FILE2STRING_PATH:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentCore/BuildTools/File2Include/script.py
 //Details about finding Git
 FIND_PACKAGE_MESSAGE_DETAILS_Git:INTERNAL=[C:/Program Files/Git/cmd/git.exe][v2.51.0.windows.2()]
 //Details about finding Python3
@@ -1554,6 +2240,20 @@ FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 GIT_EXECUTABLE-ADVANCED:INTERNAL=1
 //GLES is not supported
 GLES_SUPPORTED:INTERNAL=FALSE
+//Build the GLFW documentation
+GLFW_BUILD_DOCS:INTERNAL=OFF
+//Build the GLFW example programs
+GLFW_BUILD_EXAMPLES:INTERNAL=OFF
+//Build the GLFW test programs
+GLFW_BUILD_TESTS:INTERNAL=OFF
+//Build support for Wayland
+GLFW_BUILD_WAYLAND:INTERNAL=OFF
+//Generate installation target
+GLFW_INSTALL:INTERNAL=OFF
+//GLFW pkg-config Libs.private
+GLFW_PKG_CONFIG_LIBS_PRIVATE:INTERNAL= -lgdi32
+//GLFW pkg-config Requires.private
+GLFW_PKG_CONFIG_REQUIRES_PRIVATE:INTERNAL=
 //OpenGL is supported on Win32 platform
 GL_SUPPORTED:INTERNAL=TRUE
 //Result of TRY_COMPILE
@@ -1606,6 +2306,8 @@ HAVE_GCC_WSHADOW:INTERNAL=1
 HAVE_GCC_WUNDEF:INTERNAL=1
 //Test HAVE_GCC_WUNUSED_LOCAL_TYPEDEFS
 HAVE_GCC_WUNUSED_LOCAL_TYPEDEFS:INTERNAL=1
+//Test HAVE_LD_VERSION_SCRIPT
+HAVE_LD_VERSION_SCRIPT:INTERNAL=1
 //Have library m
 HAVE_LIBM:INTERNAL=
 //Test HAVE_MFAPI_H
@@ -1904,16 +2606,22 @@ PLATFORM_UNIVERSAL_WINDOWS:INTERNAL=FALSE
 PLATFORM_WEB:INTERNAL=FALSE
 //Target platform: Win32
 PLATFORM_WIN32:INTERNAL=TRUE
+//STRINGS property for variable: PNG_INTEL_SSE
+PNG_INTEL_SSE-STRINGS:INTERNAL=on;off
 //Release configurations
 RELEASE_CONFIGURATIONS:INTERNAL=RELEASE;RELWITHDEBINFO;MINSIZEREL
 //Render state cache is supported
 RENDER_STATE_CACHE_SUPPORTED:INTERNAL=TRUE
+//Render State Notation Parser generated headers directory
+RSN_PARSER_HEADERS_DIR:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/DiligentEngine/DiligentTools/RenderStateNotation/parser_headers
 //ADVANCED property for variable: SDL_CHECK_REQUIRED_INCLUDES
 SDL_CHECK_REQUIRED_INCLUDES-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: SDL_CHECK_REQUIRED_LINK_OPTIONS
 SDL_CHECK_REQUIRED_LINK_OPTIONS-ADVANCED:INTERNAL=1
 //Result of TRY_COMPILE
 SDL_CPU_CHECK_ALL:INTERNAL=TRUE
+//Build the test directory
+SDL_TESTS:INTERNAL=OFF
 //Target CPU architecture
 TARGET_CPU:INTERNAL=x86_64
 //Result of TRY_COMPILE
@@ -1934,6 +2642,10 @@ WEBGPU_SUPPORTED:INTERNAL=FALSE
 WINDOWS_SDK_VERSION:INTERNAL=0.0
 //ADVANCED property for variable: XXHASH_BUNDLED_MODE
 XXHASH_BUNDLED_MODE-ADVANCED:INTERNAL=1
+//ZLib include directory
+ZLIB_INCLUDE_DIRS:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/DiligentEngine/DiligentTools/ThirdParty/zlib
+//ZLib library
+ZLIB_LIBRARIES:INTERNAL=ZLib
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/install
 //Compiler reason failure
