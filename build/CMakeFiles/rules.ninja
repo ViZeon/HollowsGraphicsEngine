@@ -55,10 +55,8 @@ rule CXX_COMPILER__Hollows_Engine_unscanned_Debug
 # Rule for linking CXX shared library.
 
 rule CXX_SHARED_LIBRARY_LINKER__Hollows_Engine_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE -nostartfiles -nostdlib $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS -o $TARGET_FILE  -Xlinker /MANIFEST:EMBED -Xlinker /implib:$TARGET_IMPLIB -Xlinker /pdb:$TARGET_PDB -Xlinker /version:0.0 @$RSP_FILE $MANIFESTS && $POST_BUILD"
+  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE -nostartfiles -nostdlib $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS -o $TARGET_FILE  -Xlinker /MANIFEST:EMBED -Xlinker /implib:$TARGET_IMPLIB -Xlinker /pdb:$TARGET_PDB -Xlinker /version:0.0 $in $LINK_PATH $LINK_LIBRARIES $MANIFESTS && $POST_BUILD"
   description = Linking CXX shared library $TARGET_FILE
-  rspfile = $RSP_FILE
-  rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
   restat = $RESTAT
 
 
@@ -200,7 +198,7 @@ rule CXX_SCAN__SPIRV-Tools-shared_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__SPIRV-Tools-shared_Debug
-  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentEngine\DiligentCore\ThirdParty\SPIRV-Tools\source\CMakeFiles\SPIRV-Tools-shared.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
+  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentCore\ThirdParty\SPIRV-Tools\source\CMakeFiles\SPIRV-Tools-shared.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -251,7 +249,7 @@ rule CXX_SCAN__SPIRV-Tools-static_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__SPIRV-Tools-static_Debug
-  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentEngine\DiligentCore\ThirdParty\SPIRV-Tools\source\CMakeFiles\SPIRV-Tools-static.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
+  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentCore\ThirdParty\SPIRV-Tools\source\CMakeFiles\SPIRV-Tools-static.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -302,7 +300,7 @@ rule CXX_SCAN__SPIRV-Tools-opt_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__SPIRV-Tools-opt_Debug
-  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentEngine\DiligentCore\ThirdParty\SPIRV-Tools\source\opt\CMakeFiles\SPIRV-Tools-opt.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
+  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentCore\ThirdParty\SPIRV-Tools\source\opt\CMakeFiles\SPIRV-Tools-opt.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -353,7 +351,7 @@ rule CXX_SCAN__SPIRV-Tools-reduce_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__SPIRV-Tools-reduce_Debug
-  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentEngine\DiligentCore\ThirdParty\SPIRV-Tools\source\reduce\CMakeFiles\SPIRV-Tools-reduce.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
+  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentCore\ThirdParty\SPIRV-Tools\source\reduce\CMakeFiles\SPIRV-Tools-reduce.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -402,7 +400,7 @@ rule CXX_SCAN__SPIRV-Tools-link_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__SPIRV-Tools-link_Debug
-  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentEngine\DiligentCore\ThirdParty\SPIRV-Tools\source\link\CMakeFiles\SPIRV-Tools-link.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
+  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentCore\ThirdParty\SPIRV-Tools\source\link\CMakeFiles\SPIRV-Tools-link.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -451,7 +449,7 @@ rule CXX_SCAN__SPIRV-Tools-lint_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__SPIRV-Tools-lint_Debug
-  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentEngine\DiligentCore\ThirdParty\SPIRV-Tools\source\lint\CMakeFiles\SPIRV-Tools-lint.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
+  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentCore\ThirdParty\SPIRV-Tools\source\lint\CMakeFiles\SPIRV-Tools-lint.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -500,7 +498,7 @@ rule CXX_SCAN__SPIRV-Tools-diff_Debug
 # Rule to generate ninja dyndep files for CXX.
 
 rule CXX_DYNDEP__SPIRV-Tools-diff_Debug
-  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentEngine\DiligentCore\ThirdParty\SPIRV-Tools\source\diff\CMakeFiles\SPIRV-Tools-diff.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
+  command = "C:\Program Files\CMake\bin\cmake.exe" -E cmake_ninja_dyndep --tdi=vendor\lib\DiligentCore\ThirdParty\SPIRV-Tools\source\diff\CMakeFiles\SPIRV-Tools-diff.dir\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=$out @$out.rsp
   description = Generating CXX dyndep file $out
   rspfile = $out.rsp
   rspfile_content = $in
@@ -951,10 +949,8 @@ rule CXX_COMPILER__Diligent-GraphicsEngineOpenGL-static_unscanned_Debug
 # Rule for linking CXX static library.
 
 rule CXX_STATIC_LIBRARY_LINKER__Diligent-GraphicsEngineOpenGL-static_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
+  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
-  rspfile = $RSP_FILE
-  rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
   restat = $RESTAT
 
 
@@ -1041,277 +1037,6 @@ rule CXX_COMPILER__Diligent-GraphicsTools_unscanned_Debug
 # Rule for linking CXX static library.
 
 rule CXX_STATIC_LIBRARY_LINKER__Diligent-GraphicsTools_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling C files.
-
-rule C_COMPILER__ZLib_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\clang.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building C object $out
-
-
-#############################################
-# Rule for linking C static library.
-
-rule C_STATIC_LIBRARY_LINKER__ZLib_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking C static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling C files.
-
-rule C_COMPILER__LibJpeg_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\clang.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building C object $out
-
-
-#############################################
-# Rule for linking C static library.
-
-rule C_STATIC_LIBRARY_LINKER__LibJpeg_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking C static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling C files.
-
-rule C_COMPILER__LibTiff_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\clang.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building C object $out
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__LibTiff_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__LibTiff_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling C files.
-
-rule C_COMPILER__png_static_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\clang.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building C object $out
-
-
-#############################################
-# Rule for linking C static library.
-
-rule C_STATIC_LIBRARY_LINKER__png_static_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking C static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling C files.
-
-rule C_COMPILER__Diligent-TextureLoader_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\clang.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building C object $out
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__Diligent-TextureLoader_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__Diligent-TextureLoader_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__Diligent-AssetLoader_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__Diligent-AssetLoader_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__Diligent-Imgui_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__Diligent-Imgui_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__Diligent-NativeAppBase_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__Diligent-NativeAppBase_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__HLSL2GLSLConverter_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX executable.
-
-rule CXX_EXECUTABLE_LINKER__HLSL2GLSLConverter_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE -nostartfiles -nostdlib $FLAGS $LINK_FLAGS @$RSP_FILE -o $TARGET_FILE -Xlinker /MANIFEST:EMBED -Xlinker /implib:$TARGET_IMPLIB -Xlinker /pdb:$TARGET_PDB -Xlinker /version:0.0  $MANIFESTS && $POST_BUILD"
-  description = Linking CXX executable $TARGET_FILE
-  rspfile = $RSP_FILE
-  rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__Diligent-RenderStateNotation_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__Diligent-RenderStateNotation_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__Diligent-RenderStatePackagerLib_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__Diligent-RenderStatePackagerLib_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__Diligent-RenderStatePackager_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX executable.
-
-rule CXX_EXECUTABLE_LINKER__Diligent-RenderStatePackager_Debug
-  command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE -nostartfiles -nostdlib $FLAGS $LINK_FLAGS @$RSP_FILE -o $TARGET_FILE -Xlinker /MANIFEST:EMBED -Xlinker /implib:$TARGET_IMPLIB -Xlinker /pdb:$TARGET_PDB -Xlinker /version:0.0  $MANIFESTS && $POST_BUILD"
-  description = Linking CXX executable $TARGET_FILE
-  rspfile = $RSP_FILE
-  rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__DiligentFX_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__DiligentFX_Debug
   command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && C:\PROGRA~1\LLVM\bin\llvm-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\PROGRA~1\LLVM\bin\LLVM-R~1.EXE $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   restat = $RESTAT

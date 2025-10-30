@@ -4,3 +4,6 @@
 [submodule "vendor/lib/DiligentEngine"]
 	path = vendor/lib/DiligentEngine
 	url = https://github.com/DiligentGraphics/DiligentEngine.git
+[submodule "vendor/lib/DiligentCore"]
+	path = vendor/lib/DiligentCore
+	url = https://github.com/DiligentGraphics/DiligentCore.git
