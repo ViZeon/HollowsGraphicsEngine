@@ -12,16 +12,6 @@
 # =============================================================================
 
 #############################################
-# Rule for compiling C files.
-
-rule C_COMPILER__Hollows_Engine_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\clang.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building C object $out
-
-
-#############################################
 # Rule for generating CXX dependencies.
 
 rule CXX_SCAN__Hollows_Engine_Debug
@@ -59,16 +49,6 @@ rule CXX_COMPILER__Hollows_Engine_unscanned_Debug
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
-
-
-#############################################
-# Rule for compiling RC files.
-
-rule RC_COMPILER__Hollows_Engine_unscanned_Debug
-  depfile = $DEP_FILE
-  deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}"C:\Program Files\CMake\bin\cmake.exe" -E cmake_llvm_rc $in $out.pp C:\PROGRA~1\LLVM\bin\clang.exe $DEFINES -DRC_INVOKED $INCLUDES $FLAGS -MD -MF $DEP_FILE -x c -E -- $in ++ C:\PROGRA~1\LLVM\bin\llvm-rc.exe $DEFINES -I SOURCE_DIR $INCLUDES $FLAGS -MD -MF $DEP_FILE /fo $out $out.pp
-  description = Building RC object $out
 
 
 #############################################

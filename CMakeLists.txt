@@ -148,6 +148,20 @@ if(EXISTS ${VENDOR_LIB_DIR})
                 else()
                     message(STATUS "   ↳ No linkable targets found")
                 endif()
+            elseif(SUBMOD_NAME STREQUAL "DiligentEngine")
+                set(DILIGENT_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
+                set(DILIGENT_BUILD_UNITY_PLUGIN OFF CACHE BOOL "" FORCE)
+                set(DILIGENT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+                
+                # ADD THIS BLOCK:
+                set(DILIGENT_TARGETS "")
+                list(APPEND DILIGENT_TARGETS
+                    Diligent-GraphicsEngineD3D12-static
+                    Diligent-GraphicsEngineVk-static
+                    Diligent-GraphicsEngineOpenGL-static
+                    Diligent-GraphicsTools
+                    Diligent-Common
+                )
             else()
                 message(STATUS "   ↳ No targets detected")
             endif()
@@ -180,21 +194,26 @@ target_include_directories(Hollows_Engine
 )
 
 # Automatically link all detected submodule targets
-if(ALL_SUBMODULE_TARGETS)
-    message(STATUS "🔗 Auto-linking submodule targets to Hollows_Engine:")
-    foreach(TGT ${ALL_SUBMODULE_TARGETS})
-        if(TARGET ${TGT})
-            message(STATUS "   ↳ ${TGT}")
-            target_link_libraries(Hollows_Engine PRIVATE ${TGT})
-        endif()
-    endforeach()
-else()
-    message(WARNING "⚠️ No submodule targets detected for linking!")
-endif()
+#if(ALL_SUBMODULE_TARGETS)
+#    message(STATUS "🔗 Auto-linking submodule targets to Hollows_Engine:")
+#    foreach(TGT ${ALL_SUBMODULE_TARGETS})
+#        if(TARGET ${TGT})
+#            message(STATUS "   ↳ ${TGT}")
+#            target_link_libraries(Hollows_Engine PRIVATE ${TGT})
+#        endif()
+#    endforeach()
+#else()
+#    message(WARNING "⚠️ No submodule targets detected for linking!")
+#endif()
 
 # Link additional system/external dependencies
 target_link_libraries(Hollows_Engine PRIVATE
+    SDL3::SDL3
     spdlog::spdlog
+    
+    # Auto-link Diligent if it was found
+    ${DILIGENT_TARGETS}
+    
     winmm
     imm32
     version
@@ -242,3 +261,7 @@ target_compile_definitions(Assets PRIVATE
 )
 
 target_compile_options(Assets PRIVATE -Wall -Wextra -Wpedantic)
+
+
+
+

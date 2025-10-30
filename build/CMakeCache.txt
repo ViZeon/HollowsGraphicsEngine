@@ -425,13 +425,11 @@ DILIGENT_BUILD_DOCS:BOOL=OFF
 //Build DiligentFX module
 DILIGENT_BUILD_FX:BOOL=ON
 
-//Build DiligentSamples module
 DILIGENT_BUILD_SAMPLES:BOOL=OFF
 
 //Build only SampleBase project
 DILIGENT_BUILD_SAMPLE_BASE_ONLY:BOOL=OFF
 
-//Build Diligent Engine tests
 DILIGENT_BUILD_TESTS:BOOL=OFF
 
 //Build DiligentTools module
