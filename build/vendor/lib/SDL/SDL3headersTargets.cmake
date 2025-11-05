@@ -7,7 +7,7 @@ if(CMAKE_VERSION VERSION_LESS "3.0.0")
    message(FATAL_ERROR "CMake >= 3.0.0 required")
 endif()
 cmake_policy(PUSH)
-cmake_policy(VERSION 3.0.0...3.31)
+cmake_policy(VERSION 3.0.0...4.0)
 #----------------------------------------------------------------
 # Generated CMake target import file.
 #----------------------------------------------------------------
@@ -50,7 +50,7 @@ unset(_cmake_expected_targets)
 add_library(SDL3::Headers INTERFACE IMPORTED)
 
 set_target_properties(SDL3::Headers PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision;D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/vendor/lib/SDL/include"
+  INTERFACE_INCLUDE_DIRECTORIES "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/vendor/lib/SDL/include-revision;H:/Software/TheHollowsEngine/HollowsGraphicsEngine/vendor/lib/SDL/include"
 )
 
 # This file does not depend on other imported targets which have

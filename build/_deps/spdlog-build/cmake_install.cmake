@@ -1,8 +1,8 @@
-# Install script for directory: D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/_deps/spdlog-src
+# Install script for directory: H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/_deps/spdlog-src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/install")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/The_Hollows_Engine")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/_deps/spdlog-build/install_local_manifest.txt"
+  file(WRITE "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/_deps/spdlog-build/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

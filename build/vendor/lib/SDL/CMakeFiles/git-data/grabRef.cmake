@@ -17,27 +17,27 @@
 
 set(HEAD_HASH)
 
-file(READ "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/HEAD" HEAD_CONTENTS LIMIT 1024)
+file(READ "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/HEAD" HEAD_CONTENTS LIMIT 1024)
 
 string(STRIP "${HEAD_CONTENTS}" HEAD_CONTENTS)
 if(HEAD_CONTENTS MATCHES "ref")
 	# named branch
 	string(REPLACE "ref: " "" HEAD_REF "${HEAD_CONTENTS}")
-	if(EXISTS "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/.git/modules/vendor/lib/SDL/${HEAD_REF}")
-		configure_file("D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/.git/modules/vendor/lib/SDL/${HEAD_REF}" "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/head-ref" COPYONLY)
+	if(EXISTS "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/.git/modules/vendor/lib/SDL/${HEAD_REF}")
+		configure_file("H:/Software/TheHollowsEngine/HollowsGraphicsEngine/.git/modules/vendor/lib/SDL/${HEAD_REF}" "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/head-ref" COPYONLY)
 	else()
-		configure_file("D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/.git/modules/vendor/lib/SDL/packed-refs" "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/packed-refs" COPYONLY)
-		file(READ "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/packed-refs" PACKED_REFS)
+		configure_file("H:/Software/TheHollowsEngine/HollowsGraphicsEngine/.git/modules/vendor/lib/SDL/packed-refs" "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/packed-refs" COPYONLY)
+		file(READ "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/packed-refs" PACKED_REFS)
 		if(${PACKED_REFS} MATCHES "([0-9a-z]*) ${HEAD_REF}")
 			set(HEAD_HASH "${CMAKE_MATCH_1}")
 		endif()
 	endif()
 else()
 	# detached HEAD
-	configure_file("D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/.git/modules/vendor/lib/SDL/HEAD" "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/head-ref" COPYONLY)
+	configure_file("H:/Software/TheHollowsEngine/HollowsGraphicsEngine/.git/modules/vendor/lib/SDL/HEAD" "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/head-ref" COPYONLY)
 endif()
 
 if(NOT HEAD_HASH)
-	file(READ "D:/Work/GameEngine/TheHollows/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/head-ref" HEAD_HASH LIMIT 1024)
+	file(READ "H:/Software/TheHollowsEngine/HollowsGraphicsEngine/build/vendor/lib/SDL/CMakeFiles/git-data/head-ref" HEAD_HASH LIMIT 1024)
 	string(STRIP "${HEAD_HASH}" HEAD_HASH)
 endif()
