@@ -1,278 +1,154 @@
-cmake_minimum_required(VERSION 3.20)
+#https://github.com/meemknight/cmakeSetup
+#Version 1.1.0
 
-# =========================================================
-# Compiler Setup (BEFORE project() call)
-# =========================================================
-if(NOT DEFINED CMAKE_C_COMPILER)
-    find_program(CLANG_EXE clang)
-    if(CLANG_EXE)
-        set(CMAKE_C_COMPILER ${CLANG_EXE})
-    endif()
-endif()
+cmake_minimum_required(VERSION 3.16)
 
-if(NOT DEFINED CMAKE_CXX_COMPILER)
-    find_program(CLANGXX_EXE clang++)
-    if(CLANGXX_EXE)
-        set(CMAKE_CXX_COMPILER ${CLANGXX_EXE})
-    endif()
-endif()
-
-message(STATUS "🔧 Compiler Configuration:")
-message(STATUS "   C Compiler: ${CMAKE_C_COMPILER}")
-message(STATUS "   C++ Compiler: ${CMAKE_CXX_COMPILER}")
-
-# =========================================================
-# Project Setup
-# =========================================================
-project(The_Hollows_Engine LANGUAGES CXX C)
-
-# =========================================================
-# Global Settings
-# =========================================================
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Dist" CACHE STRING "" FORCE)
 
-set(ARCH "x64")
-set(OUTPUT_DIR "${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${ARCH}")
+#! ! ! ! ! ! !
+#set this to ON instead of OFF to ship the game!
+#basically this will change the RESOURCES_PATH to be the local path
+#! ! ! ! ! ! !
+set(PRODUCTION_BUILD OFF CACHE BOOL "Make this a production build" FORCE)
+#delete the out folder after changing if visual studio doesn recognize the change!
 
-foreach(TYPE RUNTIME ARCHIVE LIBRARY)
-    set(CMAKE_${TYPE}_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${OUTPUT_DIR})
-endforeach()
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Release>:Release>")
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
-# =========================================================
-# Include CPM (CMake Package Manager)
-# =========================================================
-set(CPM_DOWNLOAD_VERSION 0.40.2)
-set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM.cmake")
-
-if(NOT EXISTS ${CPM_DOWNLOAD_LOCATION})
-    message(STATUS "Downloading CPM.cmake v${CPM_DOWNLOAD_VERSION}")
-    file(DOWNLOAD
-        https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
-        ${CPM_DOWNLOAD_LOCATION}
-    )
+#may give problems on linux
+if(PRODUCTION_BUILD)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE) #link time optimization
+else()
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION FALSE)
 endif()
-include(${CPM_DOWNLOAD_LOCATION})
+
+if(MSVC) 
+add_compile_options(/arch:AVX2) #make sure SIMD optimizations take place
+endif()
+
+project(The_Hollows_Engine)
 
 # =========================================================
-# Dependencies
+# Dependencies Configuration
 # =========================================================
+set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+set(SDL_STATIC ON CACHE BOOL "" FORCE)
+set(SDL_TEST_LIBRARY OFF CACHE BOOL "" FORCE)
+
+set(DILIGENT_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
+set(DILIGENT_BUILD_UNITY_PLUGIN OFF CACHE BOOL "" FORCE)
+set(DILIGENT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(DILIGENT_TREAT_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+
 add_compile_definitions(SPDLOG_USE_STD_FORMAT)
-CPMAddPackage("gh:gabime/spdlog@1.14.1")
 
 # =========================================================
-# Auto-fetch and update all git submodules (recursive)
+# Add Dependencies
 # =========================================================
-if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
-    message(STATUS "🔁 Ensuring all git submodules are up to date...")
-    execute_process(
-        COMMAND git submodule update --init --recursive
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        RESULT_VARIABLE GIT_SUBMODULE_RESULT
-#        OUTPUT_QUIET ERROR_QUIET
-    )
-    if(NOT GIT_SUBMODULE_RESULT EQUAL 0)
-        message(WARNING "⚠️ Failed to auto-update git submodules (you may need to run it manually).")
-    endif()
+add_subdirectory(vendor/lib/SDL)
+add_subdirectory(vendor/lib/DiligentCore)
+add_subdirectory(vendor/lib/spdlog)
+
+# =========================================================
+# Hollows_Engine (Shared Library)
+# =========================================================
+
+# ENGINE_SOURCES is defined to be a list of all the source files for the engine
+# DON'T ADD THE SOURCES BY HAND, they are already added with this macro
+file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/*.cpp")
+
+add_library(Hollows_Engine SHARED)
+
+set_property(TARGET Hollows_Engine PROPERTY CXX_STANDARD 23)
+
+target_compile_definitions(Hollows_Engine PUBLIC GLFW_INCLUDE_NONE=1) 
+
+if(PRODUCTION_BUILD)
+	# setup the ASSETS_PATH macro to be in the root folder of your exe
+	target_compile_definitions(Hollows_Engine PUBLIC RESOURCES_PATH="./resources/") 
+
+	# remove the option to debug asserts.
+	target_compile_definitions(Hollows_Engine PUBLIC PRODUCTION_BUILD=1) 
+	target_compile_definitions(Hollows_Engine PUBLIC DEVELOPMENT_BUILD=0) 
+
+else()
+	# This is useful to get an ASSETS_PATH in your IDE during development
+	target_compile_definitions(Hollows_Engine PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+	target_compile_definitions(Hollows_Engine PUBLIC PRODUCTION_BUILD=0) 
+	target_compile_definitions(Hollows_Engine PUBLIC DEVELOPMENT_BUILD=1) 
+
 endif()
 
-# =========================================================
-# Automatic Submodule Detection and Configuration
-# =========================================================
-set(VENDOR_LIB_DIR "${CMAKE_SOURCE_DIR}/vendor/lib")
-set(ALL_SUBMODULE_TARGETS "")
+target_sources(Hollows_Engine PRIVATE ${ENGINE_SOURCES})
 
-# Function to filter targets - keeps libraries and excludes test/sample executables
-function(filter_linkable_targets TARGET_LIST OUTPUT_VAR)
-    set(FILTERED "")
-    foreach(TGT ${TARGET_LIST})
-        if(NOT TARGET ${TGT})
-            continue()
-        endif()
+if(MSVC) # If using the VS compiler...
 
-        get_target_property(TGT_TYPE ${TGT} TYPE)
-        
-        # Include static/shared/interface libraries
-        if(TGT_TYPE MATCHES "STATIC_LIBRARY|SHARED_LIBRARY|INTERFACE_LIBRARY|MODULE_LIBRARY")
-            list(APPEND FILTERED ${TGT})
-        # Exclude executables that look like tests/samples/examples
-        elseif(TGT_TYPE STREQUAL "EXECUTABLE")
-            string(TOLOWER ${TGT} TGT_LOWER)
-            if(NOT (TGT_LOWER MATCHES "test|sample|example|demo|tutorial"))
-                list(APPEND FILTERED ${TGT})
-            endif()
-        endif()
-    endforeach()
-    set(${OUTPUT_VAR} ${FILTERED} PARENT_SCOPE)
-endfunction()
+	target_compile_definitions(Hollows_Engine PUBLIC _CRT_SECURE_NO_WARNINGS)
 
-if(EXISTS ${VENDOR_LIB_DIR})
-    file(GLOB SUBMODULE_DIRS ${VENDOR_LIB_DIR}/*)
-
-    foreach(SUBMOD_PATH ${SUBMODULE_DIRS})
-        if(NOT IS_DIRECTORY ${SUBMOD_PATH})
-            continue()
-        endif()
-        
-        get_filename_component(SUBMOD_NAME ${SUBMOD_PATH} NAME)
-        
-        if(EXISTS "${SUBMOD_PATH}/CMakeLists.txt")
-            message(STATUS "🧩 Adding submodule: ${SUBMOD_NAME}")
-            
-            # Configure known submodules with their specific options BEFORE adding them
-            if(SUBMOD_NAME STREQUAL "SDL")
-                set(SDL_SHARED OFF CACHE BOOL "" FORCE)
-                set(SDL_STATIC ON CACHE BOOL "" FORCE)
-                set(SDL_TEST_LIBRARY OFF CACHE BOOL "" FORCE)
-            elseif(SUBMOD_NAME STREQUAL "DiligentCore")
-                set(DILIGENT_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
-                set(DILIGENT_BUILD_UNITY_PLUGIN OFF CACHE BOOL "" FORCE)
-                set(DILIGENT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-                set(DILIGENT_TREAT_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
-            endif()
-            
-            add_subdirectory(${SUBMOD_PATH} EXCLUDE_FROM_ALL)
-            
-            # Aggressive fix: Remove /WX and /W2 from all DiligentCore SPIRV-Tools targets
-            if(SUBMOD_NAME STREQUAL "DiligentCore")
-                get_property(ALL_DILIGENT_TARGETS DIRECTORY ${SUBMOD_PATH} PROPERTY BUILDSYSTEM_TARGETS)
-                foreach(TGT ${ALL_DILIGENT_TARGETS})
-                    if(TARGET ${TGT} AND TGT MATCHES "SPIRV-Tools")
-                        # Remove /WX from compile options
-                        get_target_property(COMPILE_OPTS ${TGT} COMPILE_OPTIONS)
-                        if(COMPILE_OPTS)
-                            list(REMOVE_ITEM COMPILE_OPTS /WX /W2)
-                            set_target_properties(${TGT} PROPERTIES COMPILE_OPTIONS "${COMPILE_OPTS}")
-                        endif()
-                        
-                        # Add /W0 to suppress all warnings for this target
-                        target_compile_options(${TGT} PRIVATE /W0)
-                        message(STATUS "   ↳ Patched ${TGT} to remove /WX")
-                    endif()
-                endforeach()
-            endif()
-            
-            # Now, find the targets to link against
-            if(SUBMOD_NAME STREQUAL "DiligentCore")
-                # For DiligentCore, automatic detection is unreliable. Use a manual list.
-                set(DILIGENT_TARGETS
-                    Diligent-GraphicsEngineD3D12-static
-                    Diligent-GraphicsEngineVk-static
-                    Diligent-GraphicsEngineOpenGL-static
-                    Diligent-GraphicsTools
-                    Diligent-Common
-                )
-                message(STATUS "   ↳ Manually adding linkable targets: ${DILIGENT_TARGETS}")
-                list(APPEND ALL_SUBMODULE_TARGETS ${DILIGENT_TARGETS})
-            else()
-                # For all other submodules, use the automatic detection method.
-                get_property(SUBMOD_TARGETS DIRECTORY ${SUBMOD_PATH} PROPERTY BUILDSYSTEM_TARGETS)
-                if(SUBMOD_TARGETS)
-                    filter_linkable_targets("${SUBMOD_TARGETS}" FILTERED_TARGETS)
-                    if(FILTERED_TARGETS)
-                        message(STATUS "   ↳ Auto-detected linkable targets: ${FILTERED_TARGETS}")
-                        list(APPEND ALL_SUBMODULE_TARGETS ${FILTERED_TARGETS})
-                    else()
-                        message(STATUS "   ↳ No linkable targets found")
-                    endif()
-                else()
-                    message(STATUS "   ↳ No targets detected")
-                endif()
-            endif()
-        endif()
-    endforeach()
+	set_target_properties(Hollows_Engine PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup") #no console
+	
 endif()
 
-# Remove duplicates
-if(ALL_SUBMODULE_TARGETS)
-    list(REMOVE_DUPLICATES ALL_SUBMODULE_TARGETS)
+#force remove unicode
+if (WIN32)
+	target_compile_options(Hollows_Engine PRIVATE /UUNICODE /U_UNICODE)
 endif()
 
-# =========================================================
-# Hollows Engine (Shared Library)
-# =========================================================
-file(GLOB_RECURSE ENGINE_SOURCES
-    src/engine/*.cpp
-    src/engine/*.c
-    src/engine/*.hpp
-    src/engine/*.h
-)
+target_include_directories(Hollows_Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/")
+target_include_directories(Hollows_Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/")
 
-add_library(Hollows_Engine SHARED ${ENGINE_SOURCES})
-
-target_include_directories(Hollows_Engine
-    PUBLIC
-        ${CMAKE_SOURCE_DIR}/src
-        ${CMAKE_SOURCE_DIR}/src/engine
-        ${CMAKE_SOURCE_DIR}/vendor/lib
-)
-
-# Link additional system/external dependencies
-target_link_libraries(Hollows_Engine PRIVATE
+target_link_libraries(Hollows_Engine PRIVATE 
     SDL3::SDL3
     spdlog::spdlog
-    
-    # Auto-link Diligent if it was found
-    ${DILIGENT_TARGETS}
-    
-    winmm
-    imm32
-    version
-    setupapi
-)
-
-target_compile_definitions(Hollows_Engine PRIVATE
-    HZ_PLATFORM_WINDOWS
-    HZ_BUILD_DLL
-    SDL_STATIC_LIB
-    $<$<CONFIG:Debug>:HZ_DEBUG>
-    $<$<CONFIG:Release>:HZ_RELEASE>
-    $<$<CONFIG:Dist>:HZ_DIST>
-)
-
-add_custom_command(TARGET Hollows_Engine POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory
-        ${CMAKE_SOURCE_DIR}/bin/${OUTPUT_DIR}/Assets
-    COMMAND ${CMAKE_COMMAND} -E copy
-        $<TARGET_FILE:Hollows_Engine>
-        ${CMAKE_SOURCE_DIR}/bin/${OUTPUT_DIR}/Assets
+    Diligent-GraphicsEngineD3D12-static
+    Diligent-GraphicsEngineVk-static
+    Diligent-GraphicsEngineOpenGL-static
+    Diligent-GraphicsTools
+    Diligent-Common
 )
 
 # =========================================================
-# Assets (Console App)
+# Assets (Executable)
 # =========================================================
-file(GLOB_RECURSE ASSET_SOURCES
-    src/assets/*.cpp
-    src/assets/*.c
-    src/assets/*.h
-)
 
-add_executable(Assets ${ASSET_SOURCES})
-add_dependencies(Assets Hollows_Engine)
-target_include_directories(Assets PRIVATE ${CMAKE_SOURCE_DIR}/src/engine)
+# ASSET_SOURCES is defined to be a list of all the source files for assets
+file(GLOB_RECURSE ASSET_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/assets/*.cpp")
+
+add_executable(Assets)
+
+set_property(TARGET Assets PROPERTY CXX_STANDARD 23)
+
+target_compile_definitions(Assets PUBLIC GLFW_INCLUDE_NONE=1) 
+
+if(PRODUCTION_BUILD)
+	target_compile_definitions(Assets PUBLIC RESOURCES_PATH="./resources/") 
+	target_compile_definitions(Assets PUBLIC PRODUCTION_BUILD=1) 
+	target_compile_definitions(Assets PUBLIC DEVELOPMENT_BUILD=0) 
+
+else()
+	target_compile_definitions(Assets PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+	target_compile_definitions(Assets PUBLIC PRODUCTION_BUILD=0) 
+	target_compile_definitions(Assets PUBLIC DEVELOPMENT_BUILD=1) 
+
+endif()
+
+target_sources(Assets PRIVATE ${ASSET_SOURCES})
+
+if(MSVC)
+	target_compile_definitions(Assets PUBLIC _CRT_SECURE_NO_WARNINGS)
+	set_target_properties(Assets PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+endif()
+
+if (WIN32)
+	target_compile_options(Assets PRIVATE /UUNICODE /U_UNICODE)
+endif()
+
+target_include_directories(Assets PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/")
+
 target_link_libraries(Assets PRIVATE Hollows_Engine spdlog::spdlog)
-
-target_compile_definitions(Assets PRIVATE
-    HZ_PLATFORM_WINDOWS
-    $<$<CONFIG:Debug>:HZ_DEBUG>
-    $<$<CONFIG:Release>:HZ_RELEASE>
-    $<$<CONFIG:Dist>:HZ_DIST>
-)
-
-# Set compiler options based on the detected compiler
-foreach(target Hollows_Engine Assets)
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        message(STATUS "Applying MSVC compile options to ${target}")
-        target_compile_options(${target} PRIVATE /W4 /permissive- /EHsc)
-
-    elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        message(STATUS "Applying Clang/GCC compile options to ${target}")
-        target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic)
-
-    else()
-        message(WARNING "Unknown compiler: ${CMAKE_CXX_COMPILER_ID}. No specific compile options set for ${target}.")
-    endif()
-endforeach()
