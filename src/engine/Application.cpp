@@ -1,5 +1,7 @@
 #include <Application.h>
 #include <SDL3/SDL.h>
+#include <diligent>
+
 namespace Hollows {
     Application::Application() {
 

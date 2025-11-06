@@ -92,7 +92,7 @@ function(filter_linkable_targets TARGET_LIST OUTPUT_VAR)
         if(NOT TARGET ${TGT})
             continue()
         endif()
-        
+
         get_target_property(TGT_TYPE ${TGT} TYPE)
         
         # Include static/shared/interface libraries
@@ -111,7 +111,7 @@ endfunction()
 
 if(EXISTS ${VENDOR_LIB_DIR})
     file(GLOB SUBMODULE_DIRS ${VENDOR_LIB_DIR}/*)
-    
+
     foreach(SUBMOD_PATH ${SUBMODULE_DIRS})
         if(NOT IS_DIRECTORY ${SUBMOD_PATH})
             continue()
@@ -122,48 +122,65 @@ if(EXISTS ${VENDOR_LIB_DIR})
         if(EXISTS "${SUBMOD_PATH}/CMakeLists.txt")
             message(STATUS "🧩 Adding submodule: ${SUBMOD_NAME}")
             
-            # Configure known submodules with their specific options
+            # Configure known submodules with their specific options BEFORE adding them
             if(SUBMOD_NAME STREQUAL "SDL")
                 set(SDL_SHARED OFF CACHE BOOL "" FORCE)
                 set(SDL_STATIC ON CACHE BOOL "" FORCE)
                 set(SDL_TEST_LIBRARY OFF CACHE BOOL "" FORCE)
-            elseif(SUBMOD_NAME STREQUAL "DiligentEngine")
+            elseif(SUBMOD_NAME STREQUAL "DiligentCore")
                 set(DILIGENT_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
                 set(DILIGENT_BUILD_UNITY_PLUGIN OFF CACHE BOOL "" FORCE)
                 set(DILIGENT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+                set(DILIGENT_TREAT_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
             endif()
             
             add_subdirectory(${SUBMOD_PATH} EXCLUDE_FROM_ALL)
             
-            # Capture all targets from this submodule
-            get_property(SUBMOD_TARGETS DIRECTORY ${SUBMOD_PATH} PROPERTY BUILDSYSTEM_TARGETS)
+            # Aggressive fix: Remove /WX and /W2 from all DiligentCore SPIRV-Tools targets
+            if(SUBMOD_NAME STREQUAL "DiligentCore")
+                get_property(ALL_DILIGENT_TARGETS DIRECTORY ${SUBMOD_PATH} PROPERTY BUILDSYSTEM_TARGETS)
+                foreach(TGT ${ALL_DILIGENT_TARGETS})
+                    if(TARGET ${TGT} AND TGT MATCHES "SPIRV-Tools")
+                        # Remove /WX from compile options
+                        get_target_property(COMPILE_OPTS ${TGT} COMPILE_OPTIONS)
+                        if(COMPILE_OPTS)
+                            list(REMOVE_ITEM COMPILE_OPTS /WX /W2)
+                            set_target_properties(${TGT} PROPERTIES COMPILE_OPTIONS "${COMPILE_OPTS}")
+                        endif()
+                        
+                        # Add /W0 to suppress all warnings for this target
+                        target_compile_options(${TGT} PRIVATE /W0)
+                        message(STATUS "   ↳ Patched ${TGT} to remove /WX")
+                    endif()
+                endforeach()
+            endif()
             
-            if(SUBMOD_TARGETS)
-                # Filter to only linkable targets
-                filter_linkable_targets("${SUBMOD_TARGETS}" FILTERED_TARGETS)
-                
-                if(FILTERED_TARGETS)
-                    message(STATUS "   ↳ Linkable targets: ${FILTERED_TARGETS}")
-                    list(APPEND ALL_SUBMODULE_TARGETS ${FILTERED_TARGETS})
-                else()
-                    message(STATUS "   ↳ No linkable targets found")
-                endif()
-            elseif(SUBMOD_NAME STREQUAL "DiligentEngine")
-                set(DILIGENT_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
-                set(DILIGENT_BUILD_UNITY_PLUGIN OFF CACHE BOOL "" FORCE)
-                set(DILIGENT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-                
-                # ADD THIS BLOCK:
-                set(DILIGENT_TARGETS "")
-                list(APPEND DILIGENT_TARGETS
+            # Now, find the targets to link against
+            if(SUBMOD_NAME STREQUAL "DiligentCore")
+                # For DiligentCore, automatic detection is unreliable. Use a manual list.
+                set(DILIGENT_TARGETS
                     Diligent-GraphicsEngineD3D12-static
                     Diligent-GraphicsEngineVk-static
                     Diligent-GraphicsEngineOpenGL-static
                     Diligent-GraphicsTools
                     Diligent-Common
                 )
+                message(STATUS "   ↳ Manually adding linkable targets: ${DILIGENT_TARGETS}")
+                list(APPEND ALL_SUBMODULE_TARGETS ${DILIGENT_TARGETS})
             else()
-                message(STATUS "   ↳ No targets detected")
+                # For all other submodules, use the automatic detection method.
+                get_property(SUBMOD_TARGETS DIRECTORY ${SUBMOD_PATH} PROPERTY BUILDSYSTEM_TARGETS)
+                if(SUBMOD_TARGETS)
+                    filter_linkable_targets("${SUBMOD_TARGETS}" FILTERED_TARGETS)
+                    if(FILTERED_TARGETS)
+                        message(STATUS "   ↳ Auto-detected linkable targets: ${FILTERED_TARGETS}")
+                        list(APPEND ALL_SUBMODULE_TARGETS ${FILTERED_TARGETS})
+                    else()
+                        message(STATUS "   ↳ No linkable targets found")
+                    endif()
+                else()
+                    message(STATUS "   ↳ No targets detected")
+                endif()
             endif()
         endif()
     endforeach()
@@ -193,19 +210,6 @@ target_include_directories(Hollows_Engine
         ${CMAKE_SOURCE_DIR}/vendor/lib
 )
 
-# Automatically link all detected submodule targets
-#if(ALL_SUBMODULE_TARGETS)
-#    message(STATUS "🔗 Auto-linking submodule targets to Hollows_Engine:")
-#    foreach(TGT ${ALL_SUBMODULE_TARGETS})
-#        if(TARGET ${TGT})
-#            message(STATUS "   ↳ ${TGT}")
-#            target_link_libraries(Hollows_Engine PRIVATE ${TGT})
-#        endif()
-#    endforeach()
-#else()
-#    message(WARNING "⚠️ No submodule targets detected for linking!")
-#endif()
-
 # Link additional system/external dependencies
 target_link_libraries(Hollows_Engine PRIVATE
     SDL3::SDL3
@@ -228,8 +232,6 @@ target_compile_definitions(Hollows_Engine PRIVATE
     $<$<CONFIG:Release>:HZ_RELEASE>
     $<$<CONFIG:Dist>:HZ_DIST>
 )
-
-target_compile_options(Hollows_Engine PRIVATE -Wall -Wextra -Wpedantic)
 
 add_custom_command(TARGET Hollows_Engine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory
@@ -260,8 +262,17 @@ target_compile_definitions(Assets PRIVATE
     $<$<CONFIG:Dist>:HZ_DIST>
 )
 
-target_compile_options(Assets PRIVATE -Wall -Wextra -Wpedantic)
+# Set compiler options based on the detected compiler
+foreach(target Hollows_Engine Assets)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        message(STATUS "Applying MSVC compile options to ${target}")
+        target_compile_options(${target} PRIVATE /W4 /permissive- /EHsc)
 
+    elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        message(STATUS "Applying Clang/GCC compile options to ${target}")
+        target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic)
 
-
-
+    else()
+        message(WARNING "Unknown compiler: ${CMAKE_CXX_COMPILER_ID}. No specific compile options set for ${target}.")
+    endif()
+endforeach()
