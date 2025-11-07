@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Application.h>
-#ifdef HZ_PLATFORM_WINDOWS
+//#ifdef HZ_PLATFORM_WINDOWS
 extern Hollows::Application* Hollows::CreateApplication();
 
 int main(int argc, char** argv)
@@ -12,4 +12,4 @@ int main(int argc, char** argv)
 	delete app;
 	return 0;
 }
-#endif
+//#endif

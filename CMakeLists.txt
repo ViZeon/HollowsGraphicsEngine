@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 
 #! ! ! ! ! ! !
 #set this to ON instead of OFF to ship the game!
@@ -40,10 +40,6 @@ set(DILIGENT_BUILD_UNITY_PLUGIN OFF CACHE BOOL "" FORCE)
 set(DILIGENT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(DILIGENT_TREAT_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
 
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 add_compile_definitions(SPDLOG_USE_STD_FORMAT)
@@ -55,6 +51,8 @@ add_subdirectory(vendor/lib/SDL)
 add_subdirectory(vendor/lib/DiligentCore)
 add_subdirectory(vendor/lib/spdlog)
 
+target_compile_options(SPIRV-Tools-opt PRIVATE /WX-)
+
 # =========================================================
 # Hollows_Engine (Shared Library)
 # =========================================================
@@ -65,9 +63,9 @@ file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/
 
 add_library(Hollows_Engine SHARED)
 
-set_property(TARGET Hollows_Engine PROPERTY CXX_STANDARD 23)
+set_property(TARGET Hollows_Engine PROPERTY CXX_STANDARD 20)
 
-target_compile_definitions(Hollows_Engine PUBLIC GLFW_INCLUDE_NONE=1) 
+target_compile_definitions(Hollows_Engine PRIVATE HZ_BUILD_DLL) 
 
 if(PRODUCTION_BUILD)
 	# setup the ASSETS_PATH macro to be in the root folder of your exe
@@ -87,13 +85,13 @@ endif()
 
 target_sources(Hollows_Engine PRIVATE ${ENGINE_SOURCES})
 
-if(MSVC) # If using the VS compiler...
+#if(MSVC) # If using the VS compiler...
 
-	target_compile_definitions(Hollows_Engine PUBLIC _CRT_SECURE_NO_WARNINGS)
+#	target_compile_definitions(Hollows_Engine PUBLIC _CRT_SECURE_NO_WARNINGS)
 
-	set_target_properties(Hollows_Engine PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup") #no console
+#	set_target_properties(Hollows_Engine PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup") #no console
 	
-endif()
+#endif()
 
 #force remove unicode
 if (WIN32)
@@ -122,7 +120,7 @@ file(GLOB_RECURSE ASSET_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/s
 
 add_executable(Assets)
 
-set_property(TARGET Assets PROPERTY CXX_STANDARD 23)
+set_property(TARGET Assets PROPERTY CXX_STANDARD 20)
 
 target_compile_definitions(Assets PUBLIC GLFW_INCLUDE_NONE=1) 
 

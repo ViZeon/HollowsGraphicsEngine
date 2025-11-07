@@ -7,3 +7,9 @@
 [submodule "vendor/lib/DiligentCore"]
 	path = vendor/lib/DiligentCore
 	url = https://github.com/DiligentGraphics/DiligentCore.git
+[submodule "vendor/lib/spdlog"]
+	path = vendor/lib/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "vendor/lib/assimp"]
+	path = vendor/lib/assimp
+	url = https://github.com/assimp/assimp.git
