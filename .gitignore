@@ -8,11 +8,13 @@ compile_commands.json
 # Premake leftovers
 bin/
 bin-int/
+out/
 
 # IDE / Editor
 *.sublime-workspace
 *.sublime-project
 .vscode/
+.vs/
 .idea/
 
 # Windows
