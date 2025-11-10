@@ -4,6 +4,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 set(CMAKE_CXX_STANDARD 20)
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #! ! ! ! ! ! !
 #set this to ON instead of OFF to ship the game!
@@ -101,7 +102,7 @@ endif()
 target_include_directories(Hollows_Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/")
 target_include_directories(Hollows_Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src/engine/")
 
-target_link_libraries(Hollows_Engine PRIVATE 
+target_link_libraries(Hollows_Engine PUBLIC 
     SDL3::SDL3
     spdlog::spdlog
     Diligent-GraphicsEngineD3D12-static
