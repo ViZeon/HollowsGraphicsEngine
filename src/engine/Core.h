@@ -1,10 +1,19 @@
 #pragma once
 
+#include <Windows.h>
+#include <GL/gl.h>
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_properties.h>
 
 
 #include <EngineFactory.h>
+#include <EngineFactoryOpenGL.h>
+
+#include <RefCntAutoPtr.hpp>
+#include <RenderDevice.h>
+#include <DeviceContext.h>
+#include <SwapChain.h>
 //#include <diligentcore/graphics/GraphicsEngine/interface/engineFactoryVk.h>
 //#include <diligentcore/graphics/GraphicsEngine/interface/engineFactoryOpenGL.h>
 
