@@ -16,51 +16,21 @@ namespace Hollows {
     }
 
 
-
-enum class NativeBackend {
-    Win32,
-    Cocoa,
-    X11,
-    Wayland,
-    Unknown
-};
-
-struct NativeWindow {
-    void* handle = nullptr;
-    NativeBackend backend = NativeBackend::Unknown;
-};
-
-inline NativeWindow GetNativeWindow(SDL_Window* window)
-{
-    SDL_PropertiesID props = SDL_GetWindowProperties(window);
-    NativeWindow out;
-
-    const struct {
-        const char* key;
-        NativeBackend backend;
-    } keys[] = {
-        {"SDL_PROP_WINDOW_WIN32_HWND_POINTER",   NativeBackend::Win32},
-        {"SDL_PROP_WINDOW_COCOA_WINDOW_POINTER", NativeBackend::Cocoa},
-        {"SDL_PROP_WINDOW_X11_WINDOW_POINTER",   NativeBackend::X11},
-        {"SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER", NativeBackend::Wayland}
-    };
-
-    for (auto& k : keys) {
-        void* h = SDL_GetPointerProperty(props, k.key, nullptr);
-        if (h) { out.handle = h; out.backend = k.backend; break; }
-    }
-
-    return out;
-}
-
-
 void window() {
     SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     SDL_Window* window = SDL_CreateWindow("SDL3 is ON, Bitches",
         800, 600, SDL_WINDOW_RESIZABLE);
 
-	SDL_PropertiesID props = SDL_GetWindowProperties(window);
+    SDL_GLContext gl_context = SDL_GL_CreateContext(window);
+    SDL_GL_MakeCurrent(window, gl_context);
+    
+
+	//L_PropertiesID props = SDL_GetWindowProperties(window);
 
 	//void* hwind_void = SDL_GetPointerProperty(props, "SDL_PROP_WINDOW");
 
