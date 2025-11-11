@@ -1,12 +1,3 @@
-[submodule "vendor/lib/SDL"]
-	path = vendor/lib/SDL
-	url = https://github.com/libsdl-org/SDL.git
-[submodule "vendor/lib/DiligentEngine"]
-	path = vendor/lib/DiligentEngine
-	url = https://github.com/DiligentGraphics/DiligentEngine.git
-[submodule "vendor/lib/DiligentCore"]
-	path = vendor/lib/DiligentCore
-	url = https://github.com/DiligentGraphics/DiligentCore.git
 [submodule "vendor/lib/spdlog"]
 	path = vendor/lib/spdlog
 	url = https://github.com/gabime/spdlog.git
