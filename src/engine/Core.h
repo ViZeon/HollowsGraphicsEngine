@@ -1,8 +1,11 @@
 #pragma once
 
-#include <Windows.h>
-#include <GL/gl.h>
+#include <HotReload.hpp>
 
+#include <iostream>
+#include <glad/glad.h>
+#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 
 //#include <diligentcore/graphics/GraphicsEngine/interface/engineFactoryVk.h>
 //#include <diligentcore/graphics/GraphicsEngine/interface/engineFactoryOpenGL.h>

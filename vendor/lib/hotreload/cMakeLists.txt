@@ -1,0 +1,28 @@
+add_subdirectory(../efsw efsw_build)
+
+add_library(hotreload_session STATIC
+    HotReload.cpp
+    FileWatcher.cpp
+)
+
+target_include_directories(hotreload_session
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/../efsw/include
+)
+target_include_directories(hotreload_session PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/json
+)
+
+target_link_libraries(hotreload_session
+    PRIVATE ${CMAKE_DL_LIBS}
+    PRIVATE efsw
+)
+
+find_package(LLVM QUIET CONFIG)
+if(LLVM_FOUND)
+    target_compile_definitions(hotreload_session PRIVATE HOTRELOAD_AVAILABLE)
+else()
+    message(STATUS "HotReload: LLVM not found — JIT disabled")
+endif()
+
+add_library(hotreload::session ALIAS hotreload_session)
