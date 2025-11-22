@@ -6,6 +6,11 @@ namespace Hollows {
 
 	class HOLLOWS_API Application {
 	public:
+			//Initialization point
+		void Init();
+
+		//Update Loop
+		void Tick();
 		Application();
 		virtual ~Application();
 

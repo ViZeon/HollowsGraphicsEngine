@@ -9,6 +9,10 @@ set(CLIENT_TARGET "Assets")
 
 set(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+#-DCMAKE_GENERATOR_PLATFORM=x64
+
+#add_compile_options("$<$<CONFIG:Debug>:/ZI>")
+
 
 # Where to put executables
 set(OUTPUT_BIN_DIR "${CMAKE_CURRENT_SOURCE_DIR}/out/bin")
@@ -34,6 +38,8 @@ endif()
 
 if(MSVC) 
 add_compile_options(/arch:AVX2) #make sure SIMD optimizations take place
+add_compile_definitions(UNICODE _UNICODE)
+
 endif()
 
 project(The_Hollows_Engine)
@@ -62,6 +68,7 @@ add_subdirectory(vendor/lib/glm)				#math
 #add_subdirectory(vendor/lib/gl2d)				#rendering
 #add_subdirectory(vendor/lib/efsw)
 add_subdirectory(vendor/lib/hotreload)
+add_subdirectory(vendor/bin/blink)
 
 
 # =========================================================
@@ -133,10 +140,10 @@ set_target_properties(${ENGINE_TARGET} PROPERTIES
 # Assets (Executable)
 # =========================================================
 
-project(Assets)
+project(Client)
 
 # ASSET_SOURCES is defined to be a list of all the source files for assets
-file(GLOB_RECURSE ASSET_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/assets/*.cpp")
+file(GLOB_RECURSE ASSET_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/client/*.cpp")
 message("ASSET_SOURCES = ${ASSET_SOURCES}")
 
 add_executable(${CLIENT_TARGET} ${ASSET_SOURCES})
