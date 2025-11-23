@@ -1,6 +1,7 @@
 #pragma once
 
 #include <HotReload.hpp>
+#include <engine\LocalIncludes.h>;
 
 #include <iostream>
 #include <glad/glad.h>

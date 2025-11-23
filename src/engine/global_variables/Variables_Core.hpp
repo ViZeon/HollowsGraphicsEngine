@@ -1,4 +1,5 @@
 #pragma once
+#include <Core.h>
 
 class Variables_Core {
 public:
