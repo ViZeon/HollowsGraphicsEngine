@@ -1,4 +1,4 @@
-package main
+package render
 import os "core:os"
 import "core:fmt"
 import "core:math"
@@ -51,14 +51,14 @@ main :: proc() {
     
     // Load glTF
     options: cgltf.options
-    data, result := cgltf.parse_file(options, "ABeautifulGame.glb")
+    data, result := cgltf.parse_file(options, "assets/ABeautifulGame.glb")
     if result != .success {
         fmt.println("Failed to load glTF:", result)
         return
     }
     defer cgltf.free(data)
     
-    result = cgltf.load_buffers(options, data, "ABeautifulGame.glb")
+    result = cgltf.load_buffers(options, data, "assets/ABeautifulGame.glb")
     if result != .success {
         fmt.println("Failed to load buffers:", result)
         return
