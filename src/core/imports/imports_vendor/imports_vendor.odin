@@ -1,4 +1,4 @@
-package main
+package imports_vendor
 
 //Vendor
 import os "core:os"

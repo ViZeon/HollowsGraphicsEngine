@@ -1,18 +1,31 @@
 package main
 
-import "core/imports/imports_vendor"
-import "core/imports/imports_local"
-
-
+//import "core:imports/imports_vendor"
+//import "core:imports/imports_local"
+import data "core/data"
 import window "core/modules/window"
+import model "core/modules/model"
 import render "core/modules/render"
-
-
-WINDOW_WIDTH_PERCENT :: 0.7
-WINDOW_HEIGHT_PERCENT :: 0.8
-SCALE_FACTOR :: 100.0
+import testing "core/testing"
+import "vendor:glfw"
 
 main :: proc() {
-	APPWINDOW := window.window_create(WINDOW_WIDTH_PERCENT,WINDOW_HEIGHT_PERCENT)
-	render.render()
+    window_handle := window.init_window(data.WINDOW_WIDTH_PERCENT, data.WINDOW_HEIGHT_PERCENT)
+    defer glfw.Terminate()
+    defer glfw.DestroyWindow(window_handle)
+    
+    raw_vertices, vertex_count, ok := model.load_model(data.MODEL_PATH)
+    if !ok {
+        return
+    }
+    defer delete(raw_vertices)
+    
+    model_data := testing.process_vertices(raw_vertices, vertex_count, data.SCALE_FACTOR)
+    defer delete(model_data.vertices)
+    
+    render_state := render.init_render(window_handle, model_data)
+    
+    for !glfw.WindowShouldClose(window_handle) {
+        render.frame_render(window_handle, model_data, render_state)
+    }
 }
