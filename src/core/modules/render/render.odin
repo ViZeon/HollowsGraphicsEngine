@@ -2,9 +2,11 @@ package render
 
 import "../../imports/imports_vendor"
 
-WINDOW_WIDTH_PERCENT :: 0.7
-WINDOW_HEIGHT_PERCENT :: 0.8
-SCALE_FACTOR :: 100.0
+import os "core:os"
+import "core:fmt"
+import "core:math"
+import "core:slice"
+
 
 Vertex :: struct {
     x, y, z: f32,
@@ -14,72 +16,10 @@ Vertex :: struct {
 }
 
 render :: proc() {
-    if !glfw.Init() {
-        fmt.println("Failed to init GLFW")
-        return
-    }
-    defer glfw.Terminate()
 
-    monitor := glfw.GetPrimaryMonitor()
-    mode := glfw.GetVideoMode(monitor)
-    
-    window_width := i32(f32(mode.width) * WINDOW_WIDTH_PERCENT)
-    window_height := i32(f32(mode.height) * WINDOW_HEIGHT_PERCENT)
 
-    glfw.WindowHint(glfw.CONTEXT_VERSION_MAJOR, 4)
-    glfw.WindowHint(glfw.CONTEXT_VERSION_MINOR, 3)
-    glfw.WindowHint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
-    glfw.WindowHint(glfw.RESIZABLE, glfw.TRUE)
     
-    window := glfw.CreateWindow(window_width, window_height, "Compute Engine", nil, nil)
-    if window == nil {
-        fmt.println("Failed to create window")
-        return
-    }
-    defer glfw.DestroyWindow(window)
-    
-    glfw.MakeContextCurrent(window)
-    gl.load_up_to(4, 3, glfw.gl_set_proc_address)
 
-    // Ensure viewport is valid at least once
-    gl.Viewport(0, 0, window_width, window_height)
-    
-    // Load glTF
-    options: cgltf.options
-    data, result := cgltf.parse_file(options, "assets/ABeautifulGame.glb")
-    if result != .success {
-        fmt.println("Failed to load glTF:", result)
-        return
-    }
-    defer cgltf.free(data)
-    
-    result = cgltf.load_buffers(options, data, "assets/ABeautifulGame.glb")
-    if result != .success {
-        fmt.println("Failed to load buffers:", result)
-        return
-    }
-    
-    fmt.println("Loaded meshes:", len(data.meshes))
-    
-    mesh := data.meshes[0]
-    primitive := mesh.primitives[0]
-    
-    position_accessor: ^cgltf.accessor
-    for attrib in primitive.attributes {
-        if attrib.type == .position {
-            position_accessor = attrib.data
-            break
-        }
-    }
-    
-    if position_accessor == nil {
-        fmt.println("No POSITION attribute found")
-        return
-    }
-    
-    vertex_count := position_accessor.count
-    vertices := make([]Vertex, vertex_count)
-    defer delete(vertices)
     
     min_z := f32(math.F32_MAX)
     max_z := f32(math.F32_MIN)
