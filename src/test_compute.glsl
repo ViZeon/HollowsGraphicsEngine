@@ -21,11 +21,24 @@ uniform float min_z;
 uniform float max_z;
 
 
-/*
+
+float get_vert_value (int index, int axis) {
+    if (axis == 0) {
+        return vertices[index].x;
+    }
+        if (axis == 1) {
+        return vertices[index].y;
+    }
+        if (axis == 2) {
+        return vertices[index].z;
+    }
+    return 0;
+}
+
 // Returns index of value, or -1 if not found
-int scan_verts(int axis, float min_value, float max_value, int first_cell, int last_cell, out int start, out int end) {
-    start = -1;
-    end = -1;
+vec2 scan_verts(int axis, float min_value, float max_value, int first_cell, int last_cell) {
+    int start = -1;
+    int end = -1;
     
     // Find start (first >= min_value)
     int left = first_cell;
@@ -33,11 +46,12 @@ int scan_verts(int axis, float min_value, float max_value, int first_cell, int l
 
     //
 
+
     while (left <= right) {
         int mid = (left + right) / 2;
         
         if (start > -1) {
-            if (vertices[mid].v[axis] <= max_value) {
+            if (get_vert_value(mid,axis) <= max_value) {
                 end = mid;
                 left = mid + 1;
             } else {
@@ -45,7 +59,7 @@ int scan_verts(int axis, float min_value, float max_value, int first_cell, int l
             }
         }
         else {
-            if (vertices[mid].v[axis] >= min_value) {
+            if (get_vert_value(mid,axis) >= min_value) {
                 start = mid;
                 right = mid - 1;
             } else {
@@ -56,25 +70,9 @@ int scan_verts(int axis, float min_value, float max_value, int first_cell, int l
 
     }
     
-    if (start == -1) return;  // No values >= min_value
-    
-    /*
-    // Find end (last <= max_value)
-    left = start;  // Start from where we found the first match
-    right = vertex_count - 1;
-    
-    while (left <= right) {
-        int mid = (left + right) / 2;
-        
-        if (vertices[mid].x <= max_value) {
-            end = mid;
-            left = mid + 1;
-        } else {
-            right = mid - 1;
-        }
-    }
-    */
-//}
+    if (start == -1) {return vec2(start,end); }
+    return vec2(start,end);  // No values >= min_value
+}
 
 
 void main() {
@@ -89,21 +87,10 @@ void main() {
     
 
     // Binary search Usage:
-    //int start, end;
+    vec2 range;
 
-    //scan_verts (0, world_pos, world_pos+1, 0, vertex_count - 1, start, end);
+    range = scan_verts (0, world_pos.x, world_pos.x + 1, 0, vertex_count - 1);
 
-
-
-    //find_range(0, int(world_pos), int(world_pos) +1, start, end);
-    
-    /*
-    if (start != -1 && end != -1) {
-        for (int i = start; i <= end; i++) {
-            // Process vertices[i]
-        }
-    }
-    */
 
 
 
@@ -111,10 +98,13 @@ void main() {
 
     //garbage for testing and disposal
     // Each pixel gets a different color based on position
-    float r = world_min.x; //float(pixel.x) / float(screen_size.x);  // 0.0 to 1.0 left to right
-    float g = world_min.y;//float(pixel.y) / float(screen_size.y);  // 0.0 to 1.0 top to bottom
+    //float r = range.x;//world_min.x; //float(pixel.x) / float(screen_size.x);  // 0.0 to 1.0 left to right
+    //float g = range.y;//float(pixel.y) / float(screen_size.y);  // 0.0 to 1.0 top to bottom
     
-    imageStore(outputImage, pixel, vec4(r, g, 0.5, 1.0));
+    float grayscale = range.y/10000;
+
+    //imageStore(outputImage, pixel, vec4(r, g, 0.5, 1.0));
+    imageStore(outputImage, pixel, vec4(grayscale, grayscale, grayscale, 1.0));
     //imageStore(outputImage, pixel, vec4(1.0, 0.0, 0.0, 1.0)); // Solid Red
 
 }
