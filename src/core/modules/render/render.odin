@@ -25,10 +25,10 @@ init_render :: proc(window: glfw.WindowHandle, model: data.Model_Data) -> data.R
     // Create output texture
     gl.GenTextures(1, &state.output_texture)
     gl.BindTexture(gl.TEXTURE_2D, state.output_texture)
-    gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, width, height, 0, gl.RGBA, gl.FLOAT, nil)
+    gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, nil)
     gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
     gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
-    gl.BindImageTexture(0, state.output_texture, 0, gl.FALSE, 0, gl.WRITE_ONLY, gl.RGBA32F)
+    gl.BindImageTexture(0, state.output_texture, 0, gl.FALSE, 0, gl.WRITE_ONLY, gl.RGBA8)
     
     // Load and compile compute shader
     compute_source, ok := os.read_entire_file(data.COMPUTE_SHADER_PATH, context.allocator)

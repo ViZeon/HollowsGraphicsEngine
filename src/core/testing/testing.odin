@@ -64,13 +64,24 @@ process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f
     // Populate model data
     model_data.vertices = vertices
     model_data.vertex_count = vertex_count
+    /*
     model_data.min_z = min_z
     model_data.max_z = max_z
     model_data.world_min_x = world_min_x
     model_data.world_max_x = world_max_x
     model_data.world_min_y = world_min_y
     model_data.world_max_y = world_max_y
-    
+    */
+
+    model_data.world_min_x,
+    model_data.world_max_x, 
+    model_data.world_min_y, 
+    model_data.world_max_y, 
+    min_z, 
+    max_z = find_bounds(model_data.vertices)
+
+    // Store in your model data
+
     // Debug output
     fmt.println("Min Z:", min_z, "Max Z:", max_z)
     fmt.println("Vertex count:", vertex_count)
@@ -84,4 +95,34 @@ process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f
     }
     
     return model_data
+}
+
+find_bounds :: proc(vertices: []data.Vertex) -> (min_x, max_x, min_y, max_y, min_z, max_z: f32) {
+    if len(vertices) == 0 {
+        return 0, 0, 0, 0, 0, 0
+    }
+    
+    // Start with first vertex
+    min_x = vertices[0].x
+    max_x = vertices[0].x
+    min_y = vertices[0].y
+    max_y = vertices[0].y
+    min_z = vertices[0].z
+    max_z = vertices[0].z
+    
+    // Check all other vertices
+    for i in 1..<len(vertices) {
+        v := vertices[i]
+        
+        if v.x < min_x do min_x = v.x
+        if v.x > max_x do max_x = v.x
+        
+        if v.y < min_y do min_y = v.y
+        if v.y > max_y do max_y = v.y
+        
+        if v.z < min_z do min_z = v.z
+        if v.z > max_z do max_z = v.z
+    }
+    
+    return
 }
