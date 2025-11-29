@@ -26,7 +26,7 @@ main :: proc() {
     render_state := render.init_render(window_handle, model_data)
     
     for !glfw.WindowShouldClose(window_handle) {
-        render.frame_render(&window_handle, model_data, render_state)
+        render.frame_render(&window_handle, &model_data, &render_state)
 
         data.FRAME_DATA = window.title_display_FPS(data.FRAME_DATA, data.WINDOW_TITLE, &window_handle)
     }
