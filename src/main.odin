@@ -10,7 +10,7 @@ import testing "core/testing"
 import "vendor:glfw"
 
 main :: proc() {
-    window_handle := window.init_window(data.WINDOW_WIDTH_PERCENT, data.WINDOW_HEIGHT_PERCENT)
+    window_handle := window.init_window(data.WINDOW_WIDTH_PERCENT, data.WINDOW_HEIGHT_PERCENT, data.WINDOW_TITLE)
     defer glfw.Terminate()
     defer glfw.DestroyWindow(window_handle)
     
@@ -26,6 +26,8 @@ main :: proc() {
     render_state := render.init_render(window_handle, model_data)
     
     for !glfw.WindowShouldClose(window_handle) {
-        render.frame_render(window_handle, model_data, render_state)
+        render.frame_render(&window_handle, model_data, render_state)
+
+        data.FRAME_DATA = window.title_display_FPS(data.FRAME_DATA, data.WINDOW_TITLE, &window_handle)
     }
 }

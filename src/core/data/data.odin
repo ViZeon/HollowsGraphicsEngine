@@ -1,8 +1,19 @@
 package data
 
+FrameData :: struct {
+    frame_count : int,
+    previous_time : f64
+}
+
 // Window constants
 WINDOW_WIDTH_PERCENT :: 0.7
 WINDOW_HEIGHT_PERCENT :: 0.8
+WINDOW_TITLE :: "Compute Engine"
+
+FRAME_DATA : FrameData ={
+        frame_count= 0,
+    previous_time= 0
+}
 
 // Model constants
 MODEL_PATH :: "assets/ABeautifulGame.glb"

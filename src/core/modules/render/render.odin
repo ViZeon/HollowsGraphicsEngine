@@ -123,7 +123,7 @@ void main() {
     return state
 }
 
-frame_render :: proc(window: glfw.WindowHandle, model: data.Model_Data, state: data.Render_State) {
+frame_render :: proc(window: ^glfw.WindowHandle, model: data.Model_Data, state: data.Render_State) {
     // Compute pass
     gl.UseProgram(state.compute_program)
     gl.Uniform1i(gl.GetUniformLocation(state.compute_program, "vertex_count"), i32(model.vertex_count))
@@ -144,6 +144,6 @@ frame_render :: proc(window: glfw.WindowHandle, model: data.Model_Data, state: d
     gl.BindVertexArray(state.vao)
     gl.DrawArrays(gl.TRIANGLES, 0, 6)
     
-    glfw.SwapBuffers(window)
+    glfw.SwapBuffers(window^)
     glfw.PollEvents()
 }
