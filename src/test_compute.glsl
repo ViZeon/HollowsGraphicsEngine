@@ -32,47 +32,76 @@ float get_vert_value (int index, int axis) {
         if (axis == 2) {
         return vertices[index].z;
     }
+
+        if (axis == 3) {
+        return vertices[index].x_cell;
+    }
+        if (axis == 4) {
+        return vertices[index].y_cell;
+    }
     return 0;
 }
 
 // Returns index of value, or -1 if not found
-vec2 scan_verts(int axis, float min_value, float max_value, int first_cell, int last_cell) {
+// ONLY THIS FUNCTION IS FIXED — everything else in your shader stays exactly the same
+
+ivec2 scan_verts(int axis, float min_value, float max_value, int first_cell, int last_cell) 
+{
     int start = -1;
-    int end = -1;
+    int end   = -1;
+
+    // ─── LOWER BOUND: first index where vertices[index] >= min_value ───
+    {
+        int left  = first_cell;
+        int right = last_cell;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (get_vert_value(mid, axis) >= min_value) {
+                start = mid;
+                right = mid - 1;    // look for even smaller index on the left
+            } else {
+                left = mid + 1;
+            }
+        }
+    }
+
+    // ─── UPPER BOUND: first index where vertices[index] > max_value ───
+    if (start != -1) {
+        int left  = start;
+        int right = last_cell;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (get_vert_value(mid, axis) <= max_value) {
+                end = mid;
+                left = mid + 1;     // look for even larger index on the right
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+
+    if (start == -1) return ivec2(-1, -1);
+    return ivec2(start, end);   // inclusive range [start, end]
+}
+
+/*
+int find_closest_index(float target, ivec2 range) {
+    int left = range.x;
+    int right = range.y;
     
-    // Find start (first >= min_value)
-    int left = first_cell;
-    int right = last_cell;
-
-    //
-
-
-    while (left <= right) {
+    while (left < right) {
         int mid = (left + right) / 2;
         
-        if (start > -1) {
-            if (get_vert_value(mid,axis) <= max_value) {
-                end = mid;
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
+        if (vertices[mid].x < target) {
+            left = mid + 1;
+        } else {
+            right = mid;
         }
-        else {
-            if (get_vert_value(mid,axis) >= min_value) {
-                start = mid;
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-        }
-
-
     }
     
-    if (start == -1) {return vec2(start,end); }
-    return vec2(start,end);  // No values >= min_value
+    return left;  // Returns index of closest value >= target
 }
+*/
 
 
 void main() {
@@ -85,25 +114,39 @@ void main() {
         world_min.y + (float(pixel.y) / float(screen_size.y)) * (world_max.y - world_min.y)
     );
     
+    float depth_range = min_z + (max_z - min_z);
+
 
     // Binary search Usage:
-    vec2 range;
+    ivec2 range_x;
+    ivec2 range_y;
+    ivec2 range_z;
 
-    range = scan_verts (0, world_pos.x, world_pos.x + 1, 0, vertex_count - 1);
+    float culling_range = 10000;
+
+    range_x = scan_verts (3, world_pos.x, world_pos.x + 1, 0, vertex_count - 1);
+    range_y = scan_verts (4, world_pos.y, world_pos.y + 1, range_x.x, range_x.y);
+    range_z = scan_verts (2, 0, culling_range + 1, range_y.x, range_y.y);
 
 
 
+
+    float depth = vertices [range_z.x].z  - depth_range ;
+
+    float depth_normalized = (vertices[range_z.x].z - min_z) / (max_z - min_z);
+
+    //if (world_pos)
 
     //if (world_pos)
 
     //garbage for testing and disposal
     // Each pixel gets a different color based on position
-    //float r = range.x;//world_min.x; //float(pixel.x) / float(screen_size.x);  // 0.0 to 1.0 left to right
-    //float g = range.y;//float(pixel.y) / float(screen_size.y);  // 0.0 to 1.0 top to bottom
-    
-    float grayscale = range.y/10000;
+    float r = range_y.x;//world_min.x; //float(pixel.x) / float(screen_size.x);  // 0.0 to 1.0 left to right
+    float g = range_y.y;//float(pixel.y) / float(screen_size.y);  // 0.0 to 1.0 top to bottom
+        
+    float grayscale = depth_normalized;
 
-    //imageStore(outputImage, pixel, vec4(r, g, 0.5, 1.0));
+    imageStore(outputImage, pixel, vec4(r, g, 0.5, 1.0));
     imageStore(outputImage, pixel, vec4(grayscale, grayscale, grayscale, 1.0));
     //imageStore(outputImage, pixel, vec4(1.0, 0.0, 0.0, 1.0)); // Solid Red
 
