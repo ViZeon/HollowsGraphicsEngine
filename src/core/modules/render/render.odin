@@ -5,7 +5,10 @@ import "../../data"
 import os "core:os"
 import "core:fmt"
 import "vendor:glfw"
-import gl "vendor:OpenGL"
+import gl "vendor:OpenGL"  
+
+debug_ssbo: u32
+buffer_size: int
 
 init_render :: proc(window: glfw.WindowHandle, model: data.Model_Data) -> data.Render_State {
     state: data.Render_State
@@ -21,7 +24,16 @@ init_render :: proc(window: glfw.WindowHandle, model: data.Model_Data) -> data.R
     gl.BufferData(gl.SHADER_STORAGE_BUFFER, len(model.vertices) * size_of(data.Vertex), 
                   raw_data(model.vertices), gl.STATIC_DRAW)
     gl.BindBufferBase(gl.SHADER_STORAGE_BUFFER, 0, state.ssbo)
-    
+
+    // Create buffer sized for all pixels
+    // Before dispatch
+    buffer_size = int(state.window_width * state.window_height * size_of([2]i32))
+
+    gl.GenBuffers(1, &debug_ssbo)
+    gl.BindBuffer(gl.SHADER_STORAGE_BUFFER, debug_ssbo)
+    gl.BufferData(gl.SHADER_STORAGE_BUFFER, buffer_size, nil, gl.DYNAMIC_READ)
+    gl.BindBufferBase(gl.SHADER_STORAGE_BUFFER, 1, debug_ssbo)
+
     // Create output texture
     gl.GenTextures(1, &state.output_texture)
     gl.BindTexture(gl.TEXTURE_2D, state.output_texture)
@@ -135,7 +147,35 @@ frame_render :: proc(window: ^glfw.WindowHandle, model: ^data.Model_Data, state:
     
     gl.DispatchCompute(u32((state.window_width + 15) / 16), u32((state.window_height + 15) / 16), 1)
     gl.MemoryBarrier(gl.SHADER_IMAGE_ACCESS_BARRIER_BIT)
-    
+
+
+
+
+    // Read back (after MemoryBarrier)
+    // Read entire debug buffer
+    debug_data := make([][2]i32, state.window_width * state.window_height)
+    defer delete(debug_data)
+
+    gl.BindBuffer(gl.SHADER_STORAGE_BUFFER, debug_ssbo)
+    gl.GetBufferSubData(gl.SHADER_STORAGE_BUFFER, 0, buffer_size, raw_data(debug_data))
+
+    @static printed := false
+    if !printed {
+        for y in 0..<min(5, state.window_height) {
+            for x in 0..<min(10, state.window_width) {
+                idx := y * state.window_width + x
+                fmt.printf("(%d,%d): (%d,%d)  ", x, y, debug_data[idx][0], debug_data[idx][1])
+            }
+            fmt.println()
+        }
+        printed = true
+    }
+
+    gl.DeleteBuffers(1, &debug_ssbo)
+ 
+
+
+
     // Display pass
     gl.Clear(gl.COLOR_BUFFER_BIT)
     gl.UseProgram(state.display_program)

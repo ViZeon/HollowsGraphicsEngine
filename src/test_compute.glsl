@@ -102,18 +102,28 @@ int find_closest_index(float target, ivec2 range) {
     return left;  // Returns index of closest value >= target
 }
 */
+layout(std430, binding = 1) buffer DebugBuffer {
+    ivec2 debug_value[];
+};
 
 
 void main() {
     ivec2 pixel = ivec2(gl_GlobalInvocationID.xy);
     if (pixel.x >= screen_size.x || pixel.y >= screen_size.y) return;
     
+
+    vec2 pixel_size = vec2(
+    (world_max.x - world_min.x) / float(screen_size.x),
+    (world_max.y - world_min.y) / float(screen_size.y)
+    );
     
     vec2 world_pos = vec2(
         world_min.x + (float(pixel.x) / float(screen_size.x)) * (world_max.x - world_min.x),
         world_min.y + (float(pixel.y) / float(screen_size.y)) * (world_max.y - world_min.y)
     );
     
+
+
     float depth_range = min_z + (max_z - min_z);
 
 
@@ -123,17 +133,18 @@ void main() {
     ivec2 range_z;
 
     float culling_range = 10000;
+    float pixel_range = 10;
 
-    range_x = scan_verts (3, world_pos.x, world_pos.x + 1, 0, vertex_count - 1);
-    range_y = scan_verts (4, world_pos.y, world_pos.y + 1, range_x.x, range_x.y);
-    range_z = scan_verts (2, 0, culling_range + 1, range_y.x, range_y.y);
+    range_x = scan_verts (3, world_pos.x - (pixel_size.x * pixel_range), world_pos.x + (pixel_size.x * pixel_range), 0, vertex_count - 1);
+    range_y = scan_verts (4, world_pos.y - (pixel_size.y * pixel_range), world_pos.y + (pixel_size.y * pixel_range), range_x.x, range_x.y);
+    range_z = scan_verts (2, 0, culling_range, range_y.x, range_y.y);
 
 
-
+    int index = pixel.y * screen_size.x + pixel.x;
 
     float depth = vertices [range_z.x].z  - depth_range ;
 
-    float depth_normalized = (vertices[range_z.x].z - min_z) / (max_z - min_z);
+    float depth_normalized = (vertices[range_z.y].z - min_z) / (max_z - min_z);
 
     //if (world_pos)
 
@@ -145,6 +156,8 @@ void main() {
     float g = range_y.y;//float(pixel.y) / float(screen_size.y);  // 0.0 to 1.0 top to bottom
         
     float grayscale = depth_normalized;
+
+    debug_value[index] = range_x;
 
     imageStore(outputImage, pixel, vec4(r, g, 0.5, 1.0));
     imageStore(outputImage, pixel, vec4(grayscale, grayscale, grayscale, 1.0));

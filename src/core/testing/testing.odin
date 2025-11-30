@@ -126,3 +126,7 @@ find_bounds :: proc(vertices: []data.Vertex) -> (min_x, max_x, min_y, max_y, min
     
     return
 }
+
+redner_sort :: proc() {
+
+}

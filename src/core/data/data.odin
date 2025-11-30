@@ -2,7 +2,8 @@ package data
 
 FrameData :: struct {
     frame_count : int,
-    previous_time : f64
+    previous_time : f64,
+    FRAME_TITLE :cstring
 }
 
 // Window constants
@@ -12,7 +13,8 @@ WINDOW_TITLE :: "Compute Engine"
 
 FRAME_DATA : FrameData ={
         frame_count= 0,
-    previous_time= 0
+    previous_time= 0, 
+    FRAME_TITLE = WINDOW_TITLE
 }
 
 // Model constants
