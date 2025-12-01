@@ -1,9 +1,12 @@
 package testing
 
+import "vendor:raylib"
 import "../data"
 import "core:fmt"
 import "core:math"
 import "core:slice"
+
+import rl "vendor:raylib"
 
 // Process raw vertices into Model_Data
 process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f32) -> data.Model_Data {
@@ -125,6 +128,23 @@ find_bounds :: proc(vertices: []data.Vertex) -> (min_x, max_x, min_y, max_y, min
     }
     
     return
+}
+
+raylib_render :: proc () {
+        rl.SetConfigFlags({.WINDOW_RESIZABLE})
+    rl.InitWindow(800, 600, "Software Renderer")
+    defer rl.CloseWindow()
+    
+    //rl.SetTargetFPS(60)
+    
+    for !rl.WindowShouldClose() {
+        // Update title with FPS
+        rl.SetWindowTitle(fmt.ctprintf("Software Renderer - FPS: %d", rl.GetFPS()))
+        
+        rl.BeginDrawing()
+        rl.ClearBackground(rl.RED)
+        rl.EndDrawing()
+    }
 }
 
 redner_sort :: proc() {
