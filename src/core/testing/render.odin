@@ -3,6 +3,7 @@ package testing
 
 import rl "vendor:raylib"
 import stbi "vendor:stb/image"
+import math "core:math/linalg/glsl"
 
 import "core:os"
 import "core:fmt"
@@ -13,6 +14,7 @@ import "core:fmt"
     frame_pixels : []u8
     image : rl.Image
     texture : rl.Texture2D
+    pixel : math.ivec4
 
 //called once before render loop
 raylib_start_functions ::proc () {
@@ -61,9 +63,12 @@ generate_pixels :: proc(width, height: int) -> []u8 {
     for y in 0..<height {
         for x in 0..<width {
             idx := (y * width + x) * 3
-            pixels[idx + 0] = u8(x * 255 / width)   // R
-            pixels[idx + 1] = u8(y * 255 / height)  // G
-            pixels[idx + 2] = 128                    // B
+
+            pixel = cpu_fragment_shader(math.vec2{f32(x),f32(y)})
+
+            pixels[idx + 0] = u8(pixel.x)   // R
+            pixels[idx + 1] = u8(pixel.y)  // G
+            pixels[idx + 2] = u8(pixel.z)                   // B
         }
     }
     

@@ -7,7 +7,27 @@ import "vendor:raylib"
 import "core:fmt"
 import "core:math"
 import "core:slice"
+import m "core:math/linalg/glsl"
 
+
+tmp_pixel : m.ivec4
+
+cpu_fragment_shader :: proc (pixel_coords: m.vec2) -> (PIXEL : m.ivec4) {
+    
+    uv := m.vec2{
+    pixel_coords.x / f32(width),
+    pixel_coords.y / f32(height),
+    }
+
+    tmp_pixel := [4]i32{
+    i32(uv.x * 256.0),
+    i32(uv.y * 256.0),
+    100.0,
+    256.0,
+    }
+
+    return tmp_pixel
+}
 
 // Process raw vertices into Model_Data
 process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f32) -> data.Model_Data {
