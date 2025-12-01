@@ -1,0 +1,115 @@
+package testing
+
+
+import rl "vendor:raylib"
+import stbi "vendor:stb/image"
+
+import "core:os"
+import "core:fmt"
+
+    width, height := 800, 600
+
+    output_dir :: "image_debug_output/"
+    frame_pixels : []u8
+    image : rl.Image
+    texture : rl.Texture2D
+
+//called once before render loop
+raylib_start_functions ::proc () {
+    frame_pixels = generate_pixels(width, height)
+
+    defer delete(frame_pixels)
+
+    //process_vertices()
+
+    frame_write_to_image()
+    raylib_render_frame()
+       
+}
+
+//callded once per frame
+raylib_update_functions :: proc () {
+        if texture.id != 0 {
+        rl.DrawTexture(texture, 0, 0, rl.WHITE)
+    } else {
+        fmt.println("Texture not loaded!")
+    }
+}
+
+
+
+
+raylib_render_frame :: proc () {
+
+        // Create image and texture
+        image = rl.Image{
+            data = raw_data(frame_pixels),
+            width = i32(width),
+            height = i32(height),
+            mipmaps = 1,
+            format = .UNCOMPRESSED_R8G8B8,
+        }
+
+                texture = rl.LoadTextureFromImage(image)
+  
+}
+
+// Generate pixel data
+generate_pixels :: proc(width, height: int) -> []u8 {
+    pixels := make([]u8, width * height * 3)
+    
+    for y in 0..<height {
+        for x in 0..<width {
+            idx := (y * width + x) * 3
+            pixels[idx + 0] = u8(x * 255 / width)   // R
+            pixels[idx + 1] = u8(y * 255 / height)  // G
+            pixels[idx + 2] = 128                    // B
+        }
+    }
+    
+    return pixels
+}
+
+frame_write_to_image :: proc() {
+
+    frame_number := 0
+
+    // Create directory if it doesn't exist
+    os.make_directory(output_dir)
+
+    // Find next available number
+    for {
+        filename := fmt.tprintf("%sframe_%04d.png", output_dir, frame_number)
+        if !os.exists(filename) {
+            stbi.write_png(cstring(raw_data(filename)), i32(width), i32(height), 3, raw_data(frame_pixels), i32(width * 3))
+            fmt.printf("Wrote %s\n", filename)
+            break
+        }
+        frame_number += 1
+    }
+}
+
+raylib_render :: proc () {
+        rl.SetConfigFlags({.WINDOW_RESIZABLE})
+    rl.InitWindow(i32(width), i32(height), "Software Renderer")
+    defer rl.CloseWindow()
+    
+    //rl.SetTargetFPS(60)
+
+    raylib_start_functions()
+
+    for !rl.WindowShouldClose() {
+
+        // Update title with FPS
+        rl.SetWindowTitle(fmt.ctprintf("Software Renderer - FPS: %d", rl.GetFPS()))
+        
+        rl.BeginDrawing()
+        rl.ClearBackground(rl.BLACK)
+
+
+        raylib_update_functions()
+
+        rl.EndDrawing()
+    }
+}
+
