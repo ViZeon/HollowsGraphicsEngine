@@ -11,26 +11,53 @@ import stbi "vendor:stb/image"
 
 import "core:os"
 
-
+    width, height := 800, 600
 
     output_dir :: "image_debug_output/"
+    frame_pixels : []u8
+    image : rl.Image
+    texture : rl.Texture2D
 
 
 raylib_start_functions ::proc () {
+    frame_pixels = generate_pixels(width, height)
+
+    defer delete(frame_pixels)
+
     frame_write_to_image()
+    raylib_render_frame()
+       
 }
 raylib_update_functions :: proc () {
-
+        if texture.id != 0 {
+        rl.DrawTexture(texture, 0, 0, rl.WHITE)
+    } else {
+        fmt.println("Texture not loaded!")
+    }
 }
 
 
-frame_write_to_image :: proc() {
-    // RGB image
-    width, height := 800, 600
-    pixels := make([]u8, width * height * 3)
-    defer delete(pixels)
 
-    // Fill pixels (RGB format)
+
+raylib_render_frame :: proc () {
+
+        // Create image and texture
+        image = rl.Image{
+            data = raw_data(frame_pixels),
+            width = i32(width),
+            height = i32(height),
+            mipmaps = 1,
+            format = .UNCOMPRESSED_R8G8B8,
+        }
+
+                texture = rl.LoadTextureFromImage(image)
+  
+}
+
+// Generate pixel data
+generate_pixels :: proc(width, height: int) -> []u8 {
+    pixels := make([]u8, width * height * 3)
+    
     for y in 0..<height {
         for x in 0..<width {
             idx := (y * width + x) * 3
@@ -39,6 +66,15 @@ frame_write_to_image :: proc() {
             pixels[idx + 2] = 128                    // B
         }
     }
+    
+    return pixels
+}
+
+frame_write_to_image :: proc() {
+    // RGB image
+
+
+
     // Write PNG
     //stbi.write_png("output.png", i32(width), i32(height), 3, raw_data(pixels), i32(width * 3))
     // Find next available filename
@@ -52,7 +88,7 @@ frame_write_to_image :: proc() {
     for {
         filename := fmt.tprintf("%sframe_%04d.png", output_dir, frame_number)
         if !os.exists(filename) {
-            stbi.write_png(cstring(raw_data(filename)), i32(width), i32(height), 3, raw_data(pixels), i32(width * 3))
+            stbi.write_png(cstring(raw_data(filename)), i32(width), i32(height), 3, raw_data(frame_pixels), i32(width * 3))
             fmt.printf("Wrote %s\n", filename)
             break
         }
@@ -184,7 +220,7 @@ find_bounds :: proc(vertices: []data.Vertex) -> (min_x, max_x, min_y, max_y, min
 
 raylib_render :: proc () {
         rl.SetConfigFlags({.WINDOW_RESIZABLE})
-    rl.InitWindow(800, 600, "Software Renderer")
+    rl.InitWindow(i32(width), i32(height), "Software Renderer")
     defer rl.CloseWindow()
     
     //rl.SetTargetFPS(60)
@@ -193,13 +229,15 @@ raylib_render :: proc () {
 
     for !rl.WindowShouldClose() {
 
-        raylib_update_functions()
-
         // Update title with FPS
         rl.SetWindowTitle(fmt.ctprintf("Software Renderer - FPS: %d", rl.GetFPS()))
         
         rl.BeginDrawing()
         rl.ClearBackground(rl.RED)
+
+
+        raylib_update_functions()
+
         rl.EndDrawing()
     }
 }
