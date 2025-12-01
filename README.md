@@ -1,5 +1,5 @@
 # The Hollows Engine [Highly Experimental]
-A different take on Game Engines, pushing the "Next Gen" of engine design while learning from the existing systems.
+A different take on 3D Game Engines, pushing the "Next Gen" of engine design while learning from the existing systems.
 
 ### Currently in progress:
 - Indexed Spatial Rendering (render pixels directly from a pre-sorted vertex list, sorted by coordinates in world space, no rasterization)
