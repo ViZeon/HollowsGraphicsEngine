@@ -7,6 +7,58 @@ import "core:math"
 import "core:slice"
 
 import rl "vendor:raylib"
+import stbi "vendor:stb/image"
+
+import "core:os"
+
+
+
+    output_dir :: "image_debug_output/"
+
+
+raylib_start_functions ::proc () {
+    frame_write_to_image()
+}
+raylib_update_functions :: proc () {
+
+}
+
+
+frame_write_to_image :: proc() {
+    // RGB image
+    width, height := 800, 600
+    pixels := make([]u8, width * height * 3)
+    defer delete(pixels)
+
+    // Fill pixels (RGB format)
+    for y in 0..<height {
+        for x in 0..<width {
+            idx := (y * width + x) * 3
+            pixels[idx + 0] = u8(x * 255 / width)   // R
+            pixels[idx + 1] = u8(y * 255 / height)  // G
+            pixels[idx + 2] = 128                    // B
+        }
+    }
+    // Write PNG
+    //stbi.write_png("output.png", i32(width), i32(height), 3, raw_data(pixels), i32(width * 3))
+    // Find next available filename
+
+    frame_number := 0
+
+    // Create directory if it doesn't exist
+    os.make_directory(output_dir)
+
+    // Find next available number
+    for {
+        filename := fmt.tprintf("%sframe_%04d.png", output_dir, frame_number)
+        if !os.exists(filename) {
+            stbi.write_png(cstring(raw_data(filename)), i32(width), i32(height), 3, raw_data(pixels), i32(width * 3))
+            fmt.printf("Wrote %s\n", filename)
+            break
+        }
+        frame_number += 1
+    }
+}
 
 // Process raw vertices into Model_Data
 process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f32) -> data.Model_Data {
@@ -136,8 +188,13 @@ raylib_render :: proc () {
     defer rl.CloseWindow()
     
     //rl.SetTargetFPS(60)
-    
+
+    raylib_start_functions()
+
     for !rl.WindowShouldClose() {
+
+        raylib_update_functions()
+
         // Update title with FPS
         rl.SetWindowTitle(fmt.ctprintf("Software Renderer - FPS: %d", rl.GetFPS()))
         
@@ -147,6 +204,6 @@ raylib_render :: proc () {
     }
 }
 
-redner_sort :: proc() {
+render_sort :: proc() {
 
 }
