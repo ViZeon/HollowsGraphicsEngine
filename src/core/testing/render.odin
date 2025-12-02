@@ -8,7 +8,7 @@ import math "core:math/linalg/glsl"
 import "core:os"
 import "core:fmt"
 
-    width, height := 800, 600
+    width, height := 80, 60
 
     output_dir :: "image_debug_output/"
     frame_pixels : []u8
