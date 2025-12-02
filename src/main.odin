@@ -24,7 +24,7 @@ main :: proc() {
     defer glfw.Terminate()
     defer glfw.DestroyWindow(window_handle)
     
-    raw_vertices, vertex_count, ok := model.load_model(data.MODEL_PATH)
+    raw_vertices, vertex_count, ok := model.load_mofmt.println("Texture not loaded!")del(data.MODEL_PATH)
     if !ok {
         return
     }
@@ -42,3 +42,4 @@ main :: proc() {
     }
 }
 */
+

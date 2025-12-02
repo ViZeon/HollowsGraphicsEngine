@@ -1,7 +1,7 @@
 package testing
 
 import data "../data"
-
+import model "../modules/model"
 
 import "vendor:raylib"
 import "core:fmt"
@@ -12,22 +12,7 @@ import m "core:math/linalg/glsl"
 
 tmp_pixel : m.ivec4
 
-cpu_fragment_shader :: proc (pixel_coords: m.vec2) -> (PIXEL : m.ivec4) {
-    
-    uv := m.vec2{
-    pixel_coords.x / f32(width),
-    pixel_coords.y / f32(height),
-    }
 
-    tmp_pixel := [4]i32{
-    i32(uv.x * 256.0),
-    i32(uv.y * 256.0),
-    100.0,
-    256.0,
-    }
-
-    return tmp_pixel
-}
 
 // Process raw vertices into Model_Data
 process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f32) -> data.Model_Data {
@@ -44,22 +29,22 @@ process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f
         y := raw_vertices[i*3 + 1]
         z := raw_vertices[i*3 + 2]
         
-        vertices[i].x = x * scale_factor
-        vertices[i].y = y * scale_factor
-        vertices[i].z = z * scale_factor
+        vertices[i].coordinates.x = x * scale_factor
+        vertices[i].coordinates.y = y * scale_factor
+        vertices[i].coordinates.z = z * scale_factor
         vertices[i].x_cell = i32(math.floor(x * scale_factor))
         vertices[i].y_cell = i32(math.floor(y * scale_factor))
         vertices[i]._pad = 0
         
-        if vertices[i].z < min_z do min_z = vertices[i].z
-        if vertices[i].z > max_z do max_z = vertices[i].z
+        if vertices[i].coordinates.z < min_z do min_z = vertices[i].coordinates.z
+        if vertices[i].coordinates.z > max_z do max_z = vertices[i].coordinates.z
     }
     
     // Sort vertices
     slice.sort_by(vertices, proc(a, b: data.Vertex) -> bool {
         if a.x_cell != b.x_cell do return a.x_cell < b.x_cell
         if a.y_cell != b.y_cell do return a.y_cell < b.y_cell
-        return a.z < b.z
+        return a.coordinates.z < b.coordinates.z
     })
 
     // Verify sort
@@ -73,16 +58,16 @@ process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f
     }
     
     // Calculate world bounds
-    world_min_x := vertices[0].x
-    world_max_x := vertices[0].x
-    world_min_y := vertices[0].y
-    world_max_y := vertices[0].y
+    world_min_x := vertices[0].coordinates.x
+    world_max_x := vertices[0].coordinates.x
+    world_min_y := vertices[0].coordinates.y
+    world_max_y := vertices[0].coordinates.y
     
     for v in vertices {
-        if v.x < world_min_x do world_min_x = v.x
-        if v.x > world_max_x do world_max_x = v.x
-        if v.y < world_min_y do world_min_y = v.y
-        if v.y > world_max_y do world_max_y = v.y
+        if v.coordinates.x < world_min_x do world_min_x = v.coordinates.x
+        if v.coordinates.x > world_max_x do world_max_x = v.coordinates.x
+        if v.coordinates.y < world_min_y do world_min_y = v.coordinates.y
+        if v.coordinates.y > world_max_y do world_max_y = v.coordinates.y
     }
     
     // Populate model data
@@ -115,7 +100,7 @@ process_vertices :: proc(raw_vertices: []f32, vertex_count: int, scale_factor: f
     fmt.println("\nFirst 5 sorted vertices:")
     for i in 0..<min(5, len(vertices)) {
         v := vertices[i]
-        fmt.printf("[%d] (%.2f, %.2f, %.2f) cell:(%d, %d)\n", i, v.x, v.y, v.z, v.x_cell, v.y_cell)
+        fmt.printf("[%d] (%.2f, %.2f, %.2f) cell:(%d, %d)\n", i, v.coordinates.x, v.coordinates.y, v.coordinates.z, v.x_cell, v.y_cell)
     }
     
     return model_data
@@ -127,25 +112,25 @@ find_bounds :: proc(vertices: []data.Vertex) -> (min_x, max_x, min_y, max_y, min
     }
     
     // Start with first vertex
-    min_x = vertices[0].x
-    max_x = vertices[0].x
-    min_y = vertices[0].y
-    max_y = vertices[0].y
-    min_z = vertices[0].z
-    max_z = vertices[0].z
+    min_x = vertices[0].coordinates.x
+    max_x = vertices[0].coordinates.x
+    min_y = vertices[0].coordinates.y
+    max_y = vertices[0].coordinates.y
+    min_z = vertices[0].coordinates.z
+    max_z = vertices[0].coordinates.z
     
     // Check all other vertices
     for i in 1..<len(vertices) {
         v := vertices[i]
         
-        if v.x < min_x do min_x = v.x
-        if v.x > max_x do max_x = v.x
+        if v.coordinates.x < min_x do min_x = v.coordinates.x
+        if v.coordinates.x > max_x do max_x = v.coordinates.x
         
-        if v.y < min_y do min_y = v.y
-        if v.y > max_y do max_y = v.y
+        if v.coordinates.y < min_y do min_y = v.coordinates.y
+        if v.coordinates.y > max_y do max_y = v.coordinates.y
         
-        if v.z < min_z do min_z = v.z
-        if v.z > max_z do max_z = v.z
+        if v.coordinates.z < min_z do min_z = v.coordinates.z
+        if v.coordinates.z > max_z do max_z = v.coordinates.z
     }
     
     return

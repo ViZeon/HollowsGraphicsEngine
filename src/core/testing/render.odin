@@ -16,27 +16,6 @@ import "core:fmt"
     texture : rl.Texture2D
     pixel : math.ivec4
 
-//called once before render loop
-raylib_start_functions ::proc () {
-    frame_pixels = generate_pixels(width, height)
-
-    defer delete(frame_pixels)
-
-    //process_vertices()
-
-    frame_write_to_image()
-    raylib_render_frame()
-       
-}
-
-//callded once per frame
-raylib_update_functions :: proc () {
-        if texture.id != 0 {
-        rl.DrawTexture(texture, 0, 0, rl.WHITE)
-    } else {
-        fmt.println("Texture not loaded!")
-    }
-}
 
 
 
