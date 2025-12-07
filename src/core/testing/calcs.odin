@@ -68,9 +68,17 @@ get_vert_value :: proc( index: int, axis: int) ->  f32 {
     return 0;
 }
 
+// CODE BELOW NEEDS REPLACEMENT!!
+// Binary search to find closest
+// Search backwards and forward to determin the range based on the passed pixel world range
+// return the full list of verts in bound, as well as an ivec4 with the closest verts
+
+// Bonus: grab EVERYTHING color directly from UVs NOT 3D space (IF any 3D is shaded by verts anyways)
+
+
 // Returns index of value, or -1 if not found
 // ONLY THIS FUNCTION IS FIXED — everything else in your shader stays exactly the same
-scan_verts :: proc(axis: int, min_value: f32, max_value: f32, first_cell: int, last_cell: int) -> (range: [2]int) {
+scan_verts :: proc(axis: int, value: f32, first_cell: int, last_cell: int) -> (range: [2]int) {
     start := -1
     end := -1
     
@@ -80,7 +88,7 @@ scan_verts :: proc(axis: int, min_value: f32, max_value: f32, first_cell: int, l
         right := last_cell
         for left <= right {
             mid := (left + right) / 2
-            if f32(get_vert_value(mid, axis)) >= min_value {
+            if f32(get_vert_value(mid, axis)) >= value {
                 start = mid
                 right = mid - 1
             } else {
@@ -95,7 +103,7 @@ scan_verts :: proc(axis: int, min_value: f32, max_value: f32, first_cell: int, l
         right := last_cell
         for left <= right {
             mid := (left + right) / 2
-            if f32(get_vert_value(mid, axis)) <= max_value {
+            if f32(get_vert_value(mid, axis)) <= value {
                 end = mid
                 left = mid + 1
             } else {

@@ -32,6 +32,7 @@ COMPUTE_SHADER_PATH :: "test_compute.glsl"
 // Vertex structure
 Vertex :: struct {
     pos: math.vec3,
+    fov: f32
 }
 
 // Model data

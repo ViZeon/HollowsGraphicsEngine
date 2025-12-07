@@ -33,7 +33,9 @@ raylib_start_functions ::proc () {
         dist := f32(math_lin.distance(math.vec3{0,0,0}, math.vec3(vert_pos.pos)))
         fov := 2.0 * math.atan_f32(dist / 2.0)
 
-        fmt.println(fov)
+        data.MODEL_DATA.VERTICES[i].fov = fov
+
+        //fmt.println(fov)
     }
 
 
@@ -80,21 +82,21 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
 
 
     range_x := scan_verts(0,
-                        f32(PIXEL_FOV_COORDS.x - PIXEL_RANGE_WIDTH * data.SCALE_FACTOR),
-                        f32(PIXEL_FOV_COORDS.x + PIXEL_RANGE_WIDTH * data.SCALE_FACTOR),
+                        f32(PIXEL_FOV_COORDS.x ),
                         0,
                         len(data.MODEL_DATA.VERTICES) - 1)
     range_y := scan_verts(1,
-                        f32(PIXEL_FOV_COORDS.y - PIXEL_RANGE_WIDTH),
-                        f32(PIXEL_FOV_COORDS.y + PIXEL_RANGE_WIDTH),
+                        f32(PIXEL_FOV_COORDS.y ),
                         range_x.x,
                         range_x.y)
-
-
-
     range := scan_verts(2,
                     f32(0),
-                    f32(data.CULLING_RANGE),
+                        range_y.x,
+                        range_y.y)
+
+
+    range_z := scan_verts(2,
+                    f32(0),
                     0,
                     len(data.MODEL_DATA.VERTICES) - 1)
 
@@ -104,25 +106,46 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
 
     //fmt.println("pixel is in range")
 
+             fov = 0
+
+            AVERAGE : math.vec3
 
     subset : []data.Vertex
     if range.x > -1 && range.y > -1 {
-        subset = data.MODEL_DATA.VERTICES[range.x:range.y-1]
-        closest_vert = nearest_neighbor(uv, subset)
-        fmt.println("has proper range")
+        subset = data.MODEL_DATA.VERTICES[range.x:range.y]
+
+        fmtrng := range.y-range.x
+        fmt.println(fmtrng)
+
+        if len(subset) > 0 {
+
+            closest_vert = nearest_neighbor(uv, subset)
+            //fmt.println("has proper range")
+
+
+
+            for VERT in subset {
+                AVERAGE += VERT.pos
+                fov += VERT.fov
+                
+            }
+
+            AVERAGE = AVERAGE / f32(len(subset))
+            fov = fov / f32(len(subset))
+
+        }
 
     } else{
-        closest_vert = data.Vertex{ PIXEL_FOV_COORDS }
+        closest_vert = data.Vertex{ PIXEL_FOV_COORDS, PIXEL_SHIFT }
         //fmt.println("out of range")
     }
 
-    AVERAGE : math.vec3
-    for VERT in subset {
-        //AVERAGE += VERT.coordinates
-        
-    }
 
-    //AVERAGE = AVERAGE / f32(len(subset))
+
+
+   
+
+
 
     // Your original visualization approach
     tmp_pixel := [4]i32{
@@ -132,6 +155,14 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
         256,
     }
 
+        // Your original visualization approach
+    tmp_pixel = [4]i32{
+        i32( AVERAGE.x * 256),
+        i32(AVERAGE.y * 256),
+        i32(AVERAGE.z * 0),
+        256,
+    }
+    /*
     tmp_pixel = math.ivec4 {i32(AVERAGE.x), i32(AVERAGE.x), i32(AVERAGE.x), 0}
 
             tmp_pixel = [4]i32{
@@ -140,6 +171,7 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
         i32(closest_vert.pos.z * 0),
     256.0,
     }
+    */
 
         fmt.println(PIXEL_FOV_COORDS, AVERAGE, fov, range_x, PIXEL_RANGE_WIDTH, PIXEL_RANGE_HEIGHT)
 
