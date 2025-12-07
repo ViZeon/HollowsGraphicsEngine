@@ -155,12 +155,8 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
 
 model_load_realtime :: proc () {
     data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
-    
-    // Use len(data.raw_vertices) instead of len(data.MODEL_DATA.vertices)
-    data.MODEL_DATA.VERTICES = process_vertices( &data.VERTICIES_RAW, data.SCALE_FACTOR)
+    data.MODEL_DATA.VERTICES = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
     
     fmt.println("model initialized")
-
     data.MODEL_INITIALIZED = true
-
 }

@@ -15,53 +15,33 @@ tmp_pixel : m.ivec4
 
 
 // Process raw vertices into Model_Data
-process_vertices :: proc(VERTICES: ^[]m.vec3, scale_factor: f32) -> []data.Vertex {
-    model_data: data.Model_Data
-    
-    //vertices := make([]data.Vertex, vertex_count)
-        // ADD THIS: Allocate the vertices slice
-    data.MODEL_DATA.VERTICES = make([]data.Vertex, len(VERTICES))
-    
-    min_z := f32(math.F32_MAX)
-    max_z := f32(math.F32_MIN)
-    
-    // Scale and calculate cells
-    for i in 0..<len(VERTICES)-1 {
-        
-        data.MODEL_DATA.VERTICES[i].pos.x = VERTICES[i].x * scale_factor
-        data.MODEL_DATA.VERTICES[i].pos.y = VERTICES[i].y * scale_factor
-        data.MODEL_DATA.VERTICES[i].pos.z = VERTICES[i].z * scale_factor
-        
-
-        //replace with the find bounds method after fixing both
-        if data.MODEL_DATA.VERTICES[i].pos.z < min_z do min_z = data.MODEL_DATA.VERTICES[i].pos.z
-        if data.MODEL_DATA.VERTICES[i].pos.z > max_z do max_z = data.MODEL_DATA.VERTICES[i].pos.z
+process_vertices :: proc(vertices: ^[]m.vec3, scale_factor: f32) -> []data.Vertex {
+    // Scale all vertices
+    scaled := make([]data.Vertex, len(vertices))
+    for i in 0..<len(vertices) {
+        scaled[i].pos.x = vertices[i].x * scale_factor
+        scaled[i].pos.y = vertices[i].y * scale_factor
+        scaled[i].pos.z = vertices[i].z * scale_factor
     }
     
-    // Sort vertices
-    slice.sort_by(data.VERTICIES_RAW, proc(a, b: m.vec3) -> bool {
-        if m.floor( a.x) != m.floor( b.x) do return m.floor( a.x) < m.floor( b.x)
-        if m.floor( a.y) != m.floor( b.y) do return m.floor( a.y) < m.floor( b.y)
-        return a.z < b.z
+    // Sort by floor(x), floor(y), then z
+    slice.sort_by(scaled, proc(a, b: data.Vertex) -> bool {
+        if m.floor(a.pos.x) != m.floor(b.pos.x) do return m.floor(a.pos.x) < m.floor(b.pos.x)
+        if m.floor(a.pos.y) != m.floor(b.pos.y) do return m.floor(a.pos.y) < m.floor(b.pos.y)
+        return a.pos.z < b.pos.z
     })
-
+    
     // Verify sort
-    for i in 1..<len(data.VERTICIES_RAW) {
-        a := data.VERTICIES_RAW[i-1]
-        b := data.VERTICIES_RAW[i]
+    for i in 1..<len(scaled) {
+        a := scaled[i-1].pos
+        b := scaled[i].pos
         if m.floor(a.x) > m.floor(b.x) || (m.floor(a.x) == m.floor(b.x) && m.floor(a.y) > m.floor(b.y)) {
-            fmt.eprintf("SORTING BUG at index %d: prev (%d,%d) curr (%d,%d)\n",
+            fmt.eprintf("SORTING BUG at index %d: prev (%.3f,%.3f) curr (%.3f,%.3f)\n",
                        i, a.x, a.y, b.x, b.y)
         }
     }
-
-    fmt.println("\nFirst 5 sorted vertices:")
-    for i in 0..<min(5, len(data.VERTICIES_RAW)) {
-        v := data.VERTICIES_RAW[i]
-        fmt.printf("[%d] (%.2f, %.2f, %.2f) cell:(%d, %d)\n", i, v.x, v.y, v.z)
-    }
     
-    return model_data.VERTICES
+    return scaled
 }
 /*
 find_bounds :: proc(vertices: []data.Vertex) -> (min_x, max_x, min_y, max_y, min_z, max_z: f32) {
