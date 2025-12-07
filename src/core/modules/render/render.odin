@@ -21,8 +21,8 @@ init_render :: proc(window: glfw.WindowHandle, model: data.Model_Data) -> data.R
     // Create SSBO for vertices
     gl.GenBuffers(1, &state.ssbo)
     gl.BindBuffer(gl.SHADER_STORAGE_BUFFER, state.ssbo)
-    gl.BufferData(gl.SHADER_STORAGE_BUFFER, len(model.vertices) * size_of(data.Vertex), 
-                  raw_data(model.vertices), gl.STATIC_DRAW)
+    gl.BufferData(gl.SHADER_STORAGE_BUFFER, len(model.VERTICES) * size_of(data.Vertex), 
+                  raw_data(model.VERTICES), gl.STATIC_DRAW)
     gl.BindBufferBase(gl.SHADER_STORAGE_BUFFER, 0, state.ssbo)
 
     // Create buffer sized for all pixels
@@ -138,12 +138,12 @@ void main() {
 frame_render :: proc(window: ^glfw.WindowHandle, model: ^data.Model_Data, state: ^data.Render_State) {
     // Compute pass
     gl.UseProgram(state.compute_program)
-    gl.Uniform1i(gl.GetUniformLocation(state.compute_program, "vertex_count"), i32(model.vertex_count))
-    gl.Uniform1f(gl.GetUniformLocation(state.compute_program, "min_z"), model.min_z)
-    gl.Uniform1f(gl.GetUniformLocation(state.compute_program, "max_z"), model.max_z)
-    gl.Uniform2f(gl.GetUniformLocation(state.compute_program, "world_min"), model.world_min_x, model.world_min_y)
-    gl.Uniform2f(gl.GetUniformLocation(state.compute_program, "world_max"), model.world_max_x, model.world_max_y)
-    gl.Uniform2i(gl.GetUniformLocation(state.compute_program, "screen_size"), state.window_width, state.window_height)
+    gl.Uniform1i(gl.GetUniformLocation(state.compute_program, "vertex_count"), i32(len(model.VERTICES)))
+    //gl.Uniform1f(gl.GetUniformLocation(state.compute_program, "min_z"), model.min_z)
+    //gl.Uniform1f(gl.GetUniformLocation(state.compute_program, "max_z"), model.max_z)
+    //gl.Uniform2f(gl.GetUniformLocation(state.compute_program, "world_min"), model.world_min_x, model.world_min_y)
+    //gl.Uniform2f(gl.GetUniformLocation(state.compute_program, "world_max"), model.world_max_x, model.world_max_y)
+    //gl.Uniform2i(gl.GetUniformLocation(state.compute_program, "screen_size"), state.window_width, state.window_height)
     
     gl.DispatchCompute(u32((state.window_width + 15) / 16), u32((state.window_height + 15) / 16), 1)
     gl.MemoryBarrier(gl.SHADER_IMAGE_ACCESS_BARRIER_BIT)

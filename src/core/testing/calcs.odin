@@ -17,9 +17,9 @@ nearest_neighbor :: proc(query: m.vec3, points: []data.Vertex) -> data.Vertex {
            return data.Vertex{} // Return empty vertex
        }
     min_idx := 0
-    min_dist := distance(query, points[0].coordinates)
+    min_dist := distance(query, points[0].pos)
     for i in 1..< len(points) {
-        d := distance(query, points[i].coordinates)
+        d := distance(query, points[i].pos)
         if d < min_dist {
             min_dist = d
             min_idx = i
@@ -50,21 +50,20 @@ trilinear_interp :: proc(
 get_vert_value :: proc( index: int, axis: int) ->  f32 {
     if index > -1 {
         if axis == 0 {
-            return data.MODEL_DATA.vertices[index].coordinates.x;
+            return data.MODEL_DATA.VERTICES[index].pos.x;
         }
             if (axis == 1) {
-            return data.MODEL_DATA.vertices[index].coordinates.y;
+            return data.MODEL_DATA.VERTICES[index].pos.y;
         }
             if (axis == 2) {
-            return data.MODEL_DATA.vertices[index].coordinates.z;
+            return data.MODEL_DATA.VERTICES[index].pos.z;
         }
 
-            if (axis == 3) {
-            return f32(data.MODEL_DATA.vertices[index].x_cell);
-        }
-            if (axis == 4) {
-            return f32(data.MODEL_DATA.vertices[index].y_cell);
-        }
+
+        //vertices[i].x_cell = i32(math.floor(x * scale_factor))
+        //vertices[i].y_cell = i32(math.floor(y * scale_factor))
+
+
     }
     return 0;
 }

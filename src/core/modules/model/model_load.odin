@@ -1,24 +1,26 @@
 package model
 
 import "../../imports/imports_vendor"
-import "../../data"
+import math "core:math/linalg/glsl"
+
+import data "../../data"
 import cgltf "vendor:cgltf"
 import "core:fmt"
 
-load_model :: proc(path: cstring) -> ([]f32, int, bool) {
+load_model :: proc(path: cstring) -> ([]math.vec3, bool) {
     // Load glTF
     options: cgltf.options
     gltf_data, result := cgltf.parse_file(options, path)
     if result != .success {
         fmt.println("Failed to load glTF:", result)
-        return nil, 0, false
+        return nil, false
     }
     defer cgltf.free(gltf_data)
     
     result = cgltf.load_buffers(options, gltf_data, path)
     if result != .success {
         fmt.println("Failed to load buffers:", result)
-        return nil, 0, false
+        return nil, false
     }
     
     fmt.println("Loaded meshes:", len(gltf_data.meshes))
@@ -37,12 +39,15 @@ load_model :: proc(path: cstring) -> ([]f32, int, bool) {
     
     if position_accessor == nil {
         fmt.println("No POSITION attribute found")
-        return nil, 0, false
+        return nil, false
     }
     
     // Extract raw vertex positions
     vertex_count := position_accessor.count
-    raw_vertices := make([]f32, vertex_count * 3)
+    //RAW_VERT := make([]f32, vertex_count * 3)
+        // ADD THIS: Allocate the slice
+    data.VERTICIES_RAW = make([]math.vec3, vertex_count)
+    
     
     for i in 0..<vertex_count {
         pos: [3]f32
@@ -52,12 +57,12 @@ load_model :: proc(path: cstring) -> ([]f32, int, bool) {
             continue
         }
         
-        raw_vertices[i*3 + 0] = pos[0]
-        raw_vertices[i*3 + 1] = pos[1]
-        raw_vertices[i*3 + 2] = pos[2]
+        data.VERTICIES_RAW[i].x = pos[0]
+        data.VERTICIES_RAW[i].y = pos[1]
+        data.VERTICIES_RAW[i].z = pos[2]
     }
     
     fmt.println("Loaded vertex count:", vertex_count)
     
-    return raw_vertices, int(vertex_count), true
+    return data.VERTICIES_RAW, true
 }
