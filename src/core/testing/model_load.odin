@@ -43,33 +43,36 @@ process_vertices :: proc(vertices: ^[]m.vec3, scale_factor: f32) -> []data.Verte
     
     return scaled
 }
-/*
-find_bounds :: proc(vertices: []data.Vertex) -> (min_x, max_x, min_y, max_y, min_z, max_z: f32) {
-    if len(vertices) == 0 {
-        return 0, 0, 0, 0, 0, 0
+
+sort_by_axis :: proc (list : ^[]data.Vertex, xs: ^[]data.Sorted_Axis, ys: ^[]data.Sorted_Axis, zs: ^[]data.Sorted_Axis) {
+    xs^ = make([]data.Sorted_Axis, len(list))
+    ys^ = make([]data.Sorted_Axis, len(list))
+    zs^ = make([]data.Sorted_Axis, len(list))
+
+    // Fill them
+    for i in 0 ..< len(list) {
+        xs[i] = data.Sorted_Axis{list[i].pos.x, i}
+        ys[i] = data.Sorted_Axis{list[i].pos.y, i}
+        zs[i] = data.Sorted_Axis{list[i].pos.z, i}
     }
-    
-    // Start with first vertex
-    min_x = vertices[0].coordinates.x
-    max_x = vertices[0].coordinates.x
-    min_y = vertices[0].coordinates.y
-    max_y = vertices[0].coordinates.y
-    min_z = vertices[0].coordinates.z
-    max_z = vertices[0].coordinates.z
-    
-    // Check all other vertices
-    for i in 1..<len(vertices) {
-        v := vertices[i]
-        
-        if v.coordinates.x < min_x do min_x = v.coordinates.x
-        if v.coordinates.x > max_x do max_x = v.coordinates.x
-        
-        if v.coordinates.y < min_y do min_y = v.coordinates.y
-        if v.coordinates.y > max_y do max_y = v.coordinates.y
-        
-        if v.coordinates.z < min_z do min_z = v.coordinates.z
-        if v.coordinates.z > max_z do max_z = v.coordinates.z
+
+    // Sort them independently
+
+    for i in 0 ..< len(list^) {
+        xs^[i] = data.Sorted_Axis{ list^[i].pos.x, i }
+        ys^[i] = data.Sorted_Axis{ list^[i].pos.y, i }
+        zs^[i] = data.Sorted_Axis{ list^[i].pos.z, i }
     }
-    
-    return
-}*/
+
+    slice.sort_by(xs^, proc(a, b: data.Sorted_Axis) -> bool {
+        return a.value < b.value
+    })
+
+    slice.sort_by(ys^, proc(a, b: data.Sorted_Axis) -> bool {
+        return a.value < b.value
+    })
+
+    slice.sort_by(zs^, proc(a, b: data.Sorted_Axis) -> bool {
+        return a.value < b.value
+    })
+}

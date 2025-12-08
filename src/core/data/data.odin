@@ -29,6 +29,26 @@ CULLING_RANGE :: 300.0
 // Shader constants
 COMPUTE_SHADER_PATH :: "test_compute.glsl"
 
+
+// Create arrays
+xs: []Sorted_Axis 
+ys: []Sorted_Axis
+zs: []Sorted_Axis
+
+
+
+
+
+
+
+
+
+// Each entry holds the value and the original index
+Sorted_Axis :: struct {
+    value: f32,
+    index: int,
+}
+
 // Vertex structure
 Vertex :: struct {
     pos: math.vec3,

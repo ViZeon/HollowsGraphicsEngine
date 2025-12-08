@@ -26,6 +26,10 @@ raylib_start_functions ::proc () {
 
 	 model_load_realtime()
 
+     sort_by_axis(&data.MODEL_DATA.VERTICES, &data.xs, &data.ys, &data.zs)
+
+     //fmt.println(data.xs, data.ys, data.zs)
+
      fmt.println("Vertex count after loading:", len(data.VERTICIES_RAW))
      
     for i in 0..<len(data.MODEL_DATA.VERTICES) {
@@ -80,7 +84,7 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
                                     uv.y * PIXEL_SHIFT,
                                     0.0}
 
-
+/*
     range_x := scan_verts(0,
                         f32(PIXEL_FOV_COORDS.x ),
                         0,
@@ -101,7 +105,10 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
                     len(data.MODEL_DATA.VERTICES) - 1)
 
     
-
+*/
+/*
+range 
+//= binary_search_insert (&data.MODEL_DATA.VERTICES)
 
 
     //fmt.println("pixel is in range")
@@ -163,6 +170,7 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
         256,
     }
     /*
+    */
     tmp_pixel = math.ivec4 {i32(AVERAGE.x), i32(AVERAGE.x), i32(AVERAGE.x), 0}
 
             tmp_pixel = [4]i32{
@@ -173,7 +181,7 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
     }
     */
 
-        fmt.println(PIXEL_FOV_COORDS, AVERAGE, fov, range_x, PIXEL_RANGE_WIDTH, PIXEL_RANGE_HEIGHT)
+        //fmt.println(PIXEL_FOV_COORDS, AVERAGE, fov, range_x, PIXEL_RANGE_WIDTH, PIXEL_RANGE_HEIGHT)
 
         return tmp_pixel
 

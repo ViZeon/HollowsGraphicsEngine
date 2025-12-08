@@ -1,0 +1,24 @@
+Slice :: []Vertex  // your original vertex slice
+
+// Each entry holds the value and the original index
+Pair :: struct {
+    value: f32,
+    index: int,
+}
+
+// Create arrays
+xs: []Pair = make([]Pair, len(Slice))
+ys: []Pair = make([]Pair, len(Slice))
+zs: []Pair = make([]Pair, len(Slice))
+
+// Fill them
+for i in 0 .. len(Slice)-1 {
+    xs[i] = Pair{Slice[i].pos.x, i}
+    ys[i] = Pair{Slice[i].pos.y, i}
+    zs[i] = Pair{Slice[i].pos.z, i}
+}
+
+// Sort them independently
+sort_by(xs,  proc(a, b: Pair) -> bool { return a.value < b.value })
+sort_by(ys,  proc(a, b: Pair) -> bool { return a.value < b.value })
+sort_by(zs,  proc(a, b: Pair) -> bool { return a.value < b.value })

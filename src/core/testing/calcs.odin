@@ -52,10 +52,10 @@ get_vert_value :: proc( index: int, axis: int) ->  f32 {
         if axis == 0 {
             return data.MODEL_DATA.VERTICES[index].pos.x;
         }
-            if (axis == 1) {
+        if (axis == 1) {
             return data.MODEL_DATA.VERTICES[index].pos.y;
         }
-            if (axis == 2) {
+        if (axis == 2) {
             return data.MODEL_DATA.VERTICES[index].pos.z;
         }
 
@@ -68,52 +68,29 @@ get_vert_value :: proc( index: int, axis: int) ->  f32 {
     return 0;
 }
 
-// CODE BELOW NEEDS REPLACEMENT!!
-// Binary search to find closest
-// Search backwards and forward to determin the range based on the passed pixel world range
-// return the full list of verts in bound, as well as an ivec4 with the closest verts
-
-// Bonus: grab EVERYTHING color directly from UVs NOT 3D space (IF any 3D is shaded by verts anyways)
 
 
-// Returns index of value, or -1 if not found
-// ONLY THIS FUNCTION IS FIXED — everything else in your shader stays exactly the same
-scan_verts :: proc(axis: int, value: f32, first_cell: int, last_cell: int) -> (range: [2]int) {
-    start := -1
-    end := -1
+
+
+
+/*
+// Returns index where value would be inserted to maintain sorted order
+// If exact match found, returns that index
+binary_search_insert :: proc(axis: int, target: f32) -> int {
+    left, right := 0, len(get_vert_value()) - 1
     
-    // ─── LOWER BOUND: first index where vertices[index] >= min_value ───
-    {
-        left := first_cell
-        right := last_cell
-        for left <= right {
-            mid := (left + right) / 2
-            if f32(get_vert_value(mid, axis)) >= value {
-                start = mid
-                right = mid - 1
-            } else {
-                left = mid + 1
-            }
+    for left <= right {
+        mid := left + (right - left) / 2
+        
+        if arr[mid] == target do return mid
+        
+        if arr[mid] < target {
+            left = mid + 1
+        } else {
+            right = mid - 1
         }
     }
     
-    // ─── UPPER BOUND: first index where vertices[index] > max_value ───
-    if start != -1 {
-        left := start
-        right := last_cell
-        for left <= right {
-            mid := (left + right) / 2
-            if f32(get_vert_value(mid, axis)) <= value {
-                end = mid
-                left = mid + 1
-            } else {
-                right = mid - 1
-            }
-        }
-    }
-    
-    if start == -1 {
-        return {-1, -1}
-    }
-    return {start, end}
+    return left  // insertion point
 }
+*/
