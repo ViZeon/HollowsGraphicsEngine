@@ -22,5 +22,6 @@
 
 #### NEXT
 - figure out a way to collect verts and choose what to render
+- maybe make a search by each vert found in a certain radius of the binary search (fallback in the find relative verts section)
 
 
