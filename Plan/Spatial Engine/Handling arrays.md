@@ -20,3 +20,7 @@
 
 
 
+#### NEXT
+- figure out a way to collect verts and choose what to render
+
+
