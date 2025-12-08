@@ -106,11 +106,10 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
 
     
 */
+
+range_x := binary_search_insert (&data.xs, PIXEL_FOV_COORDS.x)
+
 /*
-range 
-//= binary_search_insert (&data.MODEL_DATA.VERTICES)
-
-
     //fmt.println("pixel is in range")
 
              fov = 0
@@ -181,9 +180,33 @@ range
     }
     */
 
-        //fmt.println(PIXEL_FOV_COORDS, AVERAGE, fov, range_x, PIXEL_RANGE_WIDTH, PIXEL_RANGE_HEIGHT)
+        //fmt.println(PIXEL_FOV_COORDS, AVERAGE, fov, range, PIXEL_RANGE_WIDTH, PIXEL_RANGE_HEIGHT)
+        
+        tmp_pixel.x = i32(len(data.MODEL_DATA.VERTICES)/range_x * 256)
+        tmp_pixel.z = 256
 
-        return tmp_pixel
+        
+        //return tmp_pixel
+
+
+
+
+        idx := range_x
+        total := len(data.xs)
+
+        p : f32 = 0.0
+        if total > 1 {
+            p = f32(idx) / f32(total - 1)
+        }
+
+        // convert to 0..255
+        value := i32((1.0 - p) * 255.0)
+
+
+        fmt.println(range_x, value, data.MODEL_DATA.VERTICES [data.xs[range_x].index], PIXEL_FOV_COORDS)
+
+         return math.ivec4{ value, 
+            0, 0, 255 }
 
 
         //seems like it needs FOV implentation for accurate measurment

@@ -52,10 +52,10 @@ get_vert_value :: proc( index: int, axis: int) ->  f32 {
         if axis == 0 {
             return data.MODEL_DATA.VERTICES[index].pos.x;
         }
-        if (axis == 1) {
+            if (axis == 1) {
             return data.MODEL_DATA.VERTICES[index].pos.y;
         }
-        if (axis == 2) {
+            if (axis == 2) {
             return data.MODEL_DATA.VERTICES[index].pos.z;
         }
 
@@ -73,24 +73,35 @@ get_vert_value :: proc( index: int, axis: int) ->  f32 {
 
 
 
-/*
+
 // Returns index where value would be inserted to maintain sorted order
 // If exact match found, returns that index
-binary_search_insert :: proc(axis: int, target: f32) -> int {
-    left, right := 0, len(get_vert_value()) - 1
-    
-    for left <= right {
+binary_search_insert :: proc(arr: ^[]data.Sorted_Axis, target: f32) -> int {
+    left := 0
+    right := len(arr) - 1
+
+    // Standard binary-search narrowing
+    for right - left > 3 {
         mid := left + (right - left) / 2
-        
-        if arr[mid] == target do return mid
-        
-        if arr[mid] < target {
+
+        if arr[mid].value < target {
             left = mid + 1
         } else {
-            right = mid - 1
+            right = mid
         }
     }
-    
-    return left  // insertion point
+
+    // Now window is small: compare directly
+    best_index := left
+    best_dist  := abs(arr[left].value - target)
+
+    for i := left+1; i <= right; i += 1 {
+        d := abs(arr[i].value - target)
+        if d < best_dist {
+            best_dist = d
+            best_index = i
+        }
+    }
+
+    return best_index
 }
-*/

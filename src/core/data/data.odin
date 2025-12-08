@@ -16,7 +16,7 @@ FRAME_DATA : FrameData ={
 
 // Model constants
 
-VERTICIES_RAW: []math.vec3
+VERTICIES_RAW: []Vertex
 MODEL_INITIALIZED: bool = false
 MODEL_DATA: Model_Data
 
@@ -52,6 +52,7 @@ Sorted_Axis :: struct {
 // Vertex structure
 Vertex :: struct {
     pos: math.vec3,
+    normal: math.vec3,
     fov: f32
 }
 
