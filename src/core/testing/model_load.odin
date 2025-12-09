@@ -51,15 +51,48 @@ sort_by_axis :: proc (list : ^[]data.Vertex, xs: ^[]data.Sorted_Axis, ys: ^[]dat
         zs^[i] = data.Sorted_Axis{ list^[i].pos.z, i }
     }
 
-    slice.sort_by(xs^, proc(a, b: data.Sorted_Axis) -> bool {
-        return a.value < b.value
-    })
+    // Sort X axis by: floored X → floored Y → Z
+    sort_by_axis_order(&xs, &list, {.X, .Y, .Z}, {true, true, false})
 
-    slice.sort_by(ys^, proc(a, b: data.Sorted_Axis) -> bool {
-        return a.value < b.value
-    })
+    // Sort Y axis by: floored X → floored Y → Z
+    sort_by_axis_order(&ys, &list, {.X, .Y, .Z}, {true, true, false})
 
-    slice.sort_by(zs^, proc(a, b: data.Sorted_Axis) -> bool {
-        return a.value < b.value
+    // Sort Z axis by: floored X → floored Y → Z
+    sort_by_axis_order(&zs, &list, {.X, .Y, .Z}, {true, true, false})
+}
+
+Axis_Type :: enum {
+    X, Y, Z
+}
+
+get_axis_value :: proc(v: ^data.Vertex, axis: Axis_Type) -> f32 {
+    switch axis {
+    case .X: return v.pos.x
+    case .Y: return v.pos.y
+    case .Z: return v.pos.z
+    }
+    return 0
+}
+
+sort_by_axis_order :: proc(slice: ^[]data.Sorted_Axis, list: []data.Vertex, order: [3]Axis_Type, floor_mask: [3]bool) {
+    slice.sort_by(slice^, proc(a, b: data.Sorted_Axis) -> bool {
+        a_vertex := &list[a.index]
+        b_vertex := &list[b.index]
+        
+        for i in 0..<3 {
+            axis := order[i]
+            a_val := get_axis_value(a_vertex, axis)
+            b_val := get_axis_value(b_vertex, axis)
+            
+            if floor_mask[i] {
+                a_val = math.floor(a_val)
+                b_val = math.floor(b_val)
+            }
+            
+            if a_val != b_val {
+                return a_val < b_val
+            }
+        }
+        return false
     })
 }
