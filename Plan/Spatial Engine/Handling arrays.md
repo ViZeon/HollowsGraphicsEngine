@@ -25,3 +25,25 @@
 - maybe make a search by each vert found in a certain radius of the binary search (fallback in the find relative verts section)
 
 
+- get all verts from the list within 1 m
+- cross reference to refine matching verts\
+
+Or
+- get closest vert from an axis (preferably depth)
+- check if said vert has the closest distance to the cam's X and Y (loop through)
+- if not, search X for a ....
+
+Let's just loop through all verts
+
+
+- can calc pixel range
+- can calc said range based on FOV and distance
+- each vert, will know its distance, and therefor can "subscribe" (or add) itself to a pixel, based on relevant range of the pixel at its distance
+- instead of subbing to a specific pixel, it subs to a.. range?, and the pixel grabs it? (like 2D or 3D array of sort?)
+- will need some form of treatement for culling, might be able to cull based on existing verts in similar x and y but closer z
+- 
+
+
+
+
+use existing binary search, add range index to limit search, utilize the get vert value function

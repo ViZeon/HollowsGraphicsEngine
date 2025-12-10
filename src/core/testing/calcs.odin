@@ -76,9 +76,9 @@ get_vert_value :: proc( index: int, axis: int) ->  f32 {
 
 // Returns index where value would be inserted to maintain sorted order
 // If exact match found, returns that index
-binary_search_insert :: proc(arr: ^[]data.Sorted_Axis, target: f32) -> int {
-    left := 0
-    right := len(arr) - 1
+binary_search_insert :: proc(arr: ^[]data.Sorted_Axis, target: f32, start: i32, end: i32) -> m.ivec2 {
+    left := start
+    right := end//len(arr) - 1
 
     // Standard binary-search narrowing
     for right - left > 3 {
@@ -91,6 +91,7 @@ binary_search_insert :: proc(arr: ^[]data.Sorted_Axis, target: f32) -> int {
         }
     }
 
+    /*
     // Now window is small: compare directly
     best_index := left
     best_dist  := abs(arr[left].value - target)
@@ -102,6 +103,82 @@ binary_search_insert :: proc(arr: ^[]data.Sorted_Axis, target: f32) -> int {
             best_index = i
         }
     }
+    */
 
-    return best_index
+    return {left,right}
+}
+
+
+find_z_range_for_point :: proc(arr: ^[]data.Vertex, target: m.vec3) -> m.ivec2 {
+
+    tx := m.floor(target.x);
+    ty := m.floor(target.y);
+
+    compare_key := proc(v: data.Vertex, tx, ty: f32) -> int {
+        vx := m.floor(v.pos.x);
+        vy := m.floor(v.pos.y);
+
+        if vx < tx do return -1;
+        if vx > tx do return  1;
+
+        if vy < ty do return -1;
+        if vy > ty do return  1;
+
+        return 0;
+    };
+
+
+
+    first := -1;
+    last  := -1;
+
+    // ---- find FIRST ----
+    {
+        left := 0;
+        right := len(arr^) - 1;
+
+        for left <= right {
+            mid := (left + right) / 2;
+            cmp := compare_key(arr^[mid], tx, ty);
+
+
+            if cmp == 0 {
+                first = mid;
+                right = mid - 1; // search left side
+            } else if cmp < 0 {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+
+    // not found at all
+    if first < 0 {
+        return m.ivec2{-1, -1};
+    }
+
+    // ---- find LAST ----
+    {
+        left := first;                 // optimization
+        right := len(arr^) - 1;
+
+        for left <= right {
+            mid := (left + right) / 2;
+            cmp := compare_key(arr^[mid], tx, ty);
+
+
+            if cmp == 0 {
+                last = mid;
+                left = mid + 1; // search right side
+            } else if cmp < 0 {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+
+    return m.ivec2{ i32(first), i32(last) };
+
 }

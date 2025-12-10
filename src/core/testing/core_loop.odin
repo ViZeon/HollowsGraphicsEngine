@@ -39,7 +39,7 @@ raylib_start_functions ::proc () {
 
         data.MODEL_DATA.VERTICES[i].fov = fov
 
-        //fmt.println(fov)
+        fmt.println(data.MODEL_DATA.VERTICES[i])
     }
 
 
@@ -84,9 +84,24 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
                                     uv.y * PIXEL_SHIFT,
                                     0.0}
 
+
+
+
+
+//range := find_z_range_for_point(&data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS)
+
+
+
+
+
+
+
+
 vertex : data.Vertex
 
-range_x := binary_search_insert(&data.xs, PIXEL_FOV_COORDS.x)
+range := math.ivec2{0, i32(len(data.MODEL_DATA.VERTICES))}
+
+range_x := binary_search_insert(&data.xs, PIXEL_FOV_COORDS.x, )
 range_y := binary_search_insert(&data.ys, PIXEL_FOV_COORDS.y)
 
 x_idx := data.xs[range_x].index
@@ -227,10 +242,10 @@ if matched {
         value := i32((1.0 - p) * 255.0)
 
 
-        fmt.println(range_x, value)
-        fmt.println(vertex_x)
-        fmt.println(vertex_y)
-        fmt.println(PIXEL_FOV_COORDS)
+        //fmt.println(range_x, value)
+        //fmt.println(vertex_x)
+        //fmt.println(vertex_y)
+        fmt.println(range, PIXEL_FOV_COORDS)
 
          return math.ivec4{ i32(grayscale_x * 255), 
             i32(grayscale_y * 255), 0, 255 }
