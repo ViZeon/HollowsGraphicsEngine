@@ -8,6 +8,8 @@ WINDOW_WIDTH_PERCENT :: 0.7
 WINDOW_HEIGHT_PERCENT :: 0.8
 WINDOW_TITLE :: "Compute Engine"
 
+CAM_POS : math.vec3 = {-100, 0, 0}
+
 FRAME_DATA : FrameData ={
         frame_count= 0,
     previous_time= 0, 
@@ -22,7 +24,7 @@ MODEL_DATA: Model_Data
 
 
 MODEL_PATH :: "assets/ABeautifulGame.glb"
-SCALE_FACTOR :: 50.0
+SCALE_FACTOR :: 25.0
 FOV :: 120
 CULLING_RANGE :: 300.0
 

@@ -80,9 +80,9 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
     PIXEL_RANGE_HEIGHT := PIXEL_SHIFT / f32(height)
     
 
-    PIXEL_FOV_COORDS := math.vec3{  uv.x * PIXEL_SHIFT, 
-                                    uv.y * PIXEL_SHIFT,
-                                    0.0}
+    PIXEL_FOV_COORDS := math.vec3{  uv.x * PIXEL_SHIFT + data.CAM_POS.x, 
+                                    uv.y * PIXEL_SHIFT + data.CAM_POS.y,
+                                    0.0 + data.CAM_POS.z}
 
 
 
