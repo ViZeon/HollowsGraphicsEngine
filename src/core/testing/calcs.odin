@@ -47,16 +47,16 @@ trilinear_interp :: proc(
 }
 
 
-get_vert_value :: proc( index: int, axis: int) ->  f32 {
+get_vert_value :: proc( arr: ^[]data.Vertex, index: i32, axis: int) ->  f32 {
     if index > -1 {
         if axis == 0 {
-            return data.MODEL_DATA.VERTICES[index].pos.x;
+            return arr[index].pos.x;
         }
             if (axis == 1) {
-            return data.MODEL_DATA.VERTICES[index].pos.y;
+            return arr[index].pos.y;
         }
             if (axis == 2) {
-            return data.MODEL_DATA.VERTICES[index].pos.z;
+            return arr[index].pos.z;
         }
 
 
@@ -76,7 +76,7 @@ get_vert_value :: proc( index: int, axis: int) ->  f32 {
 
 // Returns index where value would be inserted to maintain sorted order
 // If exact match found, returns that index
-binary_search_insert :: proc(arr: ^[]data.Sorted_Axis, target: f32, start: i32, end: i32) -> m.ivec2 {
+binary_search_insert :: proc(axis: int, arr: ^[]data.Vertex, target: f32, start: i32, end: i32) -> m.ivec2 {
     left := start
     right := end//len(arr) - 1
 
@@ -84,13 +84,24 @@ binary_search_insert :: proc(arr: ^[]data.Sorted_Axis, target: f32, start: i32, 
     for right - left > 3 {
         mid := left + (right - left) / 2
 
-        if arr[mid].value < target {
+        if get_vert_value(&arr^, mid, axis) < target {
             left = mid + 1
         } else {
             right = mid
         }
     }
 
+floor := int(get_vert_value(&arr^, left, axis))
+
+// Find first vertex in floor range
+for left > 0 && int(get_vert_value(&arr^, left-1, axis)) == floor {
+    left -= 1
+}
+
+// Find last vertex in floor range  
+for right < i32(len(arr^)-1) && int(get_vert_value(&arr^, right+1, axis)) == floor {
+    right += 1
+}
     /*
     // Now window is small: compare directly
     best_index := left

@@ -39,7 +39,7 @@ raylib_start_functions ::proc () {
 
         data.MODEL_DATA.VERTICES[i].fov = fov
 
-        fmt.println(data.MODEL_DATA.VERTICES[i])
+        //fmt.println(data.MODEL_DATA.VERTICES[i])
     }
 
 
@@ -88,6 +88,8 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
 
 
 
+
+
 //range := find_z_range_for_point(&data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS)
 
 
@@ -99,18 +101,38 @@ cpu_fragment_shader :: proc (pixel_coords: math.vec2) -> (PIXEL : math.ivec4) {
 
 vertex : data.Vertex
 
-range := math.ivec2{0, i32(len(data.MODEL_DATA.VERTICES))}
+range_base := math.ivec2{0, i32(len(data.MODEL_DATA.VERTICES))}
 
-range_x := binary_search_insert(&data.xs, PIXEL_FOV_COORDS.x, )
-range_y := binary_search_insert(&data.ys, PIXEL_FOV_COORDS.y)
+range_x := binary_search_insert(0, &data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS.x, range_base.x, range_base.y)
+range_y := binary_search_insert(1, &data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS.y, range_x.x, range_x.y)
+//range_z := binary_search_insert(2, &data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS.z, range_y.x, range_y.y)
 
+    
+
+    z_vert_ID : int
+
+    left := range_y.x
+    right := range_y.y//len(arr) - 1
+    z_dist : f32 = data.CULLING_RANGE
+
+
+
+    // Standard binary-search narrowing
+    for i in left..< right {  // Use left..< right, not 0..< (right-left)
+        if distance(data.MODEL_DATA.VERTICES[i].pos, PIXEL_FOV_COORDS) < z_dist {
+            z_dist = distance(data.MODEL_DATA.VERTICES[i].pos, PIXEL_FOV_COORDS)
+            z_vert_ID = int(i)
+        }
+    }
+
+/*
 x_idx := data.xs[range_x].index
 y_idx := data.ys[range_y].index
 
 // Check x_idx ± 5 against y_idx ± 5
 matched := false
 matched_idx := -1
-/*
+
 for x_offset in -5..=5 {
     x_check := x_idx + x_offset
     if x_check < 0 || x_check >= len(data.MODEL_DATA.VERTICES) do continue
@@ -208,10 +230,10 @@ if matched {
     */
 
         //fmt.println(PIXEL_FOV_COORDS, AVERAGE, fov, range, PIXEL_RANGE_WIDTH, PIXEL_RANGE_HEIGHT)
-        
+ /*       
 
-        vertex_x := data.MODEL_DATA.VERTICES [data.xs[range_x].index]
-        vertex_y := data.MODEL_DATA.VERTICES [data.ys[range_y].index]
+        //vertex_x := data.MODEL_DATA.VERTICES [data.xs[range_x].index]
+        //vertex_y := data.MODEL_DATA.VERTICES [data.ys[range_y].index]
 
         // Camera facing direction (down -Z axis)
         camera_dir := math.vec3{0, 0, -1}
@@ -240,15 +262,34 @@ if matched {
 
         // convert to 0..255
         value := i32((1.0 - p) * 255.0)
+*/
+
+                //vertex_x := data.MODEL_DATA.VERTICES [data.xs[range_x].index]
+        //vertex_y := data.MODEL_DATA.VERTICES [data.ys[range_y].index]
+
+        vertex = data.MODEL_DATA.VERTICES[z_vert_ID]
+
+        // Camera facing direction (down -Z axis)
+        camera_dir := math.vec3{0, 0, -1}
+
+        // For each pixel's closest vertex:
+        dot_product := math.dot(vertex.normal, camera_dir)
+
+        // Convert to grayscale (0 to 1 range)
+        // dot_product ranges from -1 (facing away) to +1 (facing toward)
+        grayscale := (dot_product + 1.0) * 0.5  // Maps -1..1 to 0..1
+
+        // Or if you want only front-facing surfaces visible:
+        grayscale = math.max(0, dot_product)  // 0 for back faces, 0..1 for front
 
 
         //fmt.println(range_x, value)
         //fmt.println(vertex_x)
-        //fmt.println(vertex_y)
-        fmt.println(range, PIXEL_FOV_COORDS)
+        //fmt.println(data.MODEL_DATA.VERTICES[z_vert_ID])
+        //fmt.println(z_dist, range_y, PIXEL_FOV_COORDS)
 
-         return math.ivec4{ i32(grayscale_x * 255), 
-            i32(grayscale_y * 255), 0, 255 }
+         return math.ivec4{ i32(grayscale * 255), 
+            i32(0 * 255), 0, 255 }
 
 
         //seems like it needs FOV implentation for accurate measurment

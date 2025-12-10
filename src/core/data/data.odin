@@ -22,7 +22,7 @@ MODEL_DATA: Model_Data
 
 
 MODEL_PATH :: "assets/ABeautifulGame.glb"
-SCALE_FACTOR :: 100.0
+SCALE_FACTOR :: 50.0
 FOV :: 120
 CULLING_RANGE :: 300.0
 
