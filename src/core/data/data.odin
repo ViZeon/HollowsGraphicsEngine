@@ -8,7 +8,7 @@ WINDOW_WIDTH_PERCENT :: 0.7
 WINDOW_HEIGHT_PERCENT :: 0.8
 WINDOW_TITLE :: "Compute Engine"
 
-CAM_POS : math.vec3 = {-100, 0, 0}
+CAM_POS : math.vec3 = {-5, 1.9, 0}  // Model is 0 to 3.8 tall, so center Y is 1.9
 CAM_SPEED :: 2.0  // Units per frame
 
 FRAME_DATA : FrameData ={
@@ -16,6 +16,22 @@ FRAME_DATA : FrameData ={
     previous_time= 0, 
     FRAME_TITLE = WINDOW_TITLE
 }
+
+
+
+// Spatial grid types
+Spatial_Grid :: struct {
+    cells: map[Grid_Key][dynamic]i32,
+    cell_size: f32,
+}
+
+Grid_Key :: struct {
+    x, y, z: i32,
+}
+
+// Global spatial grid
+SPATIAL_GRID: Spatial_Grid
+
 
 // Model constants
 
