@@ -8,7 +8,7 @@ import stbi "vendor:stb/image"
 import "core:fmt"
 import "core:os"
 
-width, height := 400, 300
+width, height := 320, 240
 
 output_dir :: "image_debug_output/"
 frame_pixels: []u8

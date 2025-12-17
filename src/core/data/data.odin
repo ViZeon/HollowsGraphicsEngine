@@ -19,18 +19,15 @@ FRAME_DATA : FrameData ={
 
 
 
-// Spatial grid types
-Spatial_Grid :: struct {
-    cells: map[Grid_Key][dynamic]i32,
-    cell_size: f32,
-}
+// Spatial grid 
+cells: [dynamic][dynamic][dynamic]Grid_Key
 
 Grid_Key :: struct {
-    x, y, z: i32,
+    keys: [dynamic]i32,
 }
 
 // Global spatial grid
-SPATIAL_GRID: Spatial_Grid
+//SPATIAL_GRID: Spatial_Grid
 
 
 // Model constants
@@ -41,7 +38,7 @@ MODEL_DATA: Model_Data
 
 
 MODEL_PATH :: "assets/ABeautifulGame.glb"
-SCALE_FACTOR :: 25.0
+SCALE_FACTOR :: 10.0
 FOV :: 120
 CULLING_RANGE :: 300.0
 
@@ -78,7 +75,8 @@ Vertex :: struct {
 // Model data
 Model_Data :: struct {
     VERTICES: []Vertex,
-    BOUNDS : Bounds
+    BOUNDS : Bounds,
+    MAX_RADIUS: f32
 }
 
 // Render state
@@ -105,6 +103,6 @@ Bounds :: struct {
 }
 
 Range :: struct {
-    min : int,
-    max : int
+    min : f32,
+    max : f32
 }

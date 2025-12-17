@@ -20,12 +20,10 @@ fov : f32
 
 //called once before render loop
 raylib_start_functions :: proc() {
-    debug_init()
+    debug_init()  // ← Initialize debug system
     
     model_load_realtime()
-    
-    // Build spatial grid instead of axis sorting
-    data.SPATIAL_GRID = build_spatial_grid(data.MODEL_DATA.VERTICES, 1.0)
+    sort_by_axis(&data.MODEL_DATA.VERTICES, &data.xs, &data.ys, &data.zs)
     
     fmt.println("Vertex count after loading:", len(data.VERTICIES_RAW))
     
@@ -39,6 +37,18 @@ raylib_start_functions :: proc() {
     
     // Initialize pixel buffer
     frame_pixels = make([]u8, width * height * 3)
+
+    //Populate Spatial Grid// Call it:
+    grid_spatial_populate(&data.MODEL_DATA, &data.cells)
+
+    debug_spatial_map()
+
+
+
+    data.CAM_POS.x = data.MODEL_DATA.BOUNDS.x.max - data.MODEL_DATA.BOUNDS.x.min
+    data.CAM_POS.y = data.MODEL_DATA.BOUNDS.y.max - data.MODEL_DATA.BOUNDS.y.min
+    data.CAM_POS.z = data.MODEL_DATA.BOUNDS.z.max - data.MODEL_DATA.BOUNDS.z.min
+
     
     // Generate initial frame
     generate_pixels_inplace(frame_pixels, width, height)
@@ -49,6 +59,7 @@ raylib_start_functions :: proc() {
     // Create texture
     raylib_render_frame()
 }
+
 //called once per frame
 raylib_update_functions :: proc() {
     debug_frame_begin()  // ← Reset per-frame counters
@@ -88,6 +99,7 @@ raylib_update_functions :: proc() {
 
 //called once per pixel
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
+
     uv := math.vec3{
         pixel_coords.x / f32(width),
         pixel_coords.y / f32(height),
@@ -101,37 +113,55 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
         0.0 + data.CAM_POS.z
     }
     
+    //PIXEL_FOV_COORDS = ortho_pixel_to_world(pixel_coords, width, height)
+
     vertex : data.Vertex
     range_base := math.ivec2{0, i32(len(data.MODEL_DATA.VERTICES))}
     
-    range_x := binary_search_insert(0, &data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS.x, range_base.x, range_base.y)
-    range_y := binary_search_insert(1, &data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS.y, range_x.x, range_x.y)
+    test_fetch := data.MODEL_DATA.VERTICES[0].pos.x
+
+    //range_x := binary_search_insert(0, &data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS.x, range_base.x, range_base.y)
+    //range_y := binary_search_insert(1, &data.MODEL_DATA.VERTICES, PIXEL_FOV_COORDS.y, range_x.x, range_x.y)
     
     // Record debug stats
-    range_size := range_y.y - range_y.x
-    debug_record_pixel_search(range_size)
+    //range_size := range_y.y - range_y.x
+    //debug_record_pixel_search(range_size)
     
     z_vert_ID : int
-    left := range_y.x
-    right := range_y.y
+    //left := range_y.x
+    //right := range_y.y
     z_dist : f32 = data.CULLING_RANGE
+
+   //     return math.ivec4{0, 0, 0, 255}   
     
+   floor_x := int (math.floor(PIXEL_FOV_COORDS.x)) + int(data.MODEL_DATA.BOUNDS.x.max - data.MODEL_DATA.BOUNDS.x.min)
+   floor_y := int (math.floor(PIXEL_FOV_COORDS.y)) + int(data.MODEL_DATA.BOUNDS.y.max - data.MODEL_DATA.BOUNDS.y.min)
+   floor_z := int (math.floor(PIXEL_FOV_COORDS.z)) + int(data.MODEL_DATA.BOUNDS.z.max - data.MODEL_DATA.BOUNDS.z.min)
+/*
     // Linear search through filtered vertices
-    for i in left..< right {
+    for i in 0..< data.cells[floor_x] {
         if distance(data.MODEL_DATA.VERTICES[i].pos, PIXEL_FOV_COORDS) < z_dist {
             z_dist = distance(data.MODEL_DATA.VERTICES[i].pos, PIXEL_FOV_COORDS)
             z_vert_ID = int(i)
         }
     }
-    
-    vertex = data.MODEL_DATA.VERTICES[z_vert_ID]
-    
+    */
+    if check_bounds(floor_x, floor_y, floor_z, data.MODEL_DATA.BOUNDS){  // Zero value for structs
+    // Element is "blank"/uninitialized
+
+    if len(data.cells)> 0  && len( data.cells[floor_x][floor_y][floor_z].keys) != 0 {
+        vertex = data.MODEL_DATA.VERTICES[data.cells[floor_x][floor_y][floor_z].keys[0]]
+        //fmt.println(data.cells[floor_x][floor_y][floor_z].keys[0])
+    }
+    } 
+
     // Camera facing direction (down -Z axis)
     camera_dir := math.vec3{0, 0, -1}
     dot_product := math.dot(vertex.normal, camera_dir)
     grayscale := math.max(0, dot_product)
     
     return math.ivec4{i32(grayscale * 255), 0, 0, 255}
+    
 }
 
 handle_camera_input :: proc() {
@@ -156,8 +186,40 @@ handle_camera_input :: proc() {
 
 model_load_realtime :: proc() {
     data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
-    data.MODEL_DATA.VERTICES = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
+    data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
     
     fmt.println("model initialized")
     data.MODEL_INITIALIZED = true
+}
+
+ortho_pixel_to_world :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
+    bounds := data.MODEL_DATA.BOUNDS
+    
+    // Model dimensions
+    model_width := f32(bounds.x.max - bounds.x.min)
+    model_height := f32(bounds.y.max - bounds.y.min)
+    
+    // Aspect ratios
+    screen_aspect := f32(width) / f32(height)
+    model_aspect := model_width / model_height
+    
+    // Fit model to screen
+    scale : f32
+    if model_aspect > screen_aspect {
+        scale = model_width
+    } else {
+        scale = model_height
+    }
+    
+    // UV to world coordinates (centered)
+    uv := math.vec2{
+        pixel_coords.x / f32(width),
+        pixel_coords.y / f32(height),
+    }
+    
+    return math.vec3{
+        (uv.x - 0.5) * scale + f32(bounds.x.min + bounds.x.max) * 0.5,
+        (uv.y - 0.5) * scale + f32(bounds.y.min + bounds.y.max) * 0.5,
+        data.CAM_POS.z,
+    }
 }

@@ -47,3 +47,11 @@ Let's just loop through all verts
 
 
 use existing binary search, add range index to limit search, utilize the get vert value function
+
+
+Bin tree is very slow because of the search, switching to spatial hash
+
+
+
+populating an array makes it hard to rach closest verts
+I need an easy way to both instantly check x>y without search, then a way to find the closest z, also without search

@@ -5,6 +5,7 @@ import model "../modules/model"
 
 import "core:fmt"
 import "core:math"
+//import "core:"
 import m "core:math/linalg/glsl"
 import "core:slice"
 import "vendor:raylib"
@@ -14,7 +15,21 @@ tmp_pixel: m.ivec4
 
 
 // Process raw vertices into Model_Data
-process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> []data.Vertex {
+process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Model_Data {
+	
+
+	// Init bounds from first vertex
+	first := vertices[0]
+	min_x := first.pos.x
+	min_y := first.pos.y
+	min_z := first.pos.z
+
+	max_x := min_x
+	max_y := min_y
+	max_z := min_z
+
+	MAX_RADIUS : f32
+
 	// Scale all vertices
 	scaled := make([]data.Vertex, len(vertices))
 	for i in 0 ..< len(vertices) {
@@ -23,7 +38,38 @@ process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> []data.
 		scaled[i].pos.z = vertices[i].pos.z * scale_factor
 
 		scaled[i].normal = vertices[i].normal
+
+		// Find bounds
+		x := scaled[i].pos.x
+		y := scaled[i].pos.y
+		z := scaled[i].pos.z
+
+		if x < min_x do min_x = x
+		if y < min_y do min_y = y
+		if z < min_z do min_z = z
+
+		if x > max_x do max_x = x
+		if y > max_y do max_y = y
+		if z > max_z do max_z = z
+
+		if MAX_RADIUS < max_x do MAX_RADIUS = max_x
+		if MAX_RADIUS < max_y do MAX_RADIUS = max_y
+		if MAX_RADIUS < max_z do MAX_RADIUS = max_z
 	}
+
+	 bounds : data.Bounds
+
+	 bounds.x.min = min_x
+	 bounds.y.min = min_y
+	 bounds.z.min = min_z
+
+
+	 bounds.x.max = max_x
+	 bounds.y.max = max_y
+	 bounds.z.max = max_z
+
+	 
+
 
 
 	// Sort by floor(x), floor(y), then z
@@ -33,8 +79,45 @@ process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> []data.
 		return a.pos.z < b.pos.z
 	})
 
-	return scaled
+	return data.Model_Data{ scaled, bounds, MAX_RADIUS}
 }
+
+
+grid_spatial_populate :: proc(
+	model: ^data.Model_Data,
+	cells: ^[dynamic][dynamic][dynamic]data.Grid_Key,
+) {
+	if len(model.VERTICES) == 0 do return
+
+		size_x : int = int(model.BOUNDS.x.max - model.BOUNDS.x.min) + 1
+	size_y :int = int(model.BOUNDS.y.max - model.BOUNDS.y.min) + 1
+	size_z :int = int(model.BOUNDS.z.max - model.BOUNDS.z.min) + 1
+
+
+	// Allocate grid
+	// Allocate grid
+	resize(cells, size_x*2)
+
+	for x in 0 ..< size_x*2 {
+		resize(&cells[x], size_y*2)
+		for y in 0 ..< size_y*2 {
+			resize(&cells[x][y], size_z*2)
+		}
+	}
+
+
+	// Populate with offset
+	for i in 0 ..< len(model.VERTICES) {
+		x := int(m.floor(model.VERTICES[i].pos.x)) + int(model.BOUNDS.x.max - model.BOUNDS.x.min)
+		y := int(m.floor(model.VERTICES[i].pos.y)) + int(model.BOUNDS.y.max - model.BOUNDS.y.min)
+		z := int(m.floor(model.VERTICES[i].pos.z)) + int(model.BOUNDS.z.max - model.BOUNDS.z.min)
+
+		if x >= 0 && x < size_x && y >= 0 && y < size_y && z >= 0 && z < size_z {
+			append(&cells[x][y][z].keys, i32(i))
+		}
+	}
+}
+
 
 sort_by_axis :: proc(
 	list: ^[]data.Vertex,
@@ -74,4 +157,14 @@ sort_by_axis :: proc(
 	})
 
 
+}
+
+
+check_bounds :: proc(x : int, y: int, z: int, bounds: data.Bounds) -> bool{
+
+	if x > int(bounds.x.max - bounds.x.min) || x < 0 do return false
+	if y > int(bounds.y.max - bounds.y.min) || y < 0 do return false
+	if z > int(bounds.z.max - bounds.z.min) || z < 0 do return false
+
+	return true
 }
