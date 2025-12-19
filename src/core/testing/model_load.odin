@@ -16,7 +16,7 @@ tmp_pixel: m.ivec4
 
 // Process raw vertices into Model_Data
 process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Model_Data {
-	
+
 
 	// Init bounds from first vertex
 	first := vertices[0]
@@ -28,7 +28,7 @@ process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Mo
 	max_y := min_y
 	max_z := min_z
 
-	MAX_RADIUS : f32
+	MAX_RADIUS: f32
 
 	// Scale all vertices
 	scaled := make([]data.Vertex, len(vertices))
@@ -57,19 +57,16 @@ process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Mo
 		if MAX_RADIUS < max_z do MAX_RADIUS = max_z
 	}
 
-	 bounds : data.Bounds
+	bounds: data.Bounds
 
-	 bounds.x.min = min_x
-	 bounds.y.min = min_y
-	 bounds.z.min = min_z
+	bounds.x.min = min_x
+	bounds.y.min = min_y
+	bounds.z.min = min_z
 
 
-	 bounds.x.max = max_x
-	 bounds.y.max = max_y
-	 bounds.z.max = max_z
-
-	 
-
+	bounds.x.max = max_x
+	bounds.y.max = max_y
+	bounds.z.max = max_z
 
 
 	// Sort by floor(x), floor(y), then z
@@ -79,7 +76,7 @@ process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Mo
 		return a.pos.z < b.pos.z
 	})
 
-	return data.Model_Data{ scaled, bounds, MAX_RADIUS}
+	return data.Model_Data{scaled, bounds, MAX_RADIUS}
 }
 
 
@@ -89,31 +86,45 @@ grid_spatial_populate :: proc(
 ) {
 	if len(model.VERTICES) == 0 do return
 
-		size_x : int = int(model.BOUNDS.x.max - model.BOUNDS.x.min) + 1
-	size_y :int = int(model.BOUNDS.y.max - model.BOUNDS.y.min) + 1
-	size_z :int = int(model.BOUNDS.z.max - model.BOUNDS.z.min) + 1
+	size_x: int = int(model.BOUNDS.x.max - model.BOUNDS.x.min) + 1
+	size_y: int = int(model.BOUNDS.y.max - model.BOUNDS.y.min) + 1
+	size_z: int = int(model.BOUNDS.z.max - model.BOUNDS.z.min) + 1
 
 
 	// Allocate grid
 	// Allocate grid
-	resize(cells, size_x*2)
+	resize(cells, size_x * 2)
 
-	for x in 0 ..< size_x*2 {
-		resize(&cells[x], size_y*2)
-		for y in 0 ..< size_y*2 {
-			resize(&cells[x][y], size_z*2)
+	for x in 0 ..< size_x * 2 {
+		resize(&cells[x], size_y * 2)
+		for y in 0 ..< size_y * 2 {
+			resize(&cells[x][y], size_z * 2)
 		}
 	}
 
 
 	// Populate with offset
-	for i in 0 ..< len(model.VERTICES) {
-		x := int(m.floor(model.VERTICES[i].pos.x)) + int(model.BOUNDS.x.max - model.BOUNDS.x.min)
-		y := int(m.floor(model.VERTICES[i].pos.y)) + int(model.BOUNDS.y.max - model.BOUNDS.y.min)
-		z := int(m.floor(model.VERTICES[i].pos.z)) + int(model.BOUNDS.z.max - model.BOUNDS.z.min)
 
-		if x >= 0 && x < size_x && y >= 0 && y < size_y && z >= 0 && z < size_z {
-			append(&cells[x][y][z].keys, i32(i))
+    // Fixed: subtract minimum bounds
+    for i in 0 ..< len(model.VERTICES) {
+        x := int(m.floor(model.VERTICES[i].pos.x - model.BOUNDS.x.min))
+        y := int(m.floor(model.VERTICES[i].pos.y - model.BOUNDS.y.min))
+        z := int(m.floor(model.VERTICES[i].pos.z - model.BOUNDS.z.min))
+        
+        if x >= 0 && x < size_x && y >= 0 && y < size_y && z >= 0 && z < size_z {
+            append(&cells[x][y][z].keys, i32(i))
+        }
+    }
+
+    	BOUNDS : data.Bounds
+
+		//TODO: Loop through X, Y and Z and assign the last occupied index for each missing bracket to a negative version of the associated index
+		//Might want to reserve the first 6 keys exclusively for nearest data points 
+		for x in 0 ..< size_x * 2 {
+
+		//resize(&cells[x], size_y * 2)
+		for y in 0 ..< size_y * 2 {
+			//resize(&cells[x][y], size_z * 2)
 		}
 	}
 }
@@ -160,11 +171,14 @@ sort_by_axis :: proc(
 }
 
 
-check_bounds :: proc(x : int, y: int, z: int, bounds: data.Bounds) -> bool{
-
-	if x > int(bounds.x.max - bounds.x.min) || x < 0 do return false
-	if y > int(bounds.y.max - bounds.y.min) || y < 0 do return false
-	if z > int(bounds.z.max - bounds.z.min) || z < 0 do return false
-
-	return true
+check_bounds :: proc(x: int, y: int, z: int, bounds: data.Bounds) -> bool {
+    size_x := int(bounds.x.max - bounds.x.min) * 2
+    size_y := int(bounds.y.max - bounds.y.min) * 2
+    size_z := int(bounds.z.max - bounds.z.min) * 2
+    
+    if x >= size_x || x < 0 do return false
+    if y >= size_y || y < 0 do return false
+    if z >= size_z || z < 0 do return false
+    
+    return true
 }

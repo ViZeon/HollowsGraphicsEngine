@@ -55,3 +55,9 @@ Bin tree is very slow because of the search, switching to spatial hash
 
 populating an array makes it hard to rach closest verts
 I need an easy way to both instantly check x>y without search, then a way to find the closest z, also without search
+
+
+
+	model_load [Testing] 117
+		//TODO: Loop through X, Y and Z and assign the last occupied index for each missing bracket to a negative version of the associated index
+		//Might want to reserve the first 6 keys exclusively for nearest data points 

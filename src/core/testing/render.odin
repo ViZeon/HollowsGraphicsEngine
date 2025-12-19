@@ -35,48 +35,48 @@ raylib_render_frame :: proc() {
 // Generate pixel data
 // Allocates new buffer (if needed)
 generate_pixels :: proc(width, height: int) -> []u8 {
-    pixels := make([]u8, width * height * 3)
-    generate_pixels_inplace(pixels, width, height)
-    return pixels
+	pixels := make([]u8, width * height * 3)
+	generate_pixels_inplace(pixels, width, height)
+	return pixels
 }
 
 // Reuses existing buffer (use in update loop)
 generate_pixels_inplace :: proc(pixels: []u8, width, height: int) {
-    for y in 0 ..< height {
-        for x in 0 ..< width {
-            idx := (y * width + x) * 3
-            pixel := cpu_fragment_shader(math.vec2{f32(x), f32(y)})
-            
-            pixels[idx + 0] = u8(pixel.x) // R
-            pixels[idx + 1] = u8(pixel.y) // G
-            pixels[idx + 2] = u8(pixel.z) // B
-        }
-    }
+	for y in 0 ..< height {
+		for x in 0 ..< width {
+			idx := (y * width + x) * 3
+			pixel := cpu_fragment_shader(math.vec2{f32(x), f32(y)})
+
+			pixels[idx + 0] = u8(pixel.x) // R
+			pixels[idx + 1] = u8(pixel.y) // G
+			pixels[idx + 2] = u8(pixel.z) // B
+		}
+	}
 }
 frame_write_to_image :: proc() {
-    @static frame_number := 0  // ← Make this static so it persists
+	@(static) frame_number := 0 // ← Make this static so it persists
 
-    // Create directory if it doesn't exist
-    os.make_directory(output_dir)
+	// Create directory if it doesn't exist
+	os.make_directory(output_dir)
 
-    // Find next available number
-    for {
-        filename := fmt.tprintf("%sframe_%04d.png", output_dir, frame_number)
-        if !os.exists(filename) {
-            stbi.write_png(
-                cstring(raw_data(filename)),
-                i32(width),
-                i32(height),
-                3,
-                raw_data(frame_pixels),
-                i32(width * 3),
-            )
-            fmt.printf("Wrote %s\n", filename)
-            frame_number += 1  // ← Increment for next call
-            break
-        }
-        frame_number += 1
-    }
+	// Find next available number
+	for {
+		filename := fmt.tprintf("%sframe_%04d.png", output_dir, frame_number)
+		if !os.exists(filename) {
+			stbi.write_png(
+				cstring(raw_data(filename)),
+				i32(width),
+				i32(height),
+				3,
+				raw_data(frame_pixels),
+				i32(width * 3),
+			)
+			fmt.printf("Wrote %s\n", filename)
+			frame_number += 1 // ← Increment for next call
+			break
+		}
+		frame_number += 1
+	}
 }
 
 raylib_render :: proc() {
