@@ -1,32 +1,17 @@
 package testing
 
+import math_lin "core:math/linalg"
+import math "core:math/linalg/glsl"
+import rl "vendor:raylib"
+import stbi "vendor:stb/image"
+
 import data "../data"
-import "core:math"
-import m "core:math/linalg/glsl"
+import model "../modules/model"
 
-distance :: proc(a: m.vec3, b: m.vec3) -> f32 {
-	dx := a.x - b.x
-	dy := a.y - b.y
-	dz := a.z - b.z
-	return math.sqrt(dx * dx + dy * dy + dz * dz)
-}
+import "core:fmt"
+import "core:os"
 
-nearest_neighbor :: proc(query: m.vec3, points: []data.Vertex) -> data.Vertex {
 
-	if len(points) == 0 {
-		return data.Vertex{} // Return empty vertex
-	}
-	min_idx := 0
-	min_dist := m.distance(query, points[0].pos)
-	for i in 1 ..< len(points) {
-		d := m.distance(query, points[i].pos)
-		if d < min_dist {
-			min_dist = d
-			min_idx = i
-		}
-	}
-	return points[min_idx]
-}
 
 trilinear_interp :: proc(
 	c: [8]f32, // cube corner values
@@ -46,152 +31,52 @@ trilinear_interp :: proc(
 	return c0 * (1 - fz) + c1 * fz
 }
 
+handle_camera_input :: proc() {
+	dt := rl.GetFrameTime()
+	move_speed := data.CAM_SPEED * dt * 60.0
 
-get_vert_value :: proc(arr: ^[]data.Vertex, index: i32, axis: int) -> f32 {
-	if index > -1 {
-		if axis == 0 {
-			return arr[index].pos.x
-		}
-		if (axis == 1) {
-			return arr[index].pos.y
-		}
-		if (axis == 2) {
-			return arr[index].pos.z
-		}
-
-
-		//vertices[i].x_cell = i32(math.floor(x * scale_factor))
-		//vertices[i].y_cell = i32(math.floor(y * scale_factor))
-
-
+	// Faster movement with shift
+	if rl.IsKeyDown(.LEFT_SHIFT) {
+		move_speed *= 3.0
 	}
-	return 0
+
+	// WASD movement
+	if rl.IsKeyDown(.W) do data.CAM_POS.y += move_speed
+	if rl.IsKeyDown(.S) do data.CAM_POS.y -= move_speed
+	if rl.IsKeyDown(.A) do data.CAM_POS.x -= move_speed
+	if rl.IsKeyDown(.D) do data.CAM_POS.x += move_speed
+
+	// Q/E for Z axis
+	if rl.IsKeyDown(.Q) do data.CAM_POS.z -= move_speed
+	if rl.IsKeyDown(.E) do data.CAM_POS.z += move_speed
 }
 
+ortho_pixel_to_world :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
+	bounds := data.MODEL_DATA.BOUNDS
 
-// Returns index where value would be inserted to maintain sorted order
-// If exact match found, returns that index
-binary_search_insert :: proc(
-	axis: int,
-	arr: ^[]data.Vertex,
-	target: f32,
-	start: i32,
-	end: i32,
-) -> m.ivec2 {
-	left := start
-	right := end //len(arr) - 1
+	// Model dimensions
+	model_width := f32(bounds.x.max - bounds.x.min)
+	model_height := f32(bounds.y.max - bounds.y.min)
 
-	// Standard binary-search narrowing
-	for right - left > 3 {
-		mid := left + (right - left) / 2
+	// Aspect ratios
+	screen_aspect := f32(width) / f32(height)
+	model_aspect := model_width / model_height
 
-		if get_vert_value(&arr^, mid, axis) < target {
-			left = mid + 1
-		} else {
-			right = mid
-		}
+	// Fit model to screen
+	scale: f32
+	if model_aspect > screen_aspect {
+		scale = model_width
+	} else {
+		scale = model_height
 	}
 
-	floor := int(get_vert_value(&arr^, left, axis))
+	// UV to world coordinates
+	uv := math.vec2{pixel_coords.x / f32(width), pixel_coords.y / f32(height)}
 
-	// Find first vertex in floor range
-	for left > 0 && int(get_vert_value(&arr^, left - 1, axis)) == floor {
-		left -= 1
+	// ADD camera offset to world position
+	return math.vec3 {
+		(uv.x - 0.5) * scale + data.CAM_POS.x, // ← Use camera X
+		(uv.y - 0.5) * scale + data.CAM_POS.y, // ← Use camera Y
+		data.CAM_POS.z,
 	}
-
-	// Find last vertex in floor range
-	for right < i32(len(arr^) - 1) && int(get_vert_value(&arr^, right + 1, axis)) == floor {
-		right += 1
-	}
-	/*
-    // Now window is small: compare directly
-    best_index := left
-    best_dist  := abs(arr[left].value - target)
-
-    for i := left+1; i <= right; i += 1 {
-        d := abs(arr[i].value - target)
-        if d < best_dist {
-            best_dist = d
-            best_index = i
-        }
-    }
-    */
-
-	return {left, right}
-}
-
-
-//Depracated
-
-find_z_range_for_point :: proc(arr: ^[]data.Vertex, target: m.vec3) -> m.ivec2 {
-
-	tx := m.floor(target.x)
-	ty := m.floor(target.y)
-
-	compare_key := proc(v: data.Vertex, tx, ty: f32) -> int {
-		vx := m.floor(v.pos.x)
-		vy := m.floor(v.pos.y)
-
-		if vx < tx do return -1
-		if vx > tx do return 1
-
-		if vy < ty do return -1
-		if vy > ty do return 1
-
-		return 0
-	}
-
-
-	first := -1
-	last := -1
-
-	// ---- find FIRST ----
-	{
-		left := 0
-		right := len(arr^) - 1
-
-		for left <= right {
-			mid := (left + right) / 2
-			cmp := compare_key(arr^[mid], tx, ty)
-
-
-			if cmp == 0 {
-				first = mid
-				right = mid - 1 // search left side
-			} else if cmp < 0 {
-				left = mid + 1
-			} else {
-				right = mid - 1
-			}
-		}
-	}
-
-	// not found at all
-	if first < 0 {
-		return m.ivec2{-1, -1}
-	}
-
-	// ---- find LAST ----
-	{
-		left := first // optimization
-		right := len(arr^) - 1
-
-		for left <= right {
-			mid := (left + right) / 2
-			cmp := compare_key(arr^[mid], tx, ty)
-
-
-			if cmp == 0 {
-				last = mid
-				left = mid + 1 // search right side
-			} else if cmp < 0 {
-				left = mid + 1
-			} else {
-				right = mid - 1
-			}
-		}
-	}
-
-	return m.ivec2{i32(first), i32(last)}
-
 }

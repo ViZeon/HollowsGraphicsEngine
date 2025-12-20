@@ -12,8 +12,6 @@ import "core:fmt"
 import "core:os"
 
 
-SORTED_VERTS: []data.Vertex
-closest_vert: data.Vertex
 
 FOV_DISTANCE: f32 = 2.00 * f32(math_lin.tan(data.FOV / 2.0))
 fov: f32
@@ -44,10 +42,10 @@ raylib_start_functions :: proc() {
 	debug_spatial_map()
 
 
-// In raylib_start_functions():
-data.CAM_POS.x = (data.MODEL_DATA.BOUNDS.x.min + data.MODEL_DATA.BOUNDS.x.max) * 0.5
-data.CAM_POS.y = (data.MODEL_DATA.BOUNDS.y.min + data.MODEL_DATA.BOUNDS.y.max) * 0.5
-data.CAM_POS.z = data.MODEL_DATA.BOUNDS.z.max + 5.0  // 5 units in front of model
+	// In raylib_start_functions():
+	data.CAM_POS.x = (data.MODEL_DATA.BOUNDS.x.min + data.MODEL_DATA.BOUNDS.x.max) * 0.5
+	data.CAM_POS.y = (data.MODEL_DATA.BOUNDS.y.min + data.MODEL_DATA.BOUNDS.y.max) * 0.5
+	data.CAM_POS.z = data.MODEL_DATA.BOUNDS.z.max + 5.0 // 5 units in front of model
 
 
 	// Generate initial frame
@@ -109,24 +107,42 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 		0.0 + data.CAM_POS.z,
 	}
 
-PIXEL_FOV_COORDS = ortho_pixel_to_world(pixel_coords, width, height)
-    
-    // Fixed: subtract minimum bounds to get positive grid indices
-    floor_x := int(math.floor(PIXEL_FOV_COORDS.x - data.MODEL_DATA.BOUNDS.x.min))
-    floor_y := int(math.floor(PIXEL_FOV_COORDS.y - data.MODEL_DATA.BOUNDS.y.min))
-    floor_z := int(math.floor(PIXEL_FOV_COORDS.z - data.MODEL_DATA.BOUNDS.z.min))
-    
-    vertex: data.Vertex
-    
-    if check_bounds(floor_x, floor_y, floor_z, data.MODEL_DATA.BOUNDS) {
-        if len(data.cells) > 0 && 
-           floor_x < len(data.cells) &&
-           floor_y < len(data.cells[floor_x]) &&
-           floor_z < len(data.cells[floor_x][floor_y]) &&
-           len(data.cells[floor_x][floor_y][floor_z].keys) != 0 {
-            vertex = data.MODEL_DATA.VERTICES[data.cells[floor_x][floor_y][floor_z].keys[0]]
-        }
-    }
+	PIXEL_FOV_COORDS = ortho_pixel_to_world(pixel_coords, width, height)
+
+	// Fixed: subtract minimum bounds to get positive grid indices
+	floor_x := int(math.floor(PIXEL_FOV_COORDS.x - data.MODEL_DATA.BOUNDS.x.min))
+	floor_y := int(math.floor(PIXEL_FOV_COORDS.y - data.MODEL_DATA.BOUNDS.y.min))
+	floor_z := int(math.floor(PIXEL_FOV_COORDS.z - data.MODEL_DATA.BOUNDS.z.min))
+
+	vertex: data.Vertex
+
+	if check_bounds(floor_x, floor_y, floor_z, data.MODEL_DATA.BOUNDS) {
+		if len(data.cells) > 0 &&
+		   floor_x < len(data.cells) &&
+		   floor_y < len(data.cells[floor_x]) &&
+		   floor_z < len(data.cells[floor_x][floor_y]) &&
+		   len(data.cells[floor_x][floor_y][floor_z].keys) != 0 {
+
+			key: int
+			vertex_idx: i32
+
+			for vertex_idx < 0 {
+				cell_idx := -key // Convert negative to positive
+				nx := cell_idx / (floor_y * floor_z)
+				ny := (cell_idx % (floor_y * floor_z)) / floor_z
+				nz := cell_idx % floor_z
+
+				// Now access cells[nx][ny][nz].keys[0] for the actual vertex
+				vertex_idx = data.cells[nx][ny][nz].keys[0]
+			}
+			//else {
+			//vertex_idx = data.cells[floor_x][floor_y][floor_z].keys[0]
+			//}
+
+
+			vertex = data.MODEL_DATA.VERTICES[vertex_idx]
+		}
+	}
 
 	// Camera facing direction (down -Z axis)
 	camera_dir := math.vec3{0, 0, -1}
@@ -137,60 +153,3 @@ PIXEL_FOV_COORDS = ortho_pixel_to_world(pixel_coords, width, height)
 
 }
 
-handle_camera_input :: proc() {
-	dt := rl.GetFrameTime()
-	move_speed := data.CAM_SPEED * dt * 60.0
-
-	// Faster movement with shift
-	if rl.IsKeyDown(.LEFT_SHIFT) {
-		move_speed *= 3.0
-	}
-
-	// WASD movement
-	if rl.IsKeyDown(.W) do data.CAM_POS.y += move_speed
-	if rl.IsKeyDown(.S) do data.CAM_POS.y -= move_speed
-	if rl.IsKeyDown(.A) do data.CAM_POS.x -= move_speed
-	if rl.IsKeyDown(.D) do data.CAM_POS.x += move_speed
-
-	// Q/E for Z axis
-	if rl.IsKeyDown(.Q) do data.CAM_POS.z -= move_speed
-	if rl.IsKeyDown(.E) do data.CAM_POS.z += move_speed
-}
-
-model_load_realtime :: proc() {
-	data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
-	data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
-
-	fmt.println("model initialized")
-	data.MODEL_INITIALIZED = true
-}
-
-ortho_pixel_to_world :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
-    bounds := data.MODEL_DATA.BOUNDS
-
-    // Model dimensions
-    model_width := f32(bounds.x.max - bounds.x.min)
-    model_height := f32(bounds.y.max - bounds.y.min)
-
-    // Aspect ratios
-    screen_aspect := f32(width) / f32(height)
-    model_aspect := model_width / model_height
-
-    // Fit model to screen
-    scale: f32
-    if model_aspect > screen_aspect {
-        scale = model_width
-    } else {
-        scale = model_height
-    }
-
-    // UV to world coordinates
-    uv := math.vec2{pixel_coords.x / f32(width), pixel_coords.y / f32(height)}
-
-    // ADD camera offset to world position
-    return math.vec3 {
-        (uv.x - 0.5) * scale + data.CAM_POS.x,  // ← Use camera X
-        (uv.y - 0.5) * scale + data.CAM_POS.y,  // ← Use camera Y
-        data.CAM_POS.z,
-    }
-}

@@ -14,6 +14,14 @@ import "vendor:raylib"
 tmp_pixel: m.ivec4
 
 
+model_load_realtime :: proc() {
+	data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
+	data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
+
+	fmt.println("model initialized")
+	data.MODEL_INITIALIZED = true
+}
+
 // Process raw vertices into Model_Data
 process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Model_Data {
 
@@ -105,26 +113,105 @@ grid_spatial_populate :: proc(
 
 	// Populate with offset
 
-    // Fixed: subtract minimum bounds
-    for i in 0 ..< len(model.VERTICES) {
-        x := int(m.floor(model.VERTICES[i].pos.x - model.BOUNDS.x.min))
-        y := int(m.floor(model.VERTICES[i].pos.y - model.BOUNDS.y.min))
-        z := int(m.floor(model.VERTICES[i].pos.z - model.BOUNDS.z.min))
-        
-        if x >= 0 && x < size_x && y >= 0 && y < size_y && z >= 0 && z < size_z {
-            append(&cells[x][y][z].keys, i32(i))
-        }
-    }
+	// Fixed: subtract minimum bounds
+	for i in 0 ..< len(model.VERTICES) {
+		x := int(m.floor(model.VERTICES[i].pos.x - model.BOUNDS.x.min))
+		y := int(m.floor(model.VERTICES[i].pos.y - model.BOUNDS.y.min))
+		z := int(m.floor(model.VERTICES[i].pos.z - model.BOUNDS.z.min))
 
-    	BOUNDS : data.Bounds
+		if x >= 0 && x < size_x && y >= 0 && y < size_y && z >= 0 && z < size_z {
+			append(&cells[x][y][z].keys, i32(i))
+		}
+	}
 
-		//TODO: Loop through X, Y and Z and assign the last occupied index for each missing bracket to a negative version of the associated index
-		//Might want to reserve the first 6 keys exclusively for nearest data points 
-		for x in 0 ..< size_x * 2 {
+	BOUNDS_HOLDER: data.Bounds
 
-		//resize(&cells[x], size_y * 2)
-		for y in 0 ..< size_y * 2 {
-			//resize(&cells[x][y], size_z * 2)
+	//TODO: Loop through X, Y and Z and assign the last occupied index for each missing bracket to a negative version of the associated index
+	//Might want to reserve the first 6 keys exclusively for nearest data points
+	//for x in 0 ..< size_x * 2 {
+	//	if &cells
+	//resize(&cells[x], size_y * 2)
+	//for y in 0 ..< size_y * 2 {
+	//	//resize(&cells[x][y], size_z * 2)
+	//}
+	//}
+	// Fill empty cells with nearest neighbor references (6 directional sweeps)
+	for x in 0 ..< size_x {
+		for y in 0 ..< size_y {
+			for z in 0 ..< size_z {
+				if len(cells[x][y][z].keys) == 0 {
+					reserve(&cells[x][y][z].keys, 6)
+				}
+			}
+		}
+	}
+
+	// X axis: left to right, right to left
+	for y in 0 ..< size_y {
+		for z in 0 ..< size_z {
+			last_occupied := i32(-1)
+			for x in 0 ..< size_x {
+				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
+					last_occupied = i32(x * size_y * size_z + y * size_z + z)
+				} else {
+					append(&cells[x][y][z].keys, -last_occupied)
+				}
+			}
+
+			last_occupied = -1
+			for x := size_x - 1; x >= 0; x -= 1 {
+				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
+					last_occupied = i32(x * size_y * size_z + y * size_z + z)
+				} else {
+					append(&cells[x][y][z].keys, -last_occupied)
+				}
+			}
+		}
+	}
+
+	// Y axis: forward and back
+	for x in 0 ..< size_x {
+		for z in 0 ..< size_z {
+			last_occupied := i32(-1)
+			for y in 0 ..< size_y {
+				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
+					last_occupied = i32(x * size_y * size_z + y * size_z + z)
+				} else {
+					append(&cells[x][y][z].keys, -last_occupied)
+				}
+			}
+
+			last_occupied = -1
+			for y := size_y - 1; y >= 0; y -= 1 {
+				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
+					last_occupied = i32(x * size_y * size_z + y * size_z + z)
+				} else {
+					append(&cells[x][y][z].keys, -last_occupied)
+				}
+			}
+		}
+	}
+
+	// Z axis: forward and back
+	for x in 0 ..< size_x {
+		for y in 0 ..< size_y {
+			last_occupied := i32(-1)
+			for z in 0 ..< size_z {
+				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
+					last_occupied = i32(x * size_y * size_z + y * size_z + z)
+				} else {
+					append(&cells[x][y][z].keys, -last_occupied)
+				}
+			}
+
+			last_occupied = -1
+			for z := size_z - 1; z >= 0; z -= 1 {
+				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
+					last_occupied = i32(x * size_y * size_z + y * size_z + z)
+				} else {
+					append(&cells[x][y][z].keys, -last_occupied)
+				}
+			}
 		}
 	}
 }
@@ -172,13 +259,13 @@ sort_by_axis :: proc(
 
 
 check_bounds :: proc(x: int, y: int, z: int, bounds: data.Bounds) -> bool {
-    size_x := int(bounds.x.max - bounds.x.min) * 2
-    size_y := int(bounds.y.max - bounds.y.min) * 2
-    size_z := int(bounds.z.max - bounds.z.min) * 2
-    
-    if x >= size_x || x < 0 do return false
-    if y >= size_y || y < 0 do return false
-    if z >= size_z || z < 0 do return false
-    
-    return true
+	size_x := int(bounds.x.max - bounds.x.min) * 2
+	size_y := int(bounds.y.max - bounds.y.min) * 2
+	size_z := int(bounds.z.max - bounds.z.min) * 2
+
+	if x >= size_x || x < 0 do return false
+	if y >= size_y || y < 0 do return false
+	if z >= size_z || z < 0 do return false
+
+	return true
 }
