@@ -9,7 +9,7 @@ WINDOW_HEIGHT_PERCENT :: 0.8
 WINDOW_TITLE :: "Compute Engine"
 
 CAM_POS: math.vec3 = {-581.8, -224.2, -0.7} // Model is 0 to 3.8 tall, so center Y is 1.9
-CAM_SPEED :: 2.0 // Units per frame
+CAM_SPEED :: 0.1 // Units per frame
 
 FRAME_DATA: FrameData = {
 	frame_count   = 0,

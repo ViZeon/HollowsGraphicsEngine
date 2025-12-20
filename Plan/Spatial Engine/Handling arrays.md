@@ -61,3 +61,10 @@ I need an easy way to both instantly check x>y without search, then a way to fin
 	model_load [Testing] 117
 		//TODO: Loop through X, Y and Z and assign the last occupied index for each missing bracket to a negative version of the associated index
 		//Might want to reserve the first 6 keys exclusively for nearest data points 
+
+
+I'm kind of an idiot
+I added 6 neighbors to the CELL instead of per vert
+
+I need to make it only per cell when they are empty (negative) and refers to the relevant vert NOT cell
+I also need a sub variable (bounds) per key to deremine surrounding ones

@@ -97,19 +97,8 @@ raylib_update_functions :: proc() {
 
 //called once per pixel
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
+	PIXEL_FOV_COORDS := ortho_pixel_to_world(pixel_coords, width, height)
 
-	uv := math.vec3{pixel_coords.x / f32(width), pixel_coords.y / f32(height), 0}
-
-	PIXEL_SHIFT := data.CULLING_RANGE * FOV_DISTANCE
-	PIXEL_FOV_COORDS := math.vec3 {
-		uv.x * PIXEL_SHIFT + data.CAM_POS.x,
-		uv.y * PIXEL_SHIFT + data.CAM_POS.y,
-		0.0 + data.CAM_POS.z,
-	}
-
-	PIXEL_FOV_COORDS = ortho_pixel_to_world(pixel_coords, width, height)
-
-	// Fixed: subtract minimum bounds to get positive grid indices
 	floor_x := int(math.floor(PIXEL_FOV_COORDS.x - data.MODEL_DATA.BOUNDS.x.min))
 	floor_y := int(math.floor(PIXEL_FOV_COORDS.y - data.MODEL_DATA.BOUNDS.y.min))
 	floor_z := int(math.floor(PIXEL_FOV_COORDS.z - data.MODEL_DATA.BOUNDS.z.min))
@@ -121,35 +110,23 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 		   floor_x < len(data.cells) &&
 		   floor_y < len(data.cells[floor_x]) &&
 		   floor_z < len(data.cells[floor_x][floor_y]) &&
-		   len(data.cells[floor_x][floor_y][floor_z].keys) != 0 {
+		   len(data.cells[floor_x][floor_y][floor_z].keys) > 0 {
 
-			key: int
-			vertex_idx: i32
-
-			for vertex_idx < 0 {
-				cell_idx := -key // Convert negative to positive
-				nx := cell_idx / (floor_y * floor_z)
-				ny := (cell_idx % (floor_y * floor_z)) / floor_z
-				nz := cell_idx % floor_z
-
-				// Now access cells[nx][ny][nz].keys[0] for the actual vertex
-				vertex_idx = data.cells[nx][ny][nz].keys[0]
+			vertex_idx := data.cells[floor_x][floor_y][floor_z].keys[0]
+			
+			// If negative, it's a borrowed reference - convert to positive
+			if vertex_idx < 0 {
+				vertex_idx = -vertex_idx
 			}
-			//else {
-			//vertex_idx = data.cells[floor_x][floor_y][floor_z].keys[0]
-			//}
-
-
+			
 			vertex = data.MODEL_DATA.VERTICES[vertex_idx]
 		}
 	}
 
-	// Camera facing direction (down -Z axis)
 	camera_dir := math.vec3{0, 0, -1}
 	dot_product := math.dot(vertex.normal, camera_dir)
 	grayscale := math.max(0, dot_product)
 
 	return math.ivec4{i32(grayscale * 255), 0, 0, 255}
-
 }
 

@@ -19,7 +19,7 @@ main :: proc() {
 }
 
 /*
-main :: proc() {
+main :: proc() {b
     window_handle := window.init_window(data.WINDOW_WIDTH_PERCENT, data.WINDOW_HEIGHT_PERCENT, data.WINDOW_TITLE)
     defer glfw.Terminate()
     defer glfw.DestroyWindow(window_handle)

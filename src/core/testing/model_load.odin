@@ -87,7 +87,6 @@ process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Mo
 	return data.Model_Data{scaled, bounds, MAX_RADIUS}
 }
 
-
 grid_spatial_populate :: proc(
 	model: ^data.Model_Data,
 	cells: ^[dynamic][dynamic][dynamic]data.Grid_Key,
@@ -98,22 +97,16 @@ grid_spatial_populate :: proc(
 	size_y: int = int(model.BOUNDS.y.max - model.BOUNDS.y.min) + 1
 	size_z: int = int(model.BOUNDS.z.max - model.BOUNDS.z.min) + 1
 
-
 	// Allocate grid
-	// Allocate grid
-	resize(cells, size_x * 2)
-
-	for x in 0 ..< size_x * 2 {
-		resize(&cells[x], size_y * 2)
-		for y in 0 ..< size_y * 2 {
-			resize(&cells[x][y], size_z * 2)
+	resize(cells, size_x)
+	for x in 0 ..< size_x {
+		resize(&cells[x], size_y)
+		for y in 0 ..< size_y {
+			resize(&cells[x][y], size_z)
 		}
 	}
 
-
-	// Populate with offset
-
-	// Fixed: subtract minimum bounds
+	// Populate with vertices
 	for i in 0 ..< len(model.VERTICES) {
 		x := int(m.floor(model.VERTICES[i].pos.x - model.BOUNDS.x.min))
 		y := int(m.floor(model.VERTICES[i].pos.y - model.BOUNDS.y.min))
@@ -124,99 +117,65 @@ grid_spatial_populate :: proc(
 		}
 	}
 
-	BOUNDS_HOLDER: data.Bounds
+	// 6 directional sweeps
+	sweep_direction(cells, size_x, size_y, size_z, 0, 1, 2, false) // X forward
+	sweep_direction(cells, size_x, size_y, size_z, 0, 1, 2, true)  // X backward
+	sweep_direction(cells, size_x, size_y, size_z, 1, 0, 2, false) // Y forward
+	sweep_direction(cells, size_x, size_y, size_z, 1, 0, 2, true)  // Y backward
+	sweep_direction(cells, size_x, size_y, size_z, 2, 0, 1, false) // Z forward
+	sweep_direction(cells, size_x, size_y, size_z, 2, 0, 1, true)  // Z backward
+}
 
-	//TODO: Loop through X, Y and Z and assign the last occupied index for each missing bracket to a negative version of the associated index
-	//Might want to reserve the first 6 keys exclusively for nearest data points
-	//for x in 0 ..< size_x * 2 {
-	//	if &cells
-	//resize(&cells[x], size_y * 2)
-	//for y in 0 ..< size_y * 2 {
-	//	//resize(&cells[x][y], size_z * 2)
-	//}
-	//}
-	// Fill empty cells with nearest neighbor references (6 directional sweeps)
-	for x in 0 ..< size_x {
-		for y in 0 ..< size_y {
-			for z in 0 ..< size_z {
-				if len(cells[x][y][z].keys) == 0 {
-					reserve(&cells[x][y][z].keys, 6)
-				}
+sweep_direction :: proc(
+	cells: ^[dynamic][dynamic][dynamic]data.Grid_Key,
+	size_x, size_y, size_z: int,
+	sweep_axis: int,    // 0=X, 1=Y, 2=Z
+	outer_axis: int,    // First nested loop axis
+	inner_axis: int,    // Second nested loop axis
+	reverse: bool,
+) {
+	sizes := [3]int{size_x, size_y, size_z}
+	
+	for outer in 0 ..< sizes[outer_axis] {
+		for inner in 0 ..< sizes[inner_axis] {
+			last_vert := i32(-1)
+			
+			start := 0
+			end := sizes[sweep_axis]
+			step := 1
+			
+			if reverse {
+				start = sizes[sweep_axis] - 1
+				end = -1
+				step = -1
 			}
-		}
-	}
-
-	// X axis: left to right, right to left
-	for y in 0 ..< size_y {
-		for z in 0 ..< size_z {
-			last_occupied := i32(-1)
-			for x in 0 ..< size_x {
+			
+			for sweep := start; reverse ? sweep > end : sweep < end; sweep += step {
+				coords := [3]int{}
+				coords[sweep_axis] = sweep
+				coords[outer_axis] = outer
+				coords[inner_axis] = inner
+				
+				x, y, z := coords[0], coords[1], coords[2]
+				
+				// Check if cell has real vertex
 				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
-					last_occupied = i32(x * size_y * size_z + y * size_z + z)
-				} else {
-					append(&cells[x][y][z].keys, -last_occupied)
-				}
-			}
-
-			last_occupied = -1
-			for x := size_x - 1; x >= 0; x -= 1 {
-				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
-					last_occupied = i32(x * size_y * size_z + y * size_z + z)
-				} else {
-					append(&cells[x][y][z].keys, -last_occupied)
-				}
-			}
-		}
-	}
-
-	// Y axis: forward and back
-	for x in 0 ..< size_x {
-		for z in 0 ..< size_z {
-			last_occupied := i32(-1)
-			for y in 0 ..< size_y {
-				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
-					last_occupied = i32(x * size_y * size_z + y * size_z + z)
-				} else {
-					append(&cells[x][y][z].keys, -last_occupied)
-				}
-			}
-
-			last_occupied = -1
-			for y := size_y - 1; y >= 0; y -= 1 {
-				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
-					last_occupied = i32(x * size_y * size_z + y * size_z + z)
-				} else {
-					append(&cells[x][y][z].keys, -last_occupied)
-				}
-			}
-		}
-	}
-
-	// Z axis: forward and back
-	for x in 0 ..< size_x {
-		for y in 0 ..< size_y {
-			last_occupied := i32(-1)
-			for z in 0 ..< size_z {
-				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
-					last_occupied = i32(x * size_y * size_z + y * size_z + z)
-				} else {
-					append(&cells[x][y][z].keys, -last_occupied)
-				}
-			}
-
-			last_occupied = -1
-			for z := size_z - 1; z >= 0; z -= 1 {
-				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
-					last_occupied = i32(x * size_y * size_z + y * size_z + z)
-				} else {
-					append(&cells[x][y][z].keys, -last_occupied)
+					last_vert = cells[x][y][z].keys[0]
+				} else if last_vert >= 0 {
+					// Add borrowed reference if not duplicate
+					has_it := false
+					for k in cells[x][y][z].keys {
+						if k == -last_vert {
+							has_it = true
+							break
+						}
+					}
+					if !has_it do append(&cells[x][y][z].keys, -last_vert)
 				}
 			}
 		}
 	}
 }
-
-
 sort_by_axis :: proc(
 	list: ^[]data.Vertex,
 	xs: ^[]data.Sorted_Axis,
@@ -259,9 +218,9 @@ sort_by_axis :: proc(
 
 
 check_bounds :: proc(x: int, y: int, z: int, bounds: data.Bounds) -> bool {
-	size_x := int(bounds.x.max - bounds.x.min) * 2
-	size_y := int(bounds.y.max - bounds.y.min) * 2
-	size_z := int(bounds.z.max - bounds.z.min) * 2
+	size_x := int(bounds.x.max - bounds.x.min) + 1
+	size_y := int(bounds.y.max - bounds.y.min) + 1
+	size_z := int(bounds.z.max - bounds.z.min) + 1
 
 	if x >= size_x || x < 0 do return false
 	if y >= size_y || y < 0 do return false
