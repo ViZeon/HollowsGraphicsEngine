@@ -107,9 +107,6 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 
 	if check_bounds(floor_x, floor_y, floor_z, data.MODEL_DATA.BOUNDS) {
 		if len(data.cells) > 0 &&
-		   floor_x < len(data.cells) &&
-		   floor_y < len(data.cells[floor_x]) &&
-		   floor_z < len(data.cells[floor_x][floor_y]) &&
 		   len(data.cells[floor_x][floor_y][floor_z].keys) > 0 {
 
 			vertex_idx := data.cells[floor_x][floor_y][floor_z].keys[0]

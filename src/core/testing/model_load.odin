@@ -166,7 +166,7 @@ sweep_direction :: proc(
 					has_it := false
 					for k in cells[x][y][z].keys {
 						if k == -last_vert {
-							has_it = true
+							//has_it = true
 							break
 						}
 					}
