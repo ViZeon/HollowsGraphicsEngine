@@ -23,6 +23,7 @@ cells: [dynamic][dynamic][dynamic]Grid_Key
 
 Grid_Key :: struct {
 	keys: [dynamic]i32,
+	closest: [dynamic]i32
 }
 
 // Global spatial grid
