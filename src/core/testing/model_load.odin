@@ -118,17 +118,13 @@ grid_spatial_populate :: proc(
 	}
 
 	// 6 directional sweeps
-	sweep_direction(cells, size_x, size_y, size_z, 0, 1, 2, false) // X forward
-	sweep_direction(cells, size_x, size_y, size_z, 0, 1, 2, true) // X backward
-	sweep_direction(cells, size_x, size_y, size_z, 1, 0, 2, false) // Y forward
-	sweep_direction(cells, size_x, size_y, size_z, 1, 0, 2, true) // Y backward
-	sweep_direction(cells, size_x, size_y, size_z, 2, 0, 1, false) // Z forward
-	sweep_direction(cells, size_x, size_y, size_z, 2, 0, 1, true) // Z backward
+	sweep_direction(cells, size_x, size_y, size_z) // X forward
+	// X backward
+
 }
 
 sweep_direction :: proc(
 	cells: ^[dynamic][dynamic][dynamic]data.Grid_Key,
-	model: ^data.Model_Data,
 	size_x, size_y, size_z: int,
 ) {
 	//sizes := [3]int{size_x, size_y, size_z}
@@ -143,37 +139,17 @@ sweep_direction :: proc(
 
 				//vert_last_floor := := cells [vert_last_x] [vert_last_y] [vert_last_z]
 
-				if len(cells[x][y][z].keys) <= 0 {
-					append(&cells[x][y][z].keys, -1)
-					append(&cells[x][y][z].keys, -1)
-					append(&cells[x][y][z].keys, -1)
-				}
+
 				// Check if cell has real vertex
-				if cells[x][y][z].keys[0] >= 0 {
+				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
 					vert_last_x = cells[x][y][z].keys[0]
 					vert_last_y = cells[x][y][z].keys[0]
 					vert_last_z = cells[x][y][z].keys[0]
 
-				/*
 				} else {
-
-					if int(model.VERTICES[vert_last_x].pos.x) == x {
-						vert_last_x = cells[x][y][z].keys[0]
-					}
-
-					if int(model.VERTICES[vert_last_y].pos.y) == y {
-						vert_last_y = cells[x][y][z].keys[0]
-					}
-
-					if int(model.VERTICES[vert_last_z].pos.z) == z {
-						vert_last_z = cells[x][y][z].keys[0]
-					}
-					*/
-
-
-					cells[x][y][z].closest[0] = -vert_last_x
-					cells[x][y][z].closest[1] = -vert_last_y
-					cells[x][y][z].closest[2] = -vert_last_z
+					append(&cells[x][y][z].keys, -vert_last_x)
+					append(&cells[x][y][z].keys, -vert_last_y)
+					append(&cells[x][y][z].keys, -vert_last_z)
 				}
 
 			}

@@ -29,7 +29,6 @@ main :: proc() {b
         return
     }
     defer delete(raw_vertices)
-    
     model_data := testing.process_vertices(raw_vertices, vertex_count, data.SCALE_FACTOR)
     defer delete(model_data.vertices)
     
