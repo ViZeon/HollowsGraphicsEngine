@@ -12,7 +12,6 @@ import "core:fmt"
 import "core:os"
 
 
-
 FOV_DISTANCE: f32 = 2.00 * f32(math_lin.tan(data.FOV / 2.0))
 fov: f32
 
@@ -106,24 +105,25 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	vertex: data.Vertex
 
 	if check_bounds(floor_x, floor_y, floor_z, data.MODEL_DATA.BOUNDS) {
-		if len(data.cells) > 0 &&
-		   len(data.cells[floor_x][floor_y][floor_z].keys) > 0 {
+		if len(data.cells) > 0 && len(data.cells[floor_x][floor_y][floor_z].keys) > 0 {
 
 			vertex_idx := data.cells[floor_x][floor_y][floor_z].keys[0]
-			
+
 			// If negative, it's a borrowed reference - convert to positive
 			if vertex_idx < 0 {
 				vertex_idx = -vertex_idx
 			}
-			
+
 			vertex = data.MODEL_DATA.VERTICES[vertex_idx]
 		}
 	}
 
-	camera_dir := math.vec3{0, 0, -1}
+
+	//camera_dir := math.vec3{0, 0, -1}  // ← Fixed direction
+
+	camera_dir := math.normalize(data.CAM_POS - vertex.pos)
 	dot_product := math.dot(vertex.normal, camera_dir)
 	grayscale := math.max(0, dot_product)
 
 	return math.ivec4{i32(grayscale * 255), 0, 0, 255}
 }
-

@@ -128,9 +128,8 @@ sweep_direction :: proc(
 	size_x, size_y, size_z: int,
 ) {
 	//sizes := [3]int{size_x, size_y, size_z}
-	vert_last_x := i32(-1)
-	vert_last_y := i32(-1)
-	vert_last_z := i32(-1)
+	vert_last := i32(-1)
+
 
 
 	for x in 0 ..< size_x {
@@ -142,14 +141,10 @@ sweep_direction :: proc(
 
 				// Check if cell has real vertex
 				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
-					vert_last_x = cells[x][y][z].keys[0]
-					vert_last_y = cells[x][y][z].keys[0]
-					vert_last_z = cells[x][y][z].keys[0]
+					vert_last = cells[x][y][z].keys[0]
 
 				} else {
-					append(&cells[x][y][z].keys, -vert_last_x)
-					append(&cells[x][y][z].keys, -vert_last_y)
-					append(&cells[x][y][z].keys, -vert_last_z)
+					append(&cells[x][y][z].keys, -vert_last)
 				}
 
 			}
