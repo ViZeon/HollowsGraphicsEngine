@@ -17,6 +17,7 @@ fov: f32
 
 //called once before render loop
 raylib_start_functions :: proc() {
+	data.CAM_POS = {-581.8, -224.2, -0.7}  // Set it here
 	debug_init() // ← Initialize debug system
 
 	model_load_realtime()

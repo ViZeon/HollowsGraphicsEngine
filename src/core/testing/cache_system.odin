@@ -1,5 +1,7 @@
 package testing
 
+
+    import "core:strings"
 import "core:os"
 import "core:fmt"
 import "core:mem"
@@ -27,30 +29,29 @@ Grid_Cache_Header :: struct {
 
 // Generate cache filename from model path
 get_cache_path :: proc(model_path: string, suffix: string) -> string {
-    // Extract filename without extension
     base := model_path
-    if idx := len(model_path) - 1; idx >= 0 {
-        for i := idx; i >= 0; i -= 1 {
-            if model_path[i] == '/' || model_path[i] == '\\' {
-                base = model_path[i+1:]
-                break
-            }
+    
+    // Find last slash
+    for i := len(model_path) - 1; i >= 0; i -= 1 {
+        if model_path[i] == '/' || model_path[i] == '\\' {
+            base = model_path[i+1:]
+            break
         }
     }
     
     // Remove extension
-    if idx := len(base) - 1; idx >= 0 {
-        for i := idx; i >= 0; i -= 1 {
-            if base[i] == '.' {
-                base = base[:i]
-                break
-            }
+    for i := len(base) - 1; i >= 0; i -= 1 {
+        if base[i] == '.' {
+            base = base[:i]
+            break
         }
     }
     
-    return fmt.tprintf("%s%s_%s.cache", CACHE_DIR, base, suffix)
-}
+    // Use strings.clone to persist the string
 
+    result := fmt.tprintf("%s%s_%s.cache", CACHE_DIR, base, suffix)
+    return strings.clone(result)
+}
 // Save processed model data
 save_model_cache :: proc(model_data: ^data.Model_Data, model_path: string, scale: f32) -> bool {
     os.make_directory(CACHE_DIR)
@@ -119,7 +120,7 @@ load_model_cache :: proc(model_path: string, scale: f32) -> (data.Model_Data, bo
     }
     
     // Read vertices
-    vertices := make([]data.Vertex, header.vertex_count)
+    vertices := make([]data.Vertex, int(header.vertex_count))
     vertex_bytes := int(header.vertex_count) * size_of(data.Vertex)
     bytes_read, read_err = os.read_ptr(file, raw_data(vertices), vertex_bytes)
     if read_err != os.ERROR_NONE || bytes_read != vertex_bytes {

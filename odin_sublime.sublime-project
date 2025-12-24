@@ -9,7 +9,8 @@
 	[
 		{
 			"name": "sublime_odin_template",
-			"cmd": "odin build . -debug -resource:../resources/icon.rc & src.exe ",
+			"cmd": "odin build . -debug -resource:../resources/icon.rc",
+			//"cmd": "src.exe ",
 			"file_regex": "^(.+)\\(([0-9]+):([0-9]+)\\) (.+)$",
 		}
 	],
