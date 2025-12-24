@@ -37,8 +37,8 @@ MODEL_INITIALIZED: bool = false
 MODEL_DATA: Model_Data
 
 
-MODEL_PATH :: "assets/ABeautifulGame.glb"
-SCALE_FACTOR :: 20.0
+MODEL_PATH :: "assets/1mSphere.glb"
+SCALE_FACTOR :: 50.0
 FOV :: 120
 CULLING_RANGE :: 300.0
 
