@@ -1,5 +1,6 @@
 package data
 
+
 import math "core:math/linalg/glsl"
 
 APP_CLOSED := false
@@ -37,8 +38,8 @@ VERTICIES_RAW: []Vertex
 MODEL_INITIALIZED: bool = false
 MODEL_DATA: Model_Data
 
-
-MODEL_PATH :: "assets/ABeautifulGame.glb"
+CACHE_PATH :: "cache/verts.bin"
+MODEL_PATH :: "assets/1mSphere.glb"
 SCALE_FACTOR :: 50.0
 FOV :: 120
 CULLING_RANGE :: 300.0

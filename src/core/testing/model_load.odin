@@ -18,9 +18,9 @@ tmp_pixel: m.ivec4
 
 model_load_realtime :: proc() {
 
-	if os.exists("verts.bin") {
+	if os.exists(data.CACHE_PATH) {
 		data_verts :=
-			os.read_entire_file_from_filename_or_err("verts.bin") or_else panic(
+			os.read_entire_file_from_filename_or_err(data.CACHE_PATH) or_else panic(
 				"you fool! You've doomed us all!",
 			)
 		data.MODEL_DATA.VERTICES = slice.reinterpret([]data.Vertex, data_verts)
@@ -40,7 +40,7 @@ model_load_realtime :: proc() {
 		data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
 		data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
 
-		os.write_entire_file("verts.bin", slice.to_bytes(data.MODEL_DATA.VERTICES[:]))
+		os.write_entire_file(data.CACHE_PATH, slice.to_bytes(data.MODEL_DATA.VERTICES[:]))
 	}
 	fmt.println("model initialized")
 	data.MODEL_INITIALIZED = true

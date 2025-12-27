@@ -23,8 +23,8 @@ raylib_start_functions :: proc() {
 	raylib_render_frame()
 }
 
-start_functions :: proc () {
-		data.CAM_POS = {-581.8, -224.2, -0.7}  // Set it here
+start_functions :: proc() {
+	data.CAM_POS = {-581.8, -224.2, -0.7} // Set it here
 	debug_init() // ← Initialize debug system
 
 	model_load_realtime()
@@ -107,12 +107,17 @@ update_fuctions :: proc() {
 //called once per pixel
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	PIXEL_FOV_COORDS := ortho_pixel_to_world(pixel_coords, width, height)
+	default_pixel := math.ivec4{0, 0, 0, 255}
 
 	floor_x := int(math.floor(PIXEL_FOV_COORDS.x - data.MODEL_DATA.BOUNDS.x.min))
 	floor_y := int(math.floor(PIXEL_FOV_COORDS.y - data.MODEL_DATA.BOUNDS.y.min))
 	floor_z := int(math.floor(PIXEL_FOV_COORDS.z - data.MODEL_DATA.BOUNDS.z.min))
 
 	vertex: data.Vertex
+
+	if floor_x < 0 || floor_x >= len(data.cells) do return default_pixel
+	if floor_y < 0 || floor_y >= len(data.cells[0]) do return default_pixel
+	if floor_z < 0 || floor_z >= len(data.cells[0][0]) do return default_pixel
 
 	if check_bounds(floor_x, floor_y, floor_z, data.MODEL_DATA.BOUNDS) {
 		if len(data.cells) > 0 && len(data.cells[floor_x][floor_y][floor_z].keys) > 0 {
