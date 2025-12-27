@@ -17,7 +17,14 @@ fov: f32
 
 //called once before render loop
 raylib_start_functions :: proc() {
-	data.CAM_POS = {-581.8, -224.2, -0.7}  // Set it here
+
+	start_functions()
+	// Create texture
+	raylib_render_frame()
+}
+
+start_functions :: proc () {
+		data.CAM_POS = {-581.8, -224.2, -0.7}  // Set it here
 	debug_init() // ← Initialize debug system
 
 	model_load_realtime()
@@ -53,14 +60,11 @@ raylib_start_functions :: proc() {
 
 	// Write first frame
 	frame_write_to_image()
-
-	// Create texture
-	raylib_render_frame()
 }
 
 //called once per frame
 raylib_update_functions :: proc() {
-	debug_frame_begin() // ← Reset per-frame counters
+
 
 	// Camera controls with timing
 	start_input := rl.GetTime()
@@ -69,7 +73,7 @@ raylib_update_functions :: proc() {
 
 	// Pixel generation with timing
 	start_pixels := rl.GetTime()
-	generate_pixels_inplace(frame_pixels, width, height)
+	update_fuctions()
 	debug_time_pixels(rl.GetTime() - start_pixels)
 
 	// Texture update with timing
@@ -92,6 +96,11 @@ raylib_update_functions :: proc() {
 		debug_write_image(frame_pixels, width, height)
 	}
 
+
+}
+update_fuctions :: proc() {
+	debug_frame_begin() // ← Reset per-frame counters
+	generate_pixels_inplace(frame_pixels, width, height)
 	debug_frame_end() // ← Print stats periodically
 }
 

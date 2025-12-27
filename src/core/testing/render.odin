@@ -1,6 +1,6 @@
 package testing
 
-
+import data "../data"
 import math "core:math/linalg/glsl"
 import rl "vendor:raylib"
 import stbi "vendor:stb/image"
@@ -100,5 +100,13 @@ raylib_render :: proc() {
 		raylib_update_functions()
 
 		rl.EndDrawing()
+	}
+}
+
+buffer_render :: proc() {
+	start_functions()
+
+	for !data.APP_CLOSED {
+		update_fuctions()
 	}
 }

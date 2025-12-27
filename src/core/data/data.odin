@@ -1,7 +1,8 @@
 package data
 
-
 import math "core:math/linalg/glsl"
+
+APP_CLOSED := false
 
 // Window constants
 WINDOW_WIDTH_PERCENT :: 0.7
@@ -37,7 +38,7 @@ MODEL_INITIALIZED: bool = false
 MODEL_DATA: Model_Data
 
 
-MODEL_PATH :: "assets/1mSphere.glb"
+MODEL_PATH :: "assets/ABeautifulGame.glb"
 SCALE_FACTOR :: 50.0
 FOV :: 120
 CULLING_RANGE :: 300.0

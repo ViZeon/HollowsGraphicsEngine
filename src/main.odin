@@ -16,6 +16,7 @@ import "core:strings"
 
 main :: proc() {
     testing.raylib_render()
+    //testing.buffer_render()
 }
 
 /*

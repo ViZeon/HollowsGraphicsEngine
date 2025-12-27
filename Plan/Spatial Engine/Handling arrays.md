@@ -68,3 +68,15 @@ I added 6 neighbors to the CELL instead of per vert
 
 I need to make it only per cell when they are empty (negative) and refers to the relevant vert NOT cell
 I also need a sub variable (bounds) per key to deremine surrounding ones
+
+
+
+ToDO:
+- Switch from 3D dynamic array to fixed 1D array with multipliers
+- Switch from model-scale based array to world-space array with 1M unit
+- Switch from RayLib to SDL
+- Test headless version without and display API
+- Interpolation based on UV space and loops
+- Change the exe name to TheHollowsEngine.exe
+- Create build batch file
+- Make the render system OS agnostic
