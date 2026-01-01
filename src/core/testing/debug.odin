@@ -1,6 +1,8 @@
 package testing
 
 import data "../data"
+
+import "core:time"
 import "core:fmt"
 import math "core:math/linalg/glsl"
 import rl "vendor:raylib"
@@ -45,10 +47,13 @@ debug_frame_begin :: proc() {
 
 // Print frame statistics
 debug_frame_end :: proc() {
-	current_time := rl.GetTime()
+	data.FRAME_TIME = time.now()._nsec - data.APP_TIME
+	data.FPS = calc_FPS(data.FRAME_TIME)
+	data.APP_TIME = time.now()._nsec 
+	current_time := data.APP_TIME / 1000000000
 
 	// Print timing every 2 seconds
-	if current_time - debug_stats.last_print_time > 2.0 {
+	if f64(current_time) - debug_stats.last_print_time > data.DEBUG_TIME {
 		avg_vertices_per_pixel :=
 			f32(debug_stats.total_vertices_checked) / f32(debug_stats.total_pixels_processed)
 		frame_avg :=
@@ -60,7 +65,8 @@ debug_frame_end :: proc() {
 			debug_stats.input_time * 1000,
 			debug_stats.pixel_time * 1000,
 			debug_stats.texture_time * 1000,
-			rl.GetFPS(),
+// Here v
+			data.FPS,
 		)
 
 		fmt.printf("=== VERTEX CHECKS ===\n")
@@ -92,7 +98,9 @@ debug_frame_end :: proc() {
 		fmt.println("Bounds Z:", data.MODEL_DATA.BOUNDS.z)
 		fmt.println()
 
-		debug_stats.last_print_time = current_time
+		fmt.println(data.FRAME_TIME, data.APP_TIME)
+
+		debug_stats.last_print_time = f64(current_time)
 		debug_stats.last_cam_pos = data.CAM_POS
 	}
 }
@@ -198,5 +206,19 @@ debug_draw_overlay :: proc() {
 }
 
 debug_spatial_map :: proc() {
-	fmt.println(data.cells)
+	for i in 0..< 10 {
+			fmt.println(data.cells[i])
+		}
+}
+
+// Run at the begin of every frame
+clear_screen :: proc() {
+    // Clear from saved pos to current, then Restore cursor pos
+    fmt.print("\e[3J\e8")
+}
+
+// Run before at least once before `clear_screen`. 
+// Anything after this point will be reset every frame.
+save_screen_pos :: proc() {
+    fmt.print("\e7", flush = false) // Save cursor pos
 }

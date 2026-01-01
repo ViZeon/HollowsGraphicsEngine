@@ -1,9 +1,17 @@
 package data
 
+import "core:time"
 
 import math "core:math/linalg/glsl"
 
 APP_CLOSED := false
+
+APP_TIME : i64 = 0.0
+FRAME_TIME : i64 = 0.0
+
+FPS := 0
+DEBUG_TIME := 2.0
+DEBUG_LAST_TIME := 0.0
 
 // Window constants
 WINDOW_WIDTH_PERCENT :: 0.7
@@ -39,7 +47,7 @@ MODEL_INITIALIZED: bool = false
 MODEL_DATA: Model_Data
 
 CACHE_PATH :: "cache/verts.bin"
-MODEL_PATH :: "assets/1mSphere.glb"
+MODEL_PATH :: "assets/ABeautifulGame.glb"
 SCALE_FACTOR :: 50.0
 FOV :: 120
 CULLING_RANGE :: 300.0

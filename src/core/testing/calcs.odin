@@ -12,6 +12,10 @@ import "core:fmt"
 import "core:os"
 
 
+calc_FPS :: proc(frame_time: i64) -> int {
+	fps := 1000000000/frame_time
+	return int(fps)
+}
 
 trilinear_interp :: proc(
 	c: [8]f32, // cube corner values

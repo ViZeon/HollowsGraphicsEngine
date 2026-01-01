@@ -46,7 +46,7 @@ start_functions :: proc() {
 	//Populate Spatial Grid// Call it:
 	grid_spatial_populate(&data.MODEL_DATA, &data.cells)
 
-	debug_spatial_map()
+	//debug_spatial_map()
 
 
 	// In raylib_start_functions():
@@ -108,6 +108,7 @@ update_fuctions :: proc() {
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	PIXEL_FOV_COORDS := ortho_pixel_to_world(pixel_coords, width, height)
 	default_pixel := math.ivec4{0, 0, 0, 255}
+	//return default_pixel
 
 	floor_x := int(math.floor(PIXEL_FOV_COORDS.x - data.MODEL_DATA.BOUNDS.x.min))
 	floor_y := int(math.floor(PIXEL_FOV_COORDS.y - data.MODEL_DATA.BOUNDS.y.min))
@@ -141,4 +142,5 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	grayscale := math.max(0, dot_product)
 
 	return math.ivec4{i32(grayscale * 255), 0, 0, 255}
+	
 }
