@@ -33,7 +33,8 @@ Controls:
   The glitches are because:
   -  minor sorting refinement is still not implemented
   -  interpolation is also not implemented
-  it should be resolved after
+  
+it should be resolved when these are implemented.
 
 you can change the rendering resolution from src/testing/render.odin
 all other variables/settings can be controlled from src/data/data.odin
