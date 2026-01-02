@@ -15,7 +15,19 @@ A different take on 3D Game Engines, pushing the "Next Gen" of engine design whi
 #### Design Philosophy:
 Simple, Powerful, Modular, Optimized
 
+## Build instructions:
+This project is written in Odin (Modern C language), currently has build scripts for *Windows* only, but the code itself is cross platform, feel free to contribute a Linux build script
+
+- Grab Odin from the official site (make sure it's in PATH):
+https://odin-lang.org/
+
+- Run build_windows.bat
+- The exe will be in out/Windows_Speed/HollowsEngine.exe
+
+  
 
 This is the implementation project for the HotWireNine (LiCap FrameWork] Prototype here: https://github.com/ViZeon/licap-framework
+
+
 
 Videos and live development [on stream] will be available on this channel: https://www.youtube.com/@ComplexAce/featured
