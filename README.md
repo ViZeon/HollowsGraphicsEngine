@@ -30,6 +30,8 @@ Controls:
 - W A S D [Pan camera]
 - Q / E [Backwards / Forwards]
 
+[Zoom out "Q" a few times to see a visual]
+
   The glitches are because:
   -  minor sorting refinement is still not implemented
   -  interpolation is also not implemented
