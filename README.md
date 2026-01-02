@@ -24,6 +24,21 @@ https://odin-lang.org/
 - Run build_windows.bat
 - The exe will be in out/Windows_Speed/HollowsEngine.exe
 
+### Usage
+[Some controls might be broken, depending on the current stage of R&D]
+Controls:
+- W A S D [Pan camera]
+- Q / E [Backwards / Forwards]
+
+  The glitches are because:
+  -  minor sorting refinement is still not implemented
+  -  interpolation is also not implemented
+  it should be resolved after
+
+you can change the rendering resolution from src/testing/render.odin
+all other variables/settings can be controlled from src/data/data.odin
+
+The renderer is currently on CPU (single thread) for ease of debugging, it will transition to a GPU compute wokflow when ready.
   
 
 This is the implementation project for the HotWireNine (LiCap FrameWork] Prototype here: https://github.com/ViZeon/licap-framework
