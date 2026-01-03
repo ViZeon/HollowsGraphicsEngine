@@ -205,6 +205,46 @@ debug_draw_overlay :: proc() {
 	}
 }
 
+debug_grid_population :: proc() {
+	fmt.println("=== GRID POPULATION ===")
+	total_cells_with_data := 0
+	total_vertices := 0
+	
+	for i in 0..<len(data.CELLS) {
+		if len(data.CELLS[i].keys) > 0 {
+			total_cells_with_data += 1
+			total_vertices += len(data.CELLS[i].keys)
+		}
+	}
+	
+	fmt.printf("Cells with data: %d / %d\n", total_cells_with_data, len(data.CELLS))
+	fmt.printf("Total vertex refs: %d\n", total_vertices)
+	
+	fmt.println("Sample populated cells:")
+	count := 0
+	for i in 0..<len(data.CELLS) {
+		if len(data.CELLS[i].keys) > 0 && count < 5 {
+			x, y, z := cell_to_xyz(i)
+			fmt.printf("  Cell %d [%d,%d,%d]: %d verts\n", i, x, y, z, len(data.CELLS[i].keys))
+			count += 1
+		}
+	}
+	fmt.println("=======================\n")
+}
+
+debug_pixel_lookup :: proc(pixel_coords: math.vec2, world_pos: math.vec3, cell_ID: int) {
+	debug_stats.frame_pixels_processed += 1
+	
+	// Only log first 5 pixels
+	if debug_stats.frame_pixels_processed <= 5 {
+		keys_count := len(data.CELLS[cell_ID].keys) if cell_ID >= 0 && cell_ID < len(data.CELLS) else -1
+		fmt.printf("Pixel [%.0f,%.0f] -> World [%.1f,%.1f,%.1f] -> Cell %d (keys=%d)\n",
+			pixel_coords.x, pixel_coords.y,
+			world_pos.x, world_pos.y, world_pos.z,
+			cell_ID, keys_count)
+	}
+}
+
 debug_spatial_map :: proc() {
 	for i in 0..< 10 {
 			fmt.println(data.CELLS[i])

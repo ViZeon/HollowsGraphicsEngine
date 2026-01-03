@@ -13,36 +13,36 @@ import "core:os"
 
 
 calc_FPS :: proc(frame_time: i64) -> int {
-	fps := 1000000000/frame_time
+	fps := 1000000000 / frame_time
 	return int(fps)
 }
 
 
-xyz_to_cell :: proc (x : int, y: int, z: int) -> int {
-    cell_scale := data.CELL_SIZE  // meters per cell
-    
-    // Shift coords from [-150,150] to [0,300], then divide to get cell index [0,2]
-    cell_x := (x + data.WORLD_SIZE/2) / cell_scale
-    cell_y := (y + data.WORLD_SIZE/2) / cell_scale
-    cell_z := (z + data.WORLD_SIZE/2) / cell_scale
-    
-    // Flatten to 1D: z*9 + y*3 + x
-    ID := cell_z * 9 + cell_y * 3 + cell_x
-    
-    return ID
+xyz_to_cell :: proc(x_coord: int, y_coord: int, z_coord: int) -> int {
+	cell_scale := data.WORLD_SIZE / data.CELL_SIZE *2// meters per cell
+
+	// Shift coords from [-150,150] to [0,300], then divide to get cell index [0,2]
+	x := cell_scale + x_coord
+	y := cell_scale + y_coord
+	z := cell_scale + z_coord
+
+	// Flatten to 1D: z*9 + y*3 + x
+	ID := z * cell_scale * cell_scale + y * cell_scale + x
+
+	return ID
 }
-cell_to_xyz :: proc (ID : int) -> (x : int, y : int, z : int) {
-    cell_scale := data.CELL_SIZE
+cell_to_xyz :: proc(ID: int) -> (x: int, y: int, z: int) {
+    cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2
     
     // Extract cell indices from flattened ID
-    cell_x := ID % 3
-    cell_y := (ID / 3) % 3
-    cell_z := ID / 9
+    z = ID / (cell_scale * cell_scale)
+    y = (ID % (cell_scale * cell_scale)) / cell_scale
+    x = ID % cell_scale
     
-    // Convert cell indices to world coords (center of each cell)
-    x = cell_x * cell_scale - data.WORLD_SIZE/2 + cell_scale/2
-    y = cell_y * cell_scale - data.WORLD_SIZE/2 + cell_scale/2
-    z = cell_z * cell_scale - data.WORLD_SIZE/2 + cell_scale/2
+    // Convert back to world coords by reversing the shift
+    x = x - cell_scale
+    y = y - cell_scale
+    z = z - cell_scale
     
     return
 }

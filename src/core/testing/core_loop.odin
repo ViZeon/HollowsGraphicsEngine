@@ -30,7 +30,8 @@ start_functions :: proc() {
 	model_load_realtime()
 	sort_by_axis(&data.MODEL_DATA.VERTICES, &data.xs, &data.ys, &data.zs)
 
-	fmt.println("Vertex count after loading:", len(data.VERTICIES_RAW))
+	fmt.println("RAW Vertex count after loading:", len(data.VERTICIES_RAW))
+	fmt.println("Vertex count after loading:", len(data.MODEL_DATA.VERTICES))
 
 	// Calculate FOV for each vertex
 	for i in 0 ..< len(data.MODEL_DATA.VERTICES) {
@@ -46,6 +47,7 @@ start_functions :: proc() {
 	//Populate Spatial Grid// Call it:
 	grid_spatial_populate(&data.MODEL_DATA, &data.CELLS)
 
+	debug_grid_population()
 	//debug_spatial_map()
 
 
@@ -53,6 +55,14 @@ start_functions :: proc() {
 	data.CAM_POS.x = (data.MODEL_DATA.BOUNDS.x.min + data.MODEL_DATA.BOUNDS.x.max) * 0.5
 	data.CAM_POS.y = (data.MODEL_DATA.BOUNDS.y.min + data.MODEL_DATA.BOUNDS.y.max) * 0.5
 	data.CAM_POS.z = data.MODEL_DATA.BOUNDS.z.max + 5.0 // 5 units in front of model
+
+	a_ID := 43957
+	x_ID, y_ID, z_ID := cell_to_xyz(a_ID)
+	xyz_ID := xyz_to_cell(x_ID, y_ID, z_ID)
+
+	fmt.println(a_ID)
+	fmt.println(x_ID, y_ID, z_ID)
+	fmt.println(xyz_ID)
 
 
 	// Generate initial frame
@@ -131,6 +141,8 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	camera_dir := math.normalize(data.CAM_POS - vertex.pos)
 	dot_product := math.dot(vertex.normal, camera_dir)
 	grayscale := math.max(0, dot_product)
+
+	debug_pixel_lookup(pixel_coords, PIXEL_FOV_COORDS, cell_ID)
 
 	return math.ivec4{i32(grayscale * 255), 0, 0, 255}
 

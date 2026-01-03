@@ -31,7 +31,7 @@ FRAME_DATA: FrameData = {
 // Spatial grid
 CELLS: [dynamic]Grid_Key
 //In meters
-WORLD_SIZE := 90000
+WORLD_SIZE := 1000
 CELL_SIZE := 1
 
 Grid_Key :: struct {
