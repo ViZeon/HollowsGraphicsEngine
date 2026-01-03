@@ -19,12 +19,12 @@ calc_FPS :: proc(frame_time: i64) -> int {
 
 
 xyz_to_cell :: proc(x_coord: int, y_coord: int, z_coord: int) -> int {
-	cell_scale := data.WORLD_SIZE / data.CELL_SIZE *2// meters per cell
+	cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2 // meters per cell
 
 	// Shift coords from [-150,150] to [0,300], then divide to get cell index [0,2]
-	x := cell_scale + x_coord
-	y := cell_scale + y_coord
-	z := cell_scale + z_coord
+	x := cell_scale/2 + x_coord
+	y := cell_scale/2 + y_coord
+	z := cell_scale/2 + z_coord
 
 	// Flatten to 1D: z*9 + y*3 + x
 	ID := z * cell_scale * cell_scale + y * cell_scale + x
@@ -32,19 +32,19 @@ xyz_to_cell :: proc(x_coord: int, y_coord: int, z_coord: int) -> int {
 	return ID
 }
 cell_to_xyz :: proc(ID: int) -> (x: int, y: int, z: int) {
-    cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2
-    
-    // Extract cell indices from flattened ID
-    z = ID / (cell_scale * cell_scale)
-    y = (ID % (cell_scale * cell_scale)) / cell_scale
-    x = ID % cell_scale
-    
-    // Convert back to world coords by reversing the shift
-    x = x - cell_scale
-    y = y - cell_scale
-    z = z - cell_scale
-    
-    return
+	cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2
+
+	// Extract cell indices from flattened ID
+	z = ID / (cell_scale * cell_scale)
+	y = (ID % (cell_scale * cell_scale)) / cell_scale
+	x = ID % cell_scale
+
+	// Convert back to world coords by reversing the shift
+	x = x - cell_scale/2
+	y = y - cell_scale/2
+	z = z - cell_scale/2
+
+	return
 }
 
 

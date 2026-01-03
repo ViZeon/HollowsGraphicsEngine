@@ -31,7 +31,8 @@ FRAME_DATA: FrameData = {
 // Spatial grid
 CELLS: [dynamic]Grid_Key
 //In meters
-WORLD_SIZE := 1000
+// WARNING: KEEP AROUND 100 METERS TO BE SAFE
+WORLD_SIZE := 100
 CELL_SIZE := 1
 
 Grid_Key :: struct {
@@ -81,7 +82,6 @@ Model_Data :: struct {
 	BOUNDS:     Bounds,
 	MAX_RADIUS: f32,
 }
-
 
 
 // Render state

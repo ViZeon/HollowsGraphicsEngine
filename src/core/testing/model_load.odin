@@ -131,17 +131,19 @@ grid_spatial_populate :: proc(model: ^data.Model_Data, cells: ^[dynamic]data.Gri
 
 	// Allocate grid
 	cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2
-	total_cells := (cell_scale + 1) * (cell_scale + 1) * (cell_scale + 1)
+	total_cells := cell_scale * cell_scale * cell_scale
 	
 	resize(cells, total_cells)
-	fmt.println("Allocated cells:", total_cells)
+	fmt.println("Allocated cells:", len(cells))
 
 	// Populate with vertices
 	for i in 0 ..< len(model.VERTICES) {
 		x := int(m.floor(model.VERTICES[i].pos.x))
 		y := int(m.floor(model.VERTICES[i].pos.y))
 		z := int(m.floor(model.VERTICES[i].pos.z))
-		//fmt.println (xyz_to_cell(x, y, z) ,  data.WORLD_SIZE -xyz_to_cell(x, y, z) )
+		
+		fmt.println(x,y,z)
+		fmt.println (xyz_to_cell(x, y, z) ,  len(cells) -xyz_to_cell(x, y, z) )
 		if xyz_to_cell(x, y, z) >= 0  && xyz_to_cell(x, y, z) < len(cells){
 			append(&cells[xyz_to_cell(x, y, z)].keys, i32(i))
 			fmt.println(&cells[xyz_to_cell(x, y, z)].keys)
