@@ -6,8 +6,8 @@ import math "core:math/linalg/glsl"
 
 APP_CLOSED := false
 
-APP_TIME : i64 = 0.0
-FRAME_TIME : i64 = 0.0
+APP_TIME: i64 = 0.0
+FRAME_TIME: i64 = 0.0
 
 FPS := 0
 DEBUG_TIME := 2.0
@@ -29,15 +29,15 @@ FRAME_DATA: FrameData = {
 
 
 // Spatial grid
-cells: [dynamic][dynamic][dynamic]Grid_Key
+CELLS: [dynamic]Grid_Key
+//In meters
+WORLD_SIZE := 90000
+CELL_SIZE := 1
 
 Grid_Key :: struct {
-	keys: [dynamic]i32,
-	closest: [dynamic]i32
+	keys:    [dynamic]i32,
+	closest: [dynamic]i32,
 }
-
-// Global spatial grid
-//SPATIAL_GRID: Spatial_Grid
 
 
 // Model constants
@@ -81,6 +81,8 @@ Model_Data :: struct {
 	BOUNDS:     Bounds,
 	MAX_RADIUS: f32,
 }
+
+
 
 // Render state
 Render_State :: struct {

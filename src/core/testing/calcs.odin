@@ -17,6 +17,37 @@ calc_FPS :: proc(frame_time: i64) -> int {
 	return int(fps)
 }
 
+
+xyz_to_cell :: proc (x : int, y: int, z: int) -> int {
+    cell_scale := data.CELL_SIZE  // meters per cell
+    
+    // Shift coords from [-150,150] to [0,300], then divide to get cell index [0,2]
+    cell_x := (x + data.WORLD_SIZE/2) / cell_scale
+    cell_y := (y + data.WORLD_SIZE/2) / cell_scale
+    cell_z := (z + data.WORLD_SIZE/2) / cell_scale
+    
+    // Flatten to 1D: z*9 + y*3 + x
+    ID := cell_z * 9 + cell_y * 3 + cell_x
+    
+    return ID
+}
+cell_to_xyz :: proc (ID : int) -> (x : int, y : int, z : int) {
+    cell_scale := data.CELL_SIZE
+    
+    // Extract cell indices from flattened ID
+    cell_x := ID % 3
+    cell_y := (ID / 3) % 3
+    cell_z := ID / 9
+    
+    // Convert cell indices to world coords (center of each cell)
+    x = cell_x * cell_scale - data.WORLD_SIZE/2 + cell_scale/2
+    y = cell_y * cell_scale - data.WORLD_SIZE/2 + cell_scale/2
+    z = cell_z * cell_scale - data.WORLD_SIZE/2 + cell_scale/2
+    
+    return
+}
+
+
 trilinear_interp :: proc(
 	c: [8]f32, // cube corner values
 	fx, fy, fz: f32, // fractional coords in [0,1]

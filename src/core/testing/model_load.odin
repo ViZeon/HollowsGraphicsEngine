@@ -25,7 +25,7 @@ model_load_realtime :: proc() {
 			)
 		data.MODEL_DATA.VERTICES = slice.reinterpret([]data.Vertex, data_verts)
 
-		for i in 0..< 5 {
+		for i in 0 ..< 5 {
 			fmt.println(data_verts[i])
 			fmt.println(data.MODEL_DATA.VERTICES[i])
 		}
@@ -120,69 +120,59 @@ process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Mo
 	return data.Model_Data{scaled, bounds, MAX_RADIUS}
 }
 
-grid_spatial_populate :: proc(
-	model: ^data.Model_Data,
-	cells: ^[dynamic][dynamic][dynamic]data.Grid_Key,
-) {
+grid_spatial_populate :: proc(model: ^data.Model_Data, cells: ^[dynamic]data.Grid_Key) {
 	if len(model.VERTICES) == 0 do return
 
 	size_x: int = int(model.BOUNDS.x.max - model.BOUNDS.x.min) + 1
 	size_y: int = int(model.BOUNDS.y.max - model.BOUNDS.y.min) + 1
 	size_z: int = int(model.BOUNDS.z.max - model.BOUNDS.z.min) + 1
 
+
 	// Allocate grid
-	resize(cells, size_x)
-	for x in 0 ..< size_x {
-		resize(&cells[x], size_y)
-		for y in 0 ..< size_y {
-			resize(&cells[x][y], size_z)
-		}
-	}
+	resize(cells, data.WORLD_SIZE)
+
 
 	// Populate with vertices
 	for i in 0 ..< len(model.VERTICES) {
-		x := int(m.floor(model.VERTICES[i].pos.x - model.BOUNDS.x.min))
-		y := int(m.floor(model.VERTICES[i].pos.y - model.BOUNDS.y.min))
-		z := int(m.floor(model.VERTICES[i].pos.z - model.BOUNDS.z.min))
+		x := int(m.floor(model.VERTICES[i].pos.x))
+		y := int(m.floor(model.VERTICES[i].pos.y))
+		z := int(m.floor(model.VERTICES[i].pos.z))
 
-		if x >= 0 && x < size_x && y >= 0 && y < size_y && z >= 0 && z < size_z {
-			append(&cells[x][y][z].keys, i32(i))
+		if xyz_to_cell(x, y, z) >= 0 && xyz_to_cell(x, y, z) < data.WORLD_SIZE {
+			append(&cells[xyz_to_cell(x, y, z)].keys, i32(i))
 		}
 	}
 
 	// 6 directional sweeps
-	sweep_direction(cells, size_x, size_y, size_z) // X forward
+	sweep_direction(cells, model) // X forward
 	// X backward
 
 }
 
 sweep_direction :: proc(
-	cells: ^[dynamic][dynamic][dynamic]data.Grid_Key,
-	size_x, size_y, size_z: int,
+    cells: ^[dynamic]data.Grid_Key,
+    model: ^data.Model_Data,
 ) {
-	//sizes := [3]int{size_x, size_y, size_z}
-	vert_last := i32(-1)
-
-
-	for x in 0 ..< size_x {
-		for y in 0 ..< size_y {
-			for z in 0 ..< size_z {
-
-				//vert_last_floor := := cells [vert_last_x] [vert_last_y] [vert_last_z]
-
-
-				// Check if cell has real vertex
-				if len(cells[x][y][z].keys) > 0 && cells[x][y][z].keys[0] >= 0 {
-					vert_last = cells[x][y][z].keys[0]
-
-				} else {
-					append(&cells[x][y][z].keys, -vert_last)
-				}
-
-			}
-		}
-	}
+    vert_last := i32(-1)
+    
+    // Iterate over actual world coordinate range
+    for x := int(model.BOUNDS.x.min); x <= int(model.BOUNDS.x.max); x += 1 {
+        for y := int(model.BOUNDS.y.min); y <= int(model.BOUNDS.y.max); y += 1 {
+            for z := int(model.BOUNDS.z.min); z <= int(model.BOUNDS.z.max); z += 1 {
+                ID := xyz_to_cell(x, y, z)
+                
+                if ID < 0 || ID >= len(cells) do continue
+                
+                if len(cells[ID].keys) > 0 && cells[ID].keys[0] >= 0 {
+                    vert_last = cells[ID].keys[0]
+                } else {
+                    append(&cells[ID].keys, -vert_last)
+                }
+            }
+        }
+    }
 }
+
 sort_by_axis :: proc(
 	list: ^[]data.Vertex,
 	xs: ^[]data.Sorted_Axis,

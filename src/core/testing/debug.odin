@@ -207,7 +207,7 @@ debug_draw_overlay :: proc() {
 
 debug_spatial_map :: proc() {
 	for i in 0..< 10 {
-			fmt.println(data.cells[i])
+			fmt.println(data.CELLS[i])
 		}
 }
 

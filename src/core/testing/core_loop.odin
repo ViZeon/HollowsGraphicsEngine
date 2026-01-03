@@ -44,7 +44,7 @@ start_functions :: proc() {
 	frame_pixels = make([]u8, width * height * 3)
 
 	//Populate Spatial Grid// Call it:
-	grid_spatial_populate(&data.MODEL_DATA, &data.cells)
+	grid_spatial_populate(&data.MODEL_DATA, &data.CELLS)
 
 	//debug_spatial_map()
 
@@ -110,30 +110,21 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	default_pixel := math.ivec4{0, 0, 0, 255}
 	//return default_pixel
 
-	floor_x := int(math.floor(PIXEL_FOV_COORDS.x - data.MODEL_DATA.BOUNDS.x.min))
-	floor_y := int(math.floor(PIXEL_FOV_COORDS.y - data.MODEL_DATA.BOUNDS.y.min))
-	floor_z := int(math.floor(PIXEL_FOV_COORDS.z - data.MODEL_DATA.BOUNDS.z.min))
+	floor_x := int(math.floor(PIXEL_FOV_COORDS.x))
+	floor_y := int(math.floor(PIXEL_FOV_COORDS.y))
+	floor_z := int(math.floor(PIXEL_FOV_COORDS.z))
 
 	vertex: data.Vertex
 
-	if floor_x < 0 || floor_x >= len(data.cells) do return default_pixel
-	if floor_y < 0 || floor_y >= len(data.cells[0]) do return default_pixel
-	if floor_z < 0 || floor_z >= len(data.cells[0][0]) do return default_pixel
+	cell_ID := xyz_to_cell(floor_x, floor_y, floor_z)
 
-	if check_bounds(floor_x, floor_y, floor_z, data.MODEL_DATA.BOUNDS) {
-		if len(data.cells) > 0 && len(data.cells[floor_x][floor_y][floor_z].keys) > 0 {
+	if cell_ID < 0 || cell_ID >= len(data.CELLS) do return default_pixel
 
-			vertex_idx := data.cells[floor_x][floor_y][floor_z].keys[0]
-
-			// If negative, it's a borrowed reference - convert to positive
-			if vertex_idx < 0 {
-				vertex_idx = -vertex_idx
-			}
-
-			vertex = data.MODEL_DATA.VERTICES[vertex_idx]
-		}
+	if len(data.CELLS[cell_ID].keys) > 0 {
+		vertex_idx := data.CELLS[cell_ID].keys[0]
+		if vertex_idx < 0 do vertex_idx = -vertex_idx
+		vertex = data.MODEL_DATA.VERTICES[vertex_idx]
 	}
-
 
 	//camera_dir := math.vec3{0, 0, -1}  // ← Fixed direction
 
@@ -142,5 +133,5 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	grayscale := math.max(0, dot_product)
 
 	return math.ivec4{i32(grayscale * 255), 0, 0, 255}
-	
+
 }
