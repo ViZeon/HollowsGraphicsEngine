@@ -18,7 +18,7 @@ WINDOW_WIDTH_PERCENT :: 0.7
 WINDOW_HEIGHT_PERCENT :: 0.8
 WINDOW_TITLE :: "Compute Engine"
 
-CAM_POS: math.vec3 = {-581.8, -224.2, -0.7} // Model is 0 to 3.8 tall, so center Y is 1.9
+CAM_POS: math.vec3 //= {-581.8, -224.2, -0.7} // Model is 0 to 3.8 tall, so center Y is 1.9
 CAM_SPEED :: 0.1 // Units per frame
 
 FRAME_DATA: FrameData = {
@@ -32,8 +32,8 @@ FRAME_DATA: FrameData = {
 CELLS: [dynamic]Grid_Key
 //In meters
 // WARNING: KEEP AROUND 100 METERS TO BE SAFE
-WORLD_SIZE := 100
-CELL_SIZE := 1
+WORLD_SIZE :i32= 100
+CELL_SIZE :i32= 1
 
 Grid_Key :: struct {
 	keys:    [dynamic]i32,
@@ -47,9 +47,11 @@ VERTICIES_RAW: []Vertex
 MODEL_INITIALIZED: bool = false
 MODEL_DATA: Model_Data
 
+
+
 CACHE_PATH :: "cache/verts.bin"
-MODEL_PATH :: "assets/ABeautifulGame.glb"
-SCALE_FACTOR :: 50.0
+MODEL_PATH :: "assets/kenny_blaster/blaster-e.glb"
+SCALE_FACTOR :: 10.0
 FOV :: 120
 CULLING_RANGE :: 300.0
 

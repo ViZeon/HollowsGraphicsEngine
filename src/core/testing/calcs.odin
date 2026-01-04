@@ -18,7 +18,7 @@ calc_FPS :: proc(frame_time: i64) -> int {
 }
 
 
-xyz_to_cell :: proc(x_coord: int, y_coord: int, z_coord: int) -> int {
+xyz_to_cell :: proc(x_coord: i32, y_coord: i32, z_coord: i32) -> i32 {
 	cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2 // meters per cell
 
 	// Shift coords from [-150,150] to [0,300], then divide to get cell index [0,2]
@@ -29,10 +29,10 @@ xyz_to_cell :: proc(x_coord: int, y_coord: int, z_coord: int) -> int {
 	// Flatten to 1D: z*9 + y*3 + x
 	ID := z * cell_scale * cell_scale + y * cell_scale + x
 
-	return ID
+	return i32(ID)
 }
-cell_to_xyz :: proc(ID: int) -> (x: int, y: int, z: int) {
-	cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2
+cell_to_xyz :: proc(ID: i32) -> (x: i32, y: i32, z: i32) {
+	cell_scale :  = i32(data.WORLD_SIZE / data.CELL_SIZE * 2)
 
 	// Extract cell indices from flattened ID
 	z = ID / (cell_scale * cell_scale)

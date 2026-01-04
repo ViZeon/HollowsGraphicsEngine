@@ -56,7 +56,7 @@ start_functions :: proc() {
 	data.CAM_POS.y = (data.MODEL_DATA.BOUNDS.y.min + data.MODEL_DATA.BOUNDS.y.max) * 0.5
 	data.CAM_POS.z = data.MODEL_DATA.BOUNDS.z.max + 5.0 // 5 units in front of model
 
-	a_ID := 43957
+	a_ID :i32= 43957
 	x_ID, y_ID, z_ID := cell_to_xyz(a_ID)
 	xyz_ID := xyz_to_cell(x_ID, y_ID, z_ID)
 
@@ -120,18 +120,38 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	default_pixel := math.ivec4{0, 0, 0, 255}
 	//return default_pixel
 
-	floor_x := int(math.floor(PIXEL_FOV_COORDS.x))
-	floor_y := int(math.floor(PIXEL_FOV_COORDS.y))
-	floor_z := int(math.floor(PIXEL_FOV_COORDS.z))
+	floor_x := i32(math.floor(PIXEL_FOV_COORDS.x))
+	floor_y := i32(math.floor(PIXEL_FOV_COORDS.y))
+	floor_z := i32(math.floor(PIXEL_FOV_COORDS.z))
 
 	vertex: data.Vertex
 
 	cell_ID := xyz_to_cell(floor_x, floor_y, floor_z)
 
-	if cell_ID < 0 || cell_ID >= len(data.CELLS) do return default_pixel
+	if cell_ID < 0 || cell_ID >= i32(len(data.CELLS)) do return default_pixel
 
 	if len(data.CELLS[cell_ID].keys) > 0 {
-		vertex_idx := data.CELLS[cell_ID].keys[0]
+
+		ID_curr := data.CELLS[cell_ID].keys[0]
+		//fmt.println(ID_curr)
+		ID_closest := 0
+
+		if ID_curr < 0 {
+			cell_ID = - ID_curr
+			ID_curr = data.CELLS[cell_ID].keys[0]
+		}
+
+		dist := math.distance_vec3(PIXEL_FOV_COORDS, data.MODEL_DATA.VERTICES[ID_curr].pos)
+
+		for i in 0 ..< len(data.CELLS[cell_ID].keys) {
+			ID_curr = data.CELLS[cell_ID].keys[i]
+			if math.distance_vec3(PIXEL_FOV_COORDS, data.MODEL_DATA.VERTICES[ID_curr].pos) < dist {
+			   dist = math.distance_vec3(PIXEL_FOV_COORDS, data.MODEL_DATA.VERTICES[ID_curr].pos)
+			   ID_closest := data.CELLS[cell_ID].keys[i]
+				}
+		}
+
+		vertex_idx := data.CELLS[cell_ID].keys[ID_closest]
 		if vertex_idx < 0 do vertex_idx = -vertex_idx
 		vertex = data.MODEL_DATA.VERTICES[vertex_idx]
 	}
@@ -142,7 +162,7 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	dot_product := math.dot(vertex.normal, camera_dir)
 	grayscale := math.max(0, dot_product)
 
-	debug_pixel_lookup(pixel_coords, PIXEL_FOV_COORDS, cell_ID)
+	debug_pixel_lookup(pixel_coords, PIXEL_FOV_COORDS, int(cell_ID))
 
 	return math.ivec4{i32(grayscale * 255), 0, 0, 255}
 

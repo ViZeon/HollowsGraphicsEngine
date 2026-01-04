@@ -138,15 +138,15 @@ grid_spatial_populate :: proc(model: ^data.Model_Data, cells: ^[dynamic]data.Gri
 
 	// Populate with vertices
 	for i in 0 ..< len(model.VERTICES) {
-		x := int(m.floor(model.VERTICES[i].pos.x))
-		y := int(m.floor(model.VERTICES[i].pos.y))
-		z := int(m.floor(model.VERTICES[i].pos.z))
+		x := i32(m.floor(model.VERTICES[i].pos.x))
+		y := i32(m.floor(model.VERTICES[i].pos.y))
+		z := i32(m.floor(model.VERTICES[i].pos.z))
 		
-		fmt.println(x,y,z)
-		fmt.println (xyz_to_cell(x, y, z) ,  len(cells) -xyz_to_cell(x, y, z) )
-		if xyz_to_cell(x, y, z) >= 0  && xyz_to_cell(x, y, z) < len(cells){
+		//fmt.println(x,y,z)
+		//fmt.println (xyz_to_cell(x, y, z) ,  len(cells) -xyz_to_cell(x, y, z) )
+		if xyz_to_cell(x, y, z) >= 0  && xyz_to_cell(x, y, z) < i32(len(cells)){
 			append(&cells[xyz_to_cell(x, y, z)].keys, i32(i))
-			fmt.println(&cells[xyz_to_cell(x, y, z)].keys)
+			//fmt.println(&cells[xyz_to_cell(x, y, z)].keys)
 		}
 	}
 
@@ -163,15 +163,15 @@ sweep_direction :: proc(
     vert_last := i32(-1)
     
     // Iterate over actual world coordinate range
-    for x := int(model.BOUNDS.x.min); x <= int(model.BOUNDS.x.max); x += 1 {
-        for y := int(model.BOUNDS.y.min); y <= int(model.BOUNDS.y.max); y += 1 {
-            for z := int(model.BOUNDS.z.min); z <= int(model.BOUNDS.z.max); z += 1 {
+    for x := i32(model.BOUNDS.x.min); x <= i32(model.BOUNDS.x.max); x += 1 {
+        for y := i32(model.BOUNDS.y.min); y <= i32(model.BOUNDS.y.max); y += 1 {
+            for z := i32(model.BOUNDS.z.min); z <= i32(model.BOUNDS.z.max); z += 1 {
                 ID := xyz_to_cell(x, y, z)
                 
-                if ID < 0 || ID >= len(cells) do continue
+                if ID < 0 || ID >= i32(len(cells)) do continue
                 
                 if len(cells[ID].keys) > 0 && cells[ID].keys[0] >= 0 {
-                    vert_last = cells[ID].keys[0]
+                    vert_last = ID
                 } else {
                     append(&cells[ID].keys, -vert_last)
                 }

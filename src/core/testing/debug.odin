@@ -224,7 +224,7 @@ debug_grid_population :: proc() {
 	count := 0
 	for i in 0..<len(data.CELLS) {
 		if len(data.CELLS[i].keys) > 0 && count < 5 {
-			x, y, z := cell_to_xyz(i)
+			x, y, z := cell_to_xyz(i32(i))
 			fmt.printf("  Cell %d [%d,%d,%d]: %d verts\n", i, x, y, z, len(data.CELLS[i].keys))
 			count += 1
 		}
