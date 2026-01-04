@@ -147,7 +147,7 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 			ID_curr = data.CELLS[cell_ID].keys[i]
 			if math.distance_vec3(PIXEL_FOV_COORDS, data.MODEL_DATA.VERTICES[ID_curr].pos) < dist {
 			   dist = math.distance_vec3(PIXEL_FOV_COORDS, data.MODEL_DATA.VERTICES[ID_curr].pos)
-			   ID_closest := data.CELLS[cell_ID].keys[i]
+			   ID_closest = i
 				}
 		}
 

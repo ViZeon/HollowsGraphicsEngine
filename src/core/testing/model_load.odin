@@ -142,16 +142,17 @@ grid_spatial_populate :: proc(model: ^data.Model_Data, cells: ^[dynamic]data.Gri
 		y := i32(m.floor(model.VERTICES[i].pos.y))
 		z := i32(m.floor(model.VERTICES[i].pos.z))
 		
+		cell_curr : = xyz_to_cell(x, y, z)
 		//fmt.println(x,y,z)
 		//fmt.println (xyz_to_cell(x, y, z) ,  len(cells) -xyz_to_cell(x, y, z) )
-		if xyz_to_cell(x, y, z) >= 0  && xyz_to_cell(x, y, z) < i32(len(cells)){
-			append(&cells[xyz_to_cell(x, y, z)].keys, i32(i))
+		if  cell_curr >= 0  && cell_curr < i32(len(cells)){
+			append(&cells[cell_curr].keys, i32(i))
 			//fmt.println(&cells[xyz_to_cell(x, y, z)].keys)
 		}
 	}
 
 	// 6 directional sweeps
-	sweep_direction(cells, model) // X forward
+	sweep_direction(&cells^, &model^) // X forward
 	// X backward
 
 }
