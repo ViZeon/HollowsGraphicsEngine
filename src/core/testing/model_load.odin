@@ -163,9 +163,9 @@ sweep_direction :: proc(
     vert_last := i32(-1)
     
     // Iterate over actual world coordinate range
-    for x := i32(model.BOUNDS.x.min); x <= i32(model.BOUNDS.x.max); x += 1 {
-        for y := i32(model.BOUNDS.y.min); y <= i32(model.BOUNDS.y.max); y += 1 {
-            for z := i32(model.BOUNDS.z.min); z <= i32(model.BOUNDS.z.max); z += 1 {
+    for x :i32= 0; x <= data.WORLD_SIZE*2; x += 1 {
+        for y :i32=  0; y <= data.WORLD_SIZE*2; y += 1 {
+            for z :i32= 0; z <= data.WORLD_SIZE*2; z += 1 {
                 ID := xyz_to_cell(x, y, z)
                 
                 if ID < 0 || ID >= i32(len(cells)) do continue

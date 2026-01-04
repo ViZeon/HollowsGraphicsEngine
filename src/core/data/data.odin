@@ -50,7 +50,13 @@ MODEL_DATA: Model_Data
 
 
 CACHE_PATH :: "cache/verts.bin"
-MODEL_PATH :: "assets/kenny_blaster/blaster-e.glb"
+
+//Demo models, uncomment the target one
+//
+//MODEL_PATH :: "assets/kenny_blaster/blaster-e.glb"
+//MODEL_PATH :: "assets/1mSphere.glb"
+MODEL_PATH :: "assets/ABeautifulGame.glb"
+
 SCALE_FACTOR :: 10.0
 FOV :: 120
 CULLING_RANGE :: 300.0

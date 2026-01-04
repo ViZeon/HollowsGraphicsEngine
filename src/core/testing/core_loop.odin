@@ -152,7 +152,7 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 		}
 
 		vertex_idx := data.CELLS[cell_ID].keys[ID_closest]
-		if vertex_idx < 0 do vertex_idx = -vertex_idx
+		//if vertex_idx < 0 do vertex_idx = -vertex_idx
 		vertex = data.MODEL_DATA.VERTICES[vertex_idx]
 	}
 
