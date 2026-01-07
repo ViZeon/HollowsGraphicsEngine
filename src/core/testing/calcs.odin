@@ -87,31 +87,33 @@ handle_camera_input :: proc() {
 }
 
 ortho_pixel_to_world :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
-	bounds := data.MODEL_DATA.BOUNDS
-
-	// Model dimensions
-	model_width := f32(bounds.x.max - bounds.x.min)
-	model_height := f32(bounds.y.max - bounds.y.min)
-
-	// Aspect ratios
-	screen_aspect := f32(width) / f32(height)
-	model_aspect := model_width / model_height
-
-	// Fit model to screen
-	scale: f32
-	if model_aspect > screen_aspect {
-		scale = model_width
-	} else {
-		scale = model_height
-	}
-
-	// UV to world coordinates
+	// Convert pixel to [0,1] UV space
 	uv := math.vec2{pixel_coords.x / f32(width), pixel_coords.y / f32(height)}
-
-	// ADD camera offset to world position
+	
+	// Map UV to world grid space [-WORLD_SIZE, WORLD_SIZE]
+	world_x := (uv.x - 0.5) * f32(data.WORLD_SIZE * 2) + data.CAM_POS.x
+	world_y := (uv.y - 0.5) * f32(data.WORLD_SIZE * 2) + data.CAM_POS.y
+	
 	return math.vec3 {
-		(uv.x - 0.5) * scale + data.CAM_POS.x, // ← Use camera X
-		(uv.y - 0.5) * scale + data.CAM_POS.y, // ← Use camera Y
+		world_x,
+		world_y,
+		data.CAM_POS.z,
+	}
+}
+
+pixel_to_world_fov :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
+	// Convert pixel to [-1, 1] normalized device coordinates
+	ndc_x := f64(pixel_coords.x / f32(width)) * 2.0 - 1.0
+	ndc_y := f64(pixel_coords.y / f32(height)) * 2.0 - 1.0
+	
+	// Calculate view size based on FOV and distance
+	fov_radians := data.FOV * math.PI / 180.0
+	view_height := 2.0 * math.tan(fov_radians / 2.0) * f64(data.CAM_POS.z)
+	view_width := view_height * (f64(width) / f64(height))
+	
+	return math.vec3 {
+		data.CAM_POS.x + f32(ndc_x * view_width * 0.5),
+		data.CAM_POS.y + f32(ndc_y * view_height * 0.5),
 		data.CAM_POS.z,
 	}
 }

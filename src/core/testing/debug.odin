@@ -246,9 +246,8 @@ debug_pixel_lookup :: proc(pixel_coords: math.vec2, world_pos: math.vec3, cell_I
 }
 
 debug_spatial_map :: proc() {
-	for i in 0..< 10 {
-			fmt.println(data.CELLS[i])
-		}
+			fmt.sbprintf(&data.LOG_BOARD, "%+v\n", data.CELLS)
+
 }
 
 // Run at the begin of every frame

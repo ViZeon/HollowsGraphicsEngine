@@ -10,6 +10,7 @@ import model "../modules/model"
 
 import "core:fmt"
 import "core:os"
+import "core:strings"
 
 
 FOV_DISTANCE: f32 = 2.00 * f32(math_lin.tan(data.FOV / 2.0))
@@ -24,6 +25,7 @@ raylib_start_functions :: proc() {
 }
 
 start_functions :: proc() {
+	data.LOG_BOARD = strings.builder_make(0, 0, context.temp_allocator)
 	data.CAM_POS = {-581.8, -224.2, -0.7} // Set it here
 	debug_init() // ← Initialize debug system
 
@@ -70,6 +72,17 @@ start_functions :: proc() {
 
 	// Write first frame
 	frame_write_to_image()
+
+	// Add to start_functions() after model loads:
+fmt.println("First 5 vertex positions:")
+for i in 0..<min(5, len(data.MODEL_DATA.VERTICES)) {
+    fmt.printf("  Vert %d: [%.1f, %.1f, %.1f]\n", 
+        i, 
+        data.MODEL_DATA.VERTICES[i].pos.x,
+        data.MODEL_DATA.VERTICES[i].pos.y, 
+        data.MODEL_DATA.VERTICES[i].pos.z)
+}
+
 }
 
 //called once per frame
@@ -112,11 +125,12 @@ update_fuctions :: proc() {
 	debug_frame_begin() // ← Reset per-frame counters
 	generate_pixels_inplace(frame_pixels, width, height)
 	debug_frame_end() // ← Print stats periodically
+	strings.builder_reset(&data.LOG_BOARD)
 }
 
 //called once per pixel
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
-	PIXEL_FOV_COORDS := ortho_pixel_to_world(pixel_coords, width, height)
+	PIXEL_FOV_COORDS := pixel_to_world_fov(pixel_coords, width, height)
 	default_pixel := math.ivec4{0, 0, 0, 255}
 	//return default_pixel
 
@@ -153,8 +167,13 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 
 		vertex_idx := data.CELLS[cell_ID].keys[ID_closest]
 		//if vertex_idx < 0 do vertex_idx = -vertex_idx
-		vertex = data.MODEL_DATA.VERTICES[vertex_idx]
+		vertex = data.MODEL_DATA.VERTICES[vertex_idx]	
+
+		fmt.sbprintf(&data.LOG_BOARD, "%+v\n", data.MODEL_DATA.VERTICES[vertex_idx])
+		fmt.sbprintf(&data.LOG_BOARD, "%+v\n", PIXEL_FOV_COORDS)
 	}
+
+
 
 	//camera_dir := math.vec3{0, 0, -1}  // ← Fixed direction
 
@@ -162,7 +181,7 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	dot_product := math.dot(vertex.normal, camera_dir)
 	grayscale := math.max(0, dot_product)
 
-	debug_pixel_lookup(pixel_coords, PIXEL_FOV_COORDS, int(cell_ID))
+	//debug_pixel_lookup(pixel_coords, PIXEL_FOV_COORDS, int(cell_ID))
 
 	return math.ivec4{i32(grayscale * 255), 0, 0, 255}
 

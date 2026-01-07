@@ -80,3 +80,13 @@ ToDO:
 - Change the exe name to TheHollowsEngine.exe
 - Create build batch file
 - Make the render system OS agnostic
+
+
+Infinite Mipmapping:
+- each cell has a bool for "has children", if yes, also search in
+- mip levels are relative, they are /10 of the world size per level, down to 1 vertex per meter (look below)]
+- above 1 meter, it's world reltive, under, it's vert count relative (PER MODEL)
+- store whatever relaevant data in the cell, models add/remove themselves to the relevant cells
+
+
+Need a "write to file" system for debugging large data per pixel

@@ -8,7 +8,7 @@ import stbi "vendor:stb/image"
 import "core:fmt"
 import "core:os"
 
-width, height := 1280, 720
+width, height := 320, 240
 
 output_dir :: "image_debug_output/"
 frame_pixels: []u8
@@ -51,31 +51,6 @@ generate_pixels_inplace :: proc(pixels: []u8, width, height: int) {
 			pixels[idx + 1] = u8(pixel.y) // G
 			pixels[idx + 2] = u8(pixel.z) // B
 		}
-	}
-}
-frame_write_to_image :: proc() {
-	@(static) frame_number := 0 // ← Make this static so it persists
-
-	// Create directory if it doesn't exist
-	os.make_directory(output_dir)
-
-	// Find next available number
-	for {
-		filename := fmt.tprintf("%sframe_%04d.png", output_dir, frame_number)
-		if !os.exists(filename) {
-			stbi.write_png(
-				cstring(raw_data(filename)),
-				i32(width),
-				i32(height),
-				3,
-				raw_data(frame_pixels),
-				i32(width * 3),
-			)
-			fmt.printf("Wrote %s\n", filename)
-			frame_number += 1 // ← Increment for next call
-			break
-		}
-		frame_number += 1
 	}
 }
 

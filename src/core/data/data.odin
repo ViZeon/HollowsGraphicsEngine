@@ -1,6 +1,7 @@
 package data
 
 import "core:time"
+import "core:strings"
 
 import math "core:math/linalg/glsl"
 
@@ -56,14 +57,16 @@ CACHE_PATH :: "cache/verts.bin"
 //MODEL_PATH :: "assets/kenny_blaster/blaster-e.glb"
 //MODEL_PATH :: "assets/1mSphere.glb"
 MODEL_PATH :: "assets/ABeautifulGame.glb"
+LOG_PATH :: "./debug/"
 
 SCALE_FACTOR :: 10.0
-FOV :: 120
+FOV :: 60
 CULLING_RANGE :: 300.0
 
 // Shader constants
 COMPUTE_SHADER_PATH :: "test_compute.glsl"
 
+LOG_BOARD : strings.Builder
 
 // Create arrays
 xs: []Sorted_Axis
