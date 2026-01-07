@@ -90,3 +90,41 @@ Infinite Mipmapping:
 
 
 Need a "write to file" system for debugging large data per pixel
+
+
+prepass:
+- have an array/list of all potential pixels
+- grab closest objects to camera, remove relevant pixels covered by said obejct (calculate the exact coverage before settling, considering normals for interpolation, inculding from pixels {mipped}, not just "what blocks are here" )
+- sample remaining pixels and check closest facing obejcts, repeat
+- IMPOSTANRT: this phase is DATA GATHERING only, it forwards the relevant data (everything the verts have, including their 3D positon), but does NOT draw anything on screen
+
+
+hmm...
+maybe I can make it grid based, and only object mips are pixel calced, but with full light influence forwarded
+
+I will need a "screen space shadow pass" tho, where each pixel checks if there is anything between it and the light (also mipped)
+
+or not pixel, the prepass will have a shadow pass where it goes over the geo and checks shadow casting, same idea, but only done once
+
+so my plan for checking shadow casting in the prepass was: go over each pixel, check its 2D plane facing the light, and check its exact xy position facing that light, check that on a UV map with those coordinates on it, if it finds an occupied cell with shorter distance recorded, do nothing, if not or the distance is longer, record its own distance on these XY coordinates
+
+
+
+the next pass, the pixel checks its distance to light and if someone else is already casting a shadow
+
+
+
+maybe I can also store the normals of the lit/shadow casting pixel, so gradual falloff cna be calculated by the others
+
+
+
+this is one "shadow map" per light
+
+
+for global light bounces and shadows:
+- each cell has normal/vector per 5 degress across all 360 degrees
+- each vector has a list of contributing lights (includes bunce lighting and diffuse from other angles)
+- each light source has it's starting position and falloff/diffuse
+- each pixel checks the vector region aimed at it, and sets an end point to relevant lights if applicable, also contributes bounce lighting to relevant directions
+- the above calc can be per vert instead of per pixel, and should interpolate the light effect across relevant vectors
+- this is sampled by screen pixels later for the shadow mapping discussed earlier

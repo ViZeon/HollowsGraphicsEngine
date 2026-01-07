@@ -33,8 +33,14 @@ FRAME_DATA: FrameData = {
 CELLS: [dynamic]Grid_Key
 //In meters
 // WARNING: KEEP AROUND 100 METERS TO BE SAFE
-WORLD_SIZE :i32= 100
+DEPRACATED_WORLD_SIZE :i32= 100
+
 CELL_SIZE :i32= 1
+WORLD_SIZE :i32= 1000
+Cell:: struct {
+	Children_exist :bool,
+	Children : []int,
+}
 
 Grid_Key :: struct {
 	keys:    [dynamic]i32,

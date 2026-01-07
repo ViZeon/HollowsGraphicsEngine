@@ -48,8 +48,8 @@ frame_write_to_image :: proc() {
 				i32(width * 3),
 			)
 			debug_log_save(strings.to_string(data.LOG_BOARD), fmt.aprintf("%v",frame_number))
-			fmt.printf("Wrote %s\n", filename)
-			fmt.println(fmt.aprintf("%v",frame_number))
+			//fmt.printf("Wrote %s\n", filename)
+			//fmt.println(fmt.aprintf("%v",frame_number))
 
 			frame_number += 1 // ← Increment for next call
 			break
