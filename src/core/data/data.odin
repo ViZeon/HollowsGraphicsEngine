@@ -45,6 +45,7 @@ Cell:: struct {
 Grid_Key :: struct {
 	keys:    [dynamic]i32,
 	closest: [dynamic]i32,
+	Average: Vertex
 }
 
 
@@ -80,6 +81,25 @@ ys: []Sorted_Axis
 zs: []Sorted_Axis
 
 
+// Each uint32 can hold:
+// - 8 bits for one parent's children (bits 0-7)
+// - Plus 24 more bits for other data or additional cells
+
+// OR simpler: just store sequentially and calculate offsets
+Mipmap_Bitfield :: struct {
+    bits: [dynamic]u32,
+    level_offsets: [dynamic]int,  // Start index for each mip level
+}
+
+DataPointType :: enum {
+	Cell
+}
+
+DataPoint :: struct {
+	Type : DataPointType,
+	ID : int
+}
+
 // Each entry holds the value and the original index
 Sorted_Axis :: struct {
 	value: f32,
@@ -87,6 +107,7 @@ Sorted_Axis :: struct {
 }
 
 // Vertex structure
+//renamed to DataPoint, maybe I should keep as vert and use another variable
 Vertex :: struct {
 	pos:    math.vec3,
 	normal: math.vec3,

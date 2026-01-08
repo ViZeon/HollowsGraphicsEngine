@@ -128,3 +128,11 @@ for global light bounces and shadows:
 - each pixel checks the vector region aimed at it, and sets an end point to relevant lights if applicable, also contributes bounce lighting to relevant directions
 - the above calc can be per vert instead of per pixel, and should interpolate the light effect across relevant vectors
 - this is sampled by screen pixels later for the shadow mapping discussed earlier
+
+
+detection will switch to a bit mipmap, where it stores up to 4096 meters of "Available/NA" detection in 4 kb, to make sure it's cached in the L1 cache
+then we grab the relevant data from another array that has cell data
+
+everything in the world will be classified as a "Data Point", which has a type, and a hash/ID for the relevant data block
+
+the 4k meters are chosen beause it's a sort of "the furthest possible before a meter block is smaller than a pixel"

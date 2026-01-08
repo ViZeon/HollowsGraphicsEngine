@@ -19,7 +19,7 @@ calc_FPS :: proc(frame_time: i64) -> int {
 
 
 xyz_to_cell :: proc(x_coord: i32, y_coord: i32, z_coord: i32) -> i32 {
-	cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2 // meters per cell
+	cell_scale := data.DEPRACATED_WORLD_SIZE / data.CELL_SIZE * 2 // meters per cell
 
 	// Shift coords from [-150,150] to [0,300], then divide to get cell index [0,2]
 	x := cell_scale/2 + x_coord
@@ -32,7 +32,7 @@ xyz_to_cell :: proc(x_coord: i32, y_coord: i32, z_coord: i32) -> i32 {
 	return i32(ID)
 }
 cell_to_xyz :: proc(ID: i32) -> (x: i32, y: i32, z: i32) {
-	cell_scale :  = i32(data.WORLD_SIZE / data.CELL_SIZE * 2)
+	cell_scale :  = i32(data.DEPRACATED_WORLD_SIZE / data.CELL_SIZE * 2)
 
 	// Extract cell indices from flattened ID
 	z = ID / (cell_scale * cell_scale)
@@ -91,8 +91,8 @@ ortho_pixel_to_world :: proc(pixel_coords: math.vec2, width, height: int) -> mat
 	uv := math.vec2{pixel_coords.x / f32(width), pixel_coords.y / f32(height)}
 	
 	// Map UV to world grid space [-WORLD_SIZE, WORLD_SIZE]
-	world_x := (uv.x - 0.5) * f32(data.WORLD_SIZE * 2) + data.CAM_POS.x
-	world_y := (uv.y - 0.5) * f32(data.WORLD_SIZE * 2) + data.CAM_POS.y
+	world_x := (uv.x - 0.5) * f32(data.DEPRACATED_WORLD_SIZE * 2) + data.CAM_POS.x
+	world_y := (uv.y - 0.5) * f32(data.DEPRACATED_WORLD_SIZE * 2) + data.CAM_POS.y
 	
 	return math.vec3 {
 		world_x,
@@ -116,4 +116,44 @@ pixel_to_world_fov :: proc(pixel_coords: math.vec2, width, height: int) -> math.
 		data.CAM_POS.y + f32(ndc_y * view_height * 0.5),
 		data.CAM_POS.z,
 	}
+}
+
+
+// For level with N cells, next level has N/8 cells
+// Total cells = N + N/8 + N/64 + N/512 + ...
+mipmap_create :: proc(base_cell_count: int, levels: int) -> Mipmap_Bitfield {
+    total_cells := 0
+    offsets := make([dynamic]int, levels)
+    
+    cells_at_level := base_cell_count
+    for i in 0..<levels {
+        offsets[i] = total_cells
+        total_cells += cells_at_level
+        cells_at_level = (cells_at_level + 7) / 8  // Divide by 8, round up
+    }
+    
+    num_u32s := (total_cells + 31) / 32
+    return Mipmap_Bitfield{
+        bits = make([dynamic]u32, num_u32s),
+        level_offsets = offsets,
+    }
+}
+
+cell_get :: proc(mf: ^Mipmap_Bitfield, level: int, index: int) -> bool {
+    absolute_index := mf.level_offsets[level] + index
+    slot := absolute_index / 32
+    bit := u32(absolute_index % 32)
+    return (mf.bits[slot] & (1 << bit)) != 0
+}
+
+cell_set :: proc(mf: ^Mipmap_Bitfield, level: int, index: int, value: bool) {
+    absolute_index := mf.level_offsets[level] + index
+    slot := absolute_index / 32
+    bit := u32(absolute_index % 32)
+    
+    if value {
+        mf.bits[slot] |= (1 << bit)
+    } else {
+        mf.bits[slot] &= ~(1 << bit)
+    }
 }
