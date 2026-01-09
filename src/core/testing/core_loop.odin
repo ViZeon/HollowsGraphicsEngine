@@ -85,9 +85,30 @@ start_functions :: proc() {
 		)
 	}
 
-	//make the object sub to this with its bounds 
-	data.WORLD_BITFIELD = mipmap_create(1,4)
+	//make the object sub to this with its bounds
+	data.WORLD_BITFIELD = mipmap_create(4)
+	fmt.println (len(data.WORLD_BITFIELD.bits))
+	
 
+	cell_set( &data.WORLD_BITFIELD,4, 67, true)
+	fmt.println (cell_get( &data.WORLD_BITFIELD,3, 67))
+
+	render_prepass(data.MODEL_DATA)
+
+}
+
+render_prepass :: proc(model: data.Model_Data) {
+	x_range := model.BOUNDS.x.max - model.BOUNDS.x.min
+	y_range := model.BOUNDS.y.max - model.BOUNDS.y.min
+	z_range := model.BOUNDS.z.max - model.BOUNDS.z.min
+
+	for x in 0 ..< x_range {
+		for y in 0 ..< y_range {
+			for z in 0 ..< z_range {
+
+			}
+		}
+	}
 }
 
 //called once per frame
@@ -137,8 +158,8 @@ update_fuctions :: proc() {
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	PIXEL_FOV_COORDS := pixel_to_world_fov(pixel_coords, width, height)
 	default_pixel := math.ivec4{0, 0, 0, 255}
-	//return default_pixel
-
+	return default_pixel
+/*
 	floor_x := i32(math.floor(PIXEL_FOV_COORDS.x))
 	floor_y := i32(math.floor(PIXEL_FOV_COORDS.y))
 	floor_z := i32(math.floor(PIXEL_FOV_COORDS.z))
@@ -176,6 +197,7 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 
 		fmt.sbprintf(&data.LOG_BOARD, "%+v\n", data.MODEL_DATA.VERTICES[vertex_idx])
 		fmt.sbprintf(&data.LOG_BOARD, "%+v\n", PIXEL_FOV_COORDS)
+
 	}
 
 
@@ -188,5 +210,5 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	//debug_pixel_lookup(pixel_coords, PIXEL_FOV_COORDS, int(cell_ID))
 
 	return math.ivec4{i32(grayscale * 255), 0, 0, 255}
-
+*/
 }

@@ -137,3 +137,7 @@ everything in the world will be classified as a "Data Point", which has a type, 
 
 the 4k meters are chosen beause it's a sort of "the furthest possible before a meter block is smaller than a pixel"
 
+
+
+- fix the bitfield code to function as intended
+- create XYZ storage functions for the bitfield, that auto store mips

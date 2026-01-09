@@ -121,46 +121,46 @@ pixel_to_world_fov :: proc(pixel_coords: math.vec2, width, height: int) -> math.
 
 
 // Calculate the starting offset for a given level
-level_offset :: proc(level: int, base_count: int) -> int {
+level_offset :: proc(level: int) -> int {
     offset := 0
-    count := base_count
+    count := 1
     for i in 0..<level {
         offset += count
-        count = (count + 7) / 8  // Each parent holds 8 children
+        count *= 8  // Each cell subdivides into 8
     }
     return offset
 }
 
 // Calculate total number of cells across all levels
-total_cells :: proc(base_count: int, num_levels: int) -> int {
+total_cells :: proc( num_levels: int) -> int {
     total := 0
-    count := base_count
+    count := 1
     for i in 0..<num_levels {
         total += count
-        count = (count + 7) / 8
+        count *=  8
     }
     return total
 }
 
 // For level with N cells, next level has N/8 cells
 // Total cells = N + N/8 + N/64 + N/512 + ...
-mipmap_create ::  proc(base_count: int, num_levels: int) -> data.Mipmap_Bitfield {
-    total := total_cells(base_count, num_levels)
+mipmap_create ::  proc( num_levels: int) -> data.Mipmap_Bitfield {
+    total := total_cells( num_levels)
     num_u32s := (total + 31) / 32
     return data.Mipmap_Bitfield{
         bits = make([dynamic]u32, num_u32s),
     }
 }
 
-cell_get ::  proc(mf: ^data.Mipmap_Bitfield, level: int, index: int, base_count: int) -> bool {
-    absolute_index := level_offset(level, base_count) + index
+cell_get ::  proc(mf: ^data.Mipmap_Bitfield, level: int, index: int) -> bool {
+    absolute_index := level_offset(level) + index
     slot := absolute_index / 32
     bit := u32(absolute_index % 32)
     return (mf.bits[slot] & (1 << bit)) != 0
 }
 
-cell_set ::  proc(mf: ^data.Mipmap_Bitfield, level: int, index: int, value: bool, base_count: int) {
-    absolute_index := level_offset(level, base_count) + index
+cell_set ::  proc(mf: ^data.Mipmap_Bitfield, level: int, index: int, value: bool) {
+    absolute_index := level_offset(level) + index
     slot := absolute_index / 32
     bit := u32(absolute_index % 32)
     
