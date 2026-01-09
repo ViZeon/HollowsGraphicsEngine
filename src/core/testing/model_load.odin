@@ -130,7 +130,7 @@ grid_spatial_populate :: proc(model: ^data.Model_Data, cells: ^[dynamic]data.Gri
 
 
 	// Allocate grid
-	cell_scale := data.WORLD_SIZE / data.CELL_SIZE * 2
+	cell_scale := data.DEPRACATED_WORLD_SIZE / data.CELL_SIZE * 2
 	total_cells := cell_scale * cell_scale * cell_scale
 	
 	resize(cells, total_cells)
@@ -164,9 +164,9 @@ sweep_direction :: proc(
     vert_last := i32(-1)
     
     // Iterate over actual world coordinate range
-    for x :i32= 0; x <= data.WORLD_SIZE*2; x += 1 {
-        for y :i32=  0; y <= data.WORLD_SIZE*2; y += 1 {
-            for z :i32= 0; z <= data.WORLD_SIZE*2; z += 1 {
+    for x :i32= 0; x <= data.DEPRACATED_WORLD_SIZE*2; x += 1 {
+        for y :i32=  0; y <= data.DEPRACATED_WORLD_SIZE*2; y += 1 {
+            for z :i32= 0; z <= data.DEPRACATED_WORLD_SIZE*2; z += 1 {
                 ID := xyz_to_cell(x, y, z)
                 
                 if ID < 0 || ID >= i32(len(cells)) do continue

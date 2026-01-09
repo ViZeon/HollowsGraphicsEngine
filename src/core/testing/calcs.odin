@@ -119,35 +119,48 @@ pixel_to_world_fov :: proc(pixel_coords: math.vec2, width, height: int) -> math.
 }
 
 
+
+// Calculate the starting offset for a given level
+level_offset :: proc(level: int, base_count: int) -> int {
+    offset := 0
+    count := base_count
+    for i in 0..<level {
+        offset += count
+        count = (count + 7) / 8  // Each parent holds 8 children
+    }
+    return offset
+}
+
+// Calculate total number of cells across all levels
+total_cells :: proc(base_count: int, num_levels: int) -> int {
+    total := 0
+    count := base_count
+    for i in 0..<num_levels {
+        total += count
+        count = (count + 7) / 8
+    }
+    return total
+}
+
 // For level with N cells, next level has N/8 cells
 // Total cells = N + N/8 + N/64 + N/512 + ...
-mipmap_create :: proc(base_cell_count: int, levels: int) -> Mipmap_Bitfield {
-    total_cells := 0
-    offsets := make([dynamic]int, levels)
-    
-    cells_at_level := base_cell_count
-    for i in 0..<levels {
-        offsets[i] = total_cells
-        total_cells += cells_at_level
-        cells_at_level = (cells_at_level + 7) / 8  // Divide by 8, round up
-    }
-    
-    num_u32s := (total_cells + 31) / 32
-    return Mipmap_Bitfield{
+mipmap_create ::  proc(base_count: int, num_levels: int) -> data.Mipmap_Bitfield {
+    total := total_cells(base_count, num_levels)
+    num_u32s := (total + 31) / 32
+    return data.Mipmap_Bitfield{
         bits = make([dynamic]u32, num_u32s),
-        level_offsets = offsets,
     }
 }
 
-cell_get :: proc(mf: ^Mipmap_Bitfield, level: int, index: int) -> bool {
-    absolute_index := mf.level_offsets[level] + index
+cell_get ::  proc(mf: ^data.Mipmap_Bitfield, level: int, index: int, base_count: int) -> bool {
+    absolute_index := level_offset(level, base_count) + index
     slot := absolute_index / 32
     bit := u32(absolute_index % 32)
     return (mf.bits[slot] & (1 << bit)) != 0
 }
 
-cell_set :: proc(mf: ^Mipmap_Bitfield, level: int, index: int, value: bool) {
-    absolute_index := mf.level_offsets[level] + index
+cell_set ::  proc(mf: ^data.Mipmap_Bitfield, level: int, index: int, value: bool, base_count: int) {
+    absolute_index := level_offset(level, base_count) + index
     slot := absolute_index / 32
     bit := u32(absolute_index % 32)
     
@@ -157,3 +170,5 @@ cell_set :: proc(mf: ^Mipmap_Bitfield, level: int, index: int, value: bool) {
         mf.bits[slot] &= ~(1 << bit)
     }
 }
+
+

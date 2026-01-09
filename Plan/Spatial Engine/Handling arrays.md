@@ -136,3 +136,4 @@ then we grab the relevant data from another array that has cell data
 everything in the world will be classified as a "Data Point", which has a type, and a hash/ID for the relevant data block
 
 the 4k meters are chosen beause it's a sort of "the furthest possible before a meter block is smaller than a pixel"
+

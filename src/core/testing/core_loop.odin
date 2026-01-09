@@ -58,7 +58,7 @@ start_functions :: proc() {
 	data.CAM_POS.y = (data.MODEL_DATA.BOUNDS.y.min + data.MODEL_DATA.BOUNDS.y.max) * 0.5
 	data.CAM_POS.z = data.MODEL_DATA.BOUNDS.z.max + 5.0 // 5 units in front of model
 
-	a_ID :i32= 43957
+	a_ID: i32 = 43957
 	x_ID, y_ID, z_ID := cell_to_xyz(a_ID)
 	xyz_ID := xyz_to_cell(x_ID, y_ID, z_ID)
 
@@ -74,14 +74,19 @@ start_functions :: proc() {
 	frame_write_to_image()
 
 	// Add to start_functions() after model loads:
-fmt.println("First 5 vertex positions:")
-for i in 0..<min(5, len(data.MODEL_DATA.VERTICES)) {
-    fmt.printf("  Vert %d: [%.1f, %.1f, %.1f]\n", 
-        i, 
-        data.MODEL_DATA.VERTICES[i].pos.x,
-        data.MODEL_DATA.VERTICES[i].pos.y, 
-        data.MODEL_DATA.VERTICES[i].pos.z)
-}
+	fmt.println("First 5 vertex positions:")
+	for i in 0 ..< min(5, len(data.MODEL_DATA.VERTICES)) {
+		fmt.printf(
+			"  Vert %d: [%.1f, %.1f, %.1f]\n",
+			i,
+			data.MODEL_DATA.VERTICES[i].pos.x,
+			data.MODEL_DATA.VERTICES[i].pos.y,
+			data.MODEL_DATA.VERTICES[i].pos.z,
+		)
+	}
+
+	//make the object sub to this with its bounds 
+	data.WORLD_BITFIELD = mipmap_create(1,4)
 
 }
 
@@ -151,7 +156,7 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 		ID_closest := 0
 
 		if ID_curr < 0 {
-			cell_ID = - ID_curr
+			cell_ID = -ID_curr
 			ID_curr = data.CELLS[cell_ID].keys[0]
 		}
 
@@ -160,19 +165,18 @@ cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 		for i in 0 ..< len(data.CELLS[cell_ID].keys) {
 			ID_curr = data.CELLS[cell_ID].keys[i]
 			if math.distance_vec3(PIXEL_FOV_COORDS, data.MODEL_DATA.VERTICES[ID_curr].pos) < dist {
-			   dist = math.distance_vec3(PIXEL_FOV_COORDS, data.MODEL_DATA.VERTICES[ID_curr].pos)
-			   ID_closest = i
-				}
+				dist = math.distance_vec3(PIXEL_FOV_COORDS, data.MODEL_DATA.VERTICES[ID_curr].pos)
+				ID_closest = i
+			}
 		}
 
 		vertex_idx := data.CELLS[cell_ID].keys[ID_closest]
 		//if vertex_idx < 0 do vertex_idx = -vertex_idx
-		vertex = data.MODEL_DATA.VERTICES[vertex_idx]	
+		vertex = data.MODEL_DATA.VERTICES[vertex_idx]
 
 		fmt.sbprintf(&data.LOG_BOARD, "%+v\n", data.MODEL_DATA.VERTICES[vertex_idx])
 		fmt.sbprintf(&data.LOG_BOARD, "%+v\n", PIXEL_FOV_COORDS)
 	}
-
 
 
 	//camera_dir := math.vec3{0, 0, -1}  // ← Fixed direction

@@ -21,7 +21,7 @@ init_render :: proc(window: glfw.WindowHandle, model: data.Model_Data) -> data.R
     // Create SSBO for vertices
     gl.GenBuffers(1, &state.ssbo)
     gl.BindBuffer(gl.SHADER_STORAGE_BUFFER, state.ssbo)
-    gl.BufferData(gl.SHADER_STORAGE_BUFFER, len(model.VERTICES) * size_of(data.Vertex), 
+    gl.BufferData(gl.SHADER_STORAGE_BUFFER, len(model.VERTICES) * size_of(data.DataPoint), 
                   raw_data(model.VERTICES), gl.STATIC_DRAW)
     gl.BindBufferBase(gl.SHADER_STORAGE_BUFFER, 0, state.ssbo)
 

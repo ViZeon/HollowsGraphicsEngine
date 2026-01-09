@@ -81,6 +81,8 @@ ys: []Sorted_Axis
 zs: []Sorted_Axis
 
 
+WORLD_BITFIELD : Mipmap_Bitfield
+
 // Each uint32 can hold:
 // - 8 bits for one parent's children (bits 0-7)
 // - Plus 24 more bits for other data or additional cells
@@ -88,7 +90,7 @@ zs: []Sorted_Axis
 // OR simpler: just store sequentially and calculate offsets
 Mipmap_Bitfield :: struct {
     bits: [dynamic]u32,
-    level_offsets: [dynamic]int,  // Start index for each mip level
+    transbits: [dynamic]u32,  // Start index for each mip level
 }
 
 DataPointType :: enum {
