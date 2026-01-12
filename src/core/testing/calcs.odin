@@ -265,6 +265,31 @@ model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) ->
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Convert 3D grid position to linear index
 grid_to_index :: proc(x, y, z, grid_size: int) -> int {
 	return z * grid_size * grid_size + y * grid_size + x
