@@ -141,3 +141,66 @@ the 4k meters are chosen beause it's a sort of "the furthest possible before a m
 
 - fix the bitfield code to function as intended
 - create XYZ storage functions for the bitfield, that auto store mips
+
+- fix the xyz mip conversion to account for this:
+the "unset" version needs a little more care
+
+hmm... maybe I need a counter but in another data set (this bitmap needs to stay lean, so nothing other than the bit bools gets stored)
+
+but unsetting a variable should NOT recursively unset all the parents UNLESS there's no other cell that is set on the relevant level
+
+I'll need a separate counter per cell where the added cells increase it, and it only unsets parents if the counter is 0 after unsetting the lowest level
+
+- the mipmap should have bitfield sub-versions (one for transparency and one for existing data) and the actual data version (stores counters, references... etc, not huge in size but "huge" for L1 cache, the bitfield is used for detection, the data list is for access/updates)
+
+- Mipmap covers only 64 meters at 4 kb, and 32 at 1 kb, caches are around 64 kb, but consider 32 for safety, and 16 kb as active
+
+- each vert should store the n4 adjacent ones
+this will get forwarded and used for interpolation
+
+Hz = cycle
+MHz = 1000 000
+GHz = 1000 000 000
+
+RAM = 300-500 cycles
+L1, L2, L3
+L1 = 	5 cycles 		32 kb - 123kb
+L2/L3 = 50/100 cycles	1 - 5 mb
+
+1 bit
+byte = 8 bits
+kb = 1000 bytes
+
+kb = 8000 bits
+
+1
+8
+64
+512
+4,096
+32,768 = 4k kb
+
+
+1
+2
+4
+8
+16
+32
+
+
+1k = 2 million
+
+3-5 Ghz
+
+int = 4 bytes = 4 x 8 bits = 32 bits
+
+xyz coords > is cell occupied (on multiple levels)
+cell > what xyz coordinates are in this cell?
+
+- loop over cells closest to camera at highest level
+- loop over child cells and pick closest
+- repeat till last level is reached
+
+one loop within bounds, accounts for multiplications
+

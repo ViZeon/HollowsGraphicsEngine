@@ -86,30 +86,23 @@ start_functions :: proc() {
 	}
 
 	//make the object sub to this with its bounds
-	data.WORLD_BITFIELD = mipmap_create(4)
+	data.WORLD_BITFIELD = bitfield_create(4)
 	fmt.println (len(data.WORLD_BITFIELD.bits))
 	
 
-	cell_set( &data.WORLD_BITFIELD,4, 67, true)
-	fmt.println (cell_get( &data.WORLD_BITFIELD,3, 67))
+	world_set_at_level( &data.WORLD_BITFIELD, {67,5,9},4)
+	fmt.println (cell_get( &data.WORLD_BITFIELD,4, 67))
+	fmt.println (cell_get( &data.WORLD_BITFIELD,4, 66))
 
-	render_prepass(data.MODEL_DATA)
+	model_bitfield_set(&data.WORLD_BITFIELD, data.MODEL_DATA)
+	model_bitfield := model_bitfield_get(&data.WORLD_BITFIELD, data.MODEL_DATA)
+	fmt.println(model_bitfield)
 
 }
-
+/*
 render_prepass :: proc(model: data.Model_Data) {
-	x_range := model.BOUNDS.x.max - model.BOUNDS.x.min
-	y_range := model.BOUNDS.y.max - model.BOUNDS.y.min
-	z_range := model.BOUNDS.z.max - model.BOUNDS.z.min
-
-	for x in 0 ..< x_range {
-		for y in 0 ..< y_range {
-			for z in 0 ..< z_range {
-
-			}
-		}
-	}
 }
+*/
 
 //called once per frame
 raylib_update_functions :: proc() {
