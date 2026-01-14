@@ -42,10 +42,10 @@ you can change the rendering resolution from src/testing/render.odin
 all other variables/settings can be controlled from src/data/data.odin
 
 The renderer is currently on CPU (single thread) for ease of debugging, it will transition to a GPU compute wokflow when ready.
-  
+
 
 This is the implementation project for the HotWireNine (LiCap FrameWork] Prototype here: https://github.com/ViZeon/licap-framework
 
-
+Discord Server: https://discord.gg/CtFJXAJ6QE
 
 Videos and live development [on stream] will be available on this channel: https://www.youtube.com/@ComplexAce/featured
