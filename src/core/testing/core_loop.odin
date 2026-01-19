@@ -90,6 +90,8 @@ start_functions :: proc() {
 	fmt.println (len(data.WORLD_BITFIELD.bits))
 	
 
+	fmt.println (data.MODEL_DATA.BOUNDS)
+
 	world_set_at_level( &data.WORLD_BITFIELD, {67,5,9},4)
 	fmt.println (cell_get( &data.WORLD_BITFIELD,4, 67))
 	fmt.println (cell_get( &data.WORLD_BITFIELD,4, 66))
@@ -150,6 +152,10 @@ update_fuctions :: proc() {
 //called once per pixel
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	PIXEL_FOV_COORDS := pixel_to_world_fov(pixel_coords, width, height)
+
+	if model_bitfield_get(&data.WORLD_BITFIELD.bits,PIXEL_FOV_COORDS){
+		return math.ivec4{255, 0, 0, 255}
+	}
 	default_pixel := math.ivec4{0, 0, 0, 255}
 	return default_pixel
 /*

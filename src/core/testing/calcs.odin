@@ -221,10 +221,11 @@ model_bitfield_set :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) {
 	y_range := model.BOUNDS.y.max - model.BOUNDS.y.min
 	z_range := model.BOUNDS.z.max - model.BOUNDS.z.min
 
-	for x in model.BOUNDS.x.min ..< model.BOUNDS.x.max {
-		for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
-			for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
-				for i in 0 ..< level_count(mf) {
+	for i in 0 ..< level_count(mf) {
+		for x in model.BOUNDS.x.min ..< model.BOUNDS.x.max {
+			for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
+				for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
+
 					index := xyz_to_index(int(x), int(y), int(z), i)
 					cell_set(mf, i, index, true)
 				}
@@ -244,11 +245,11 @@ model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) ->
 	//resize(&index_occupied, level_offset(level_count + 1))
 	occ_count := 0
 
+	for i in 0 ..< level_count {
+		for x in model.BOUNDS.x.min ..< model.BOUNDS.x.max {
+			for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
+				for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
 
-	for x in model.BOUNDS.x.min ..< model.BOUNDS.x.max {
-		for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
-			for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
-				for i in 0 ..< level_count {
 					index := xyz_to_index(int(x), int(y), int(z), i)
 
 
@@ -263,31 +264,6 @@ model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) ->
 	}
 	return index_occupied
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Convert 3D grid position to linear index
