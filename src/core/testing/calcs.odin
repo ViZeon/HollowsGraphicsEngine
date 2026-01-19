@@ -116,7 +116,7 @@ pixel_to_world_fov :: proc(pixel_coords: math.vec2, width, height: int) -> math.
 
 level_count :: proc(mf: ^data.Mipmap_Bitfield) -> int {
 	max_level := 0
-	for total_cells(max_level + 1) <= len(mf.bits) * 32 {
+	for total_cells(max_level + 1) <= i32(len(mf.bits)) * 32 {
 		max_level += 1
 	}
 	max_level -= 1
@@ -124,9 +124,9 @@ level_count :: proc(mf: ^data.Mipmap_Bitfield) -> int {
 }
 
 // Calculate the starting offset for a given level
-level_offset :: proc(level: int) -> int {
-	offset := 0
-	count := 1
+level_offset :: proc(level: i32) -> i32 {
+	offset :i32= 0
+	count :i32= 1
 	for i in 0 ..< level {
 		offset += count
 		count *= 8 // Each cell subdivides into 8
@@ -135,9 +135,9 @@ level_offset :: proc(level: int) -> int {
 }
 
 // Calculate total number of cells across all levels
-total_cells :: proc(num_levels: int) -> int {
-	total := 0
-	count := 1
+total_cells :: proc(num_levels: int) -> i32 {
+	total :i32= 0
+	count :i32= 1
 	for i in 0 ..< num_levels {
 		total += count
 		count *= 8
@@ -153,15 +153,15 @@ bitfield_create :: proc(num_levels: int) -> data.Mipmap_Bitfield {
 	return data.Mipmap_Bitfield{bits = make([dynamic]u32, num_u32s)}
 }
 
-cell_get :: proc(mf: ^data.Mipmap_Bitfield, level: int, index: int) -> bool {
-	absolute_index := level_offset(level) + index
+cell_get :: proc(mf: ^data.Mipmap_Bitfield, level: int, index: i32) -> bool {
+	absolute_index := level_offset(i32(level)) + index
 	slot := absolute_index / 32
 	bit := u32(absolute_index % 32)
 	return (mf.bits[slot] & (1 << bit)) != 0
 }
 
-cell_set :: proc(mf: ^data.Mipmap_Bitfield, level: int, index: int, value: bool) {
-	absolute_index := level_offset(level) + index
+cell_set :: proc(mf: ^data.Mipmap_Bitfield, level: int, index: i32, value: bool) {
+	absolute_index :i32= level_offset(i32(level)) + index
 	slot := absolute_index / 32
 	bit := u32(absolute_index % 32)
 
@@ -185,32 +185,32 @@ first_child_index :: proc(parent_index: int) -> int {
 
 
 // Convert linear index to 3D coordinates at a given level
-index_to_xyz :: proc(index: int, level: int) -> (x, y, z: int) {
-	grid_size := 1 << uint(level) // 2^level cells per axis
+index_to_xyz :: proc(index: i32, level: int) -> (xyz: math.ivec3) {
+	grid_size :i32= 1 << uint(level) // 2^level cells per axis
 
 	// Decode index (row-major order)
-	z = index / (grid_size * grid_size)
-	y = (index / grid_size) % grid_size
-	x = index % grid_size
+	xyz.z = index / (grid_size * grid_size)
+	xyz.y = (index / grid_size) % grid_size
+	xyz.x = index % grid_size
 
 	// Center coordinates (shift by half grid)
 	half := grid_size / 2
-	x -= half
-	y -= half
-	z -= half
+	xyz.x -= half
+	xyz.y -= half
+	xyz.z -= half
 
 	return
 }
 
 // Reverse: 3D coordinates to index
-xyz_to_index :: proc(x, y, z: int, level: int) -> int {
-	grid_size := 1 << uint(level)
+xyz_to_index :: proc(xyz: math.ivec3, level: int) -> i32 {
+	grid_size :i32= 1 << uint(level)
 	half := grid_size / 2
 
 	// Uncenter
-	x := x + half
-	y := y + half
-	z := z + half
+	x := xyz.x + half
+	y := xyz.y + half
+	z := xyz.z + half
 
 	return z * grid_size * grid_size + y * grid_size + x
 }
@@ -221,27 +221,47 @@ model_bitfield_set :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) {
 	y_range := model.BOUNDS.y.max - model.BOUNDS.y.min
 	z_range := model.BOUNDS.z.max - model.BOUNDS.z.min
 
-	for i in 0 ..< level_count(mf) {
-		for x in model.BOUNDS.x.min ..< model.BOUNDS.x.max {
-			for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
-				for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
+	lvl_count := level_count(mf)
+	for x in model.BOUNDS.x.min ..< model.BOUNDS.x.max {
+		for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
+			for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
 
-					index := xyz_to_index(int(x), int(y), int(z), i)
-					cell_set(mf, i, index, true)
-				}
+				index := xyz_to_index(math.ivec3{i32(x),i32(y),i32(z)}, lvl_count)
+				cell_set(mf, lvl_count, index, true)
 			}
 		}
 	}
+
+
+	cell_count := make([dynamic]i32, lvl_count)
+	cell_count[0] = 0
+
+	for i in 0 ..< lvl_count {
+		if i > 0 {
+			cell_count[i] = total_cells(i) - cell_count[i - 1]
+		}
+
+		for cell in 0 ..< cell_count[i] {
+
+			//cell_xyz := index_to_xyz(cell,i)
+			
+/*
+			if cell_get(mf, lvl_count, cell){
+				cell_set(mf, lvl_count, cell, true)
+			}*/
+		}
+	}
+
 }
 
-model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) -> [dynamic]int {
+model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) -> [dynamic]i32 {
 	x_range := model.BOUNDS.x.max - model.BOUNDS.x.min
 	y_range := model.BOUNDS.y.max - model.BOUNDS.y.min
 	z_range := model.BOUNDS.z.max - model.BOUNDS.z.min
 
 	level_count := level_count(mf)
 
-	index_occupied: [dynamic]int
+	index_occupied: [dynamic]i32
 	//resize(&index_occupied, level_offset(level_count + 1))
 	occ_count := 0
 
@@ -250,7 +270,7 @@ model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) ->
 			for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
 				for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
 
-					index := xyz_to_index(int(x), int(y), int(z), i)
+					index := xyz_to_index(math.ivec3{i32(x), i32(y), i32(z)}, i)
 
 
 					cell_occ := cell_get(mf, i, index)
@@ -263,78 +283,4 @@ model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) ->
 		}
 	}
 	return index_occupied
-}
-
-
-// Convert 3D grid position to linear index
-grid_to_index :: proc(x, y, z, grid_size: int) -> int {
-	return z * grid_size * grid_size + y * grid_size + x
-}
-
-// Set cell at world position and propagate up
-// Get world position from cell at specific level
-cell_to_world :: proc(mf: ^data.Mipmap_Bitfield, level: int, index: int) -> math.vec3 {
-	// Infer max level
-	max_level := 0
-	for total_cells(max_level + 1) <= len(mf.bits) * 32 {
-		max_level += 1
-	}
-	max_level -= 1
-
-	grid_size := 1 << uint(level)
-	cell_size := 1 << uint(max_level - level) // Size in meters
-	world_size := 1 << uint(max_level)
-	half_size := world_size / 2.0
-
-	// Linear index to 3D grid
-	z := index / (grid_size * grid_size)
-	y := (index / grid_size) % grid_size
-	x := index % grid_size
-
-	// Grid to world (cell center)
-	return {
-		f32(x * cell_size + cell_size / 2.0 - half_size),
-		f32(y * cell_size + cell_size / 2.0 - half_size),
-		f32(z * cell_size + cell_size / 2.0 - half_size),
-	}
-}
-
-// Set cell at world position at specific level (and propagate up)
-world_set_at_level :: proc(mf: ^data.Mipmap_Bitfield, world_pos: math.vec3, target_level: int) {
-	// Infer max level
-	max_level := 0
-	for total_cells(max_level + 1) <= len(mf.bits) * 32 {
-		max_level += 1
-	}
-	max_level -= 1
-
-	grid_size := 1 << uint(target_level)
-	cell_size := 1 << uint(max_level - target_level)
-	world_size := 1 << uint(max_level)
-	half_size := world_size / 2.0
-
-	// World to grid at target level
-	grid_x := (int(world_pos.x) + half_size / cell_size)
-	grid_y := (int(world_pos.y) + half_size / cell_size)
-	grid_z := (int(world_pos.z) + half_size / cell_size)
-
-	if grid_x < 0 ||
-	   grid_x >= grid_size ||
-	   grid_y < 0 ||
-	   grid_y >= grid_size ||
-	   grid_z < 0 ||
-	   grid_z >= grid_size {
-		return
-	}
-
-	// Set at target level and propagate up
-	x, y, z := grid_x, grid_y, grid_z
-	for level := target_level; level >= 0; level -= 1 {
-		gs := 1 << uint(level)
-		index := grid_to_index(x, y, z, gs)
-		cell_set(mf, level, index, true)
-		x /= 2
-		y /= 2
-		z /= 2
-	}
 }

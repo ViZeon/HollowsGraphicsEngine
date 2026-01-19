@@ -87,14 +87,14 @@ start_functions :: proc() {
 
 	//make the object sub to this with its bounds
 	data.WORLD_BITFIELD = bitfield_create(4)
-	fmt.println (len(data.WORLD_BITFIELD.bits))
-	
+	fmt.println(len(data.WORLD_BITFIELD.bits))
 
-	fmt.println (data.MODEL_DATA.BOUNDS)
 
-	world_set_at_level( &data.WORLD_BITFIELD, {67,5,9},4)
-	fmt.println (cell_get( &data.WORLD_BITFIELD,4, 67))
-	fmt.println (cell_get( &data.WORLD_BITFIELD,4, 66))
+	fmt.println(data.MODEL_DATA.BOUNDS)
+
+	//world_set_at_level( &data.WORLD_BITFIELD, {67,5,9},4)
+	fmt.println(cell_get(&data.WORLD_BITFIELD, 4, 67))
+	fmt.println(cell_get(&data.WORLD_BITFIELD, 4, 66))
 
 	model_bitfield_set(&data.WORLD_BITFIELD, data.MODEL_DATA)
 	model_bitfield := model_bitfield_get(&data.WORLD_BITFIELD, data.MODEL_DATA)
@@ -153,12 +153,22 @@ update_fuctions :: proc() {
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
 	PIXEL_FOV_COORDS := pixel_to_world_fov(pixel_coords, width, height)
 
-	if model_bitfield_get(&data.WORLD_BITFIELD.bits,PIXEL_FOV_COORDS){
-		return math.ivec4{255, 0, 0, 255}
+
+	cell_index := xyz_to_index(math.ivec3 {
+		i32(PIXEL_FOV_COORDS.x),
+		i32(PIXEL_FOV_COORDS.y),
+		i32(PIXEL_FOV_COORDS.z)},
+		4,
+	)
+	if cell_index < i32(len(data.WORLD_BITFIELD.bits)) && cell_index > -1 {
+		cell := cell_get(&data.WORLD_BITFIELD, 4, cell_index)
+		if cell {
+			return math.ivec4{255, 0, 0, 255}
+		}
 	}
 	default_pixel := math.ivec4{0, 0, 0, 255}
 	return default_pixel
-/*
+	/*
 	floor_x := i32(math.floor(PIXEL_FOV_COORDS.x))
 	floor_y := i32(math.floor(PIXEL_FOV_COORDS.y))
 	floor_z := i32(math.floor(PIXEL_FOV_COORDS.z))
