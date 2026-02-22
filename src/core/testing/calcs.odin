@@ -215,72 +215,131 @@ xyz_to_index :: proc(xyz: math.ivec3, level: int) -> i32 {
 	return z * grid_size * grid_size + y * grid_size + x
 }
 
+model_bitfield_set :: proc(
+    mf: ^data.Mipmap_Bitfield,
+    model: data.Model_Data,
+) {
 
-model_bitfield_set :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) {
-	x_range := model.BOUNDS.x.max - model.BOUNDS.x.min
-	y_range := model.BOUNDS.y.max - model.BOUNDS.y.min
-	z_range := model.BOUNDS.z.max - model.BOUNDS.z.min
+    lvl_count := level_count(mf)
 
-	lvl_count := level_count(mf)
-	for x in model.BOUNDS.x.min ..< model.BOUNDS.x.max {
-		for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
-			for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
+    grid_size : i32 = 1 << uint(lvl_count)
+    half      : i32 = grid_size / 2
 
-				index := xyz_to_index(math.ivec3{i32(x),i32(y),i32(z)}, lvl_count)
-				cell_set(mf, lvl_count, index, true)
-			}
-		}
-	}
+    // Use model bounds to normalize into voxel space
+    range_x := model.BOUNDS.x.max - model.BOUNDS.x.min
+    range_y := model.BOUNDS.y.max - model.BOUNDS.y.min
+    range_z := model.BOUNDS.z.max - model.BOUNDS.z.min
 
+    if range_x == 0 || range_y == 0 || range_z == 0 {
+        return
+    }
 
-	cell_count := make([dynamic]i32, lvl_count)
-	cell_count[0] = 0
+    // --------------------------------------------
+    // 1️⃣ Populate finest level from vertices
+    // --------------------------------------------
 
-	for i in 0 ..< lvl_count {
-		if i > 0 {
-			cell_count[i] = total_cells(i) - cell_count[i - 1]
-		}
+    for i in 0 ..< len(model.VERTICES) {
 
-		for cell in 0 ..< cell_count[i] {
+        v := model.VERTICES[i]
 
-			//cell_xyz := index_to_xyz(cell,i)
-			
-/*
-			if cell_get(mf, lvl_count, cell){
-				cell_set(mf, lvl_count, cell, true)
-			}*/
-		}
-	}
+        nx := (v.pos.x - model.BOUNDS.x.min) / range_x
+        ny := (v.pos.y - model.BOUNDS.y.min) / range_y
+        nz := (v.pos.z - model.BOUNDS.z.min) / range_z
 
+        if nx < 0 || nx > 1 ||
+           ny < 0 || ny > 1 ||
+           nz < 0 || nz > 1 {
+            continue
+        }
+
+        gx := i32(nx * f32(grid_size))
+        gy := i32(ny * f32(grid_size))
+        gz := i32(nz * f32(grid_size))
+
+        if gx >= grid_size do gx = grid_size - 1
+        if gy >= grid_size do gy = grid_size - 1
+        if gz >= grid_size do gz = grid_size - 1
+
+        gx -= half
+        gy -= half
+        gz -= half
+
+        index := xyz_to_index(math.ivec3{gx, gy, gz}, lvl_count)
+
+        if index < 0 {
+            continue
+        }
+
+        cell_set(mf, lvl_count, index, true)
+    }
+
+    // --------------------------------------------
+    // 2️⃣ Propagate occupancy upward
+    // --------------------------------------------
+
+    for level := lvl_count - 1; level >= 0; level -= 1 {
+
+        parent_count : i32 = 1 << (3 * u32(level))
+
+        for p in 0 ..< parent_count {
+
+            first_child : i32 = p * 8
+
+            occupied := false
+
+            for c in 0 ..< 8 {
+                if cell_get(mf, level + 1, first_child + i32(c)) {
+                    occupied = true
+                    break
+                }
+            }
+
+            if occupied {
+                cell_set(mf, level, p, true)
+            }
+        }
+    }
 }
 
-model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield, model: data.Model_Data) -> [dynamic]i32 {
-	x_range := model.BOUNDS.x.max - model.BOUNDS.x.min
-	y_range := model.BOUNDS.y.max - model.BOUNDS.y.min
-	z_range := model.BOUNDS.z.max - model.BOUNDS.z.min
 
-	level_count := level_count(mf)
+model_bitfield_get :: proc(mf: ^data.Mipmap_Bitfield,model: data.Model_Data,) -> [dynamic]i32 {
 
-	index_occupied: [dynamic]i32
-	//resize(&index_occupied, level_offset(level_count + 1))
-	occ_count := 0
+    level_count := level_count(mf)
 
-	for i in 0 ..< level_count {
-		for x in model.BOUNDS.x.min ..< model.BOUNDS.x.max {
-			for y in model.BOUNDS.y.min ..< model.BOUNDS.y.max {
-				for z in model.BOUNDS.z.min ..< model.BOUNDS.z.max {
+    min_x := i32(model.BOUNDS.x.min)
+    max_x := i32(model.BOUNDS.x.max)
 
-					index := xyz_to_index(math.ivec3{i32(x), i32(y), i32(z)}, i)
+    min_y := i32(model.BOUNDS.y.min)
+    max_y := i32(model.BOUNDS.y.max)
+
+    min_z := i32(model.BOUNDS.z.min)
+    max_z := i32(model.BOUNDS.z.max)
+
+    index_occupied: [dynamic]i32
+
+    for x in min_x ..< max_x {
+        for y in min_y ..< max_y {
+            for z in min_z ..< max_z {
+
+                index := xyz_to_index(
+                    math.ivec3{x, y, z},
+                    level_count,
+                )
+
+                if index < 0 {
+                    continue
+                }
+
+                if cell_get(mf, level_count, index) {
+                    append(&index_occupied, index)
+                }
+            }
+        }
+    }
+    fmt.println("Root occupied:", cell_get(&data.WORLD_BITFIELD, 0, 0))
 
 
-					cell_occ := cell_get(mf, i, index)
-					if cell_occ {
-						append(&index_occupied, index) // Remove the [occ_count] indexing
-						occ_count += 1
-					}
-				}
-			}
-		}
-	}
-	return index_occupied
+    return index_occupied
 }
+
+
