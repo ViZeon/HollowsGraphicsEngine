@@ -1,6 +1,6 @@
 package testing
 
-import data "../data"
+import data "../_data"
 import math "core:math/linalg/glsl"
 
 ref_valid :: proc(ref: data.Ref, generation: u32) -> bool {

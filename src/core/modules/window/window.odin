@@ -1,7 +1,6 @@
 package window
 
-import "../../imports/imports_vendor"
-import "../../data"
+import data "../../_data"
 import "core:fmt"
 import "core:strings"
 import os "core:os"

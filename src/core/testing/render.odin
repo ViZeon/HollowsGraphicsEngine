@@ -1,6 +1,6 @@
 package testing
 
-import data "../data"
+import data "../_data"
 import math "core:math/linalg/glsl"
 import rl "vendor:raylib"
 import stbi "vendor:stb/image"

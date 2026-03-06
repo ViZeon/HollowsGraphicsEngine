@@ -1,220 +1,104 @@
 package testing
 
-import data "../data"
+import data "../_data"
 import model "../modules/model"
-
+import math "core:math/linalg/glsl"
 import "core:fmt"
-import "core:math"
-//import "core:"
-import m "core:math/linalg/glsl"
-import os "core:os"
-import "core:slice"
-import "vendor:raylib"
 
+load_model :: proc(path: cstring) -> (datapoints: [dynamic]data.DataPoint, bounds: data.Bounds, center: math.vec3, ok: bool) {
+    raw_verts, loaded := model.load_model(path)
+    if !loaded do return {}, {}, {}, false
 
-tmp_pixel: m.ivec4
+    bounds.x.min = raw_verts[0].pos.x
+    bounds.x.max = raw_verts[0].pos.x
+    bounds.y.min = raw_verts[0].pos.y
+    bounds.y.max = raw_verts[0].pos.y
+    bounds.z.min = raw_verts[0].pos.z
+    bounds.z.max = raw_verts[0].pos.z
 
+    for v in raw_verts {
+        if v.pos.x < bounds.x.min do bounds.x.min = v.pos.x
+        if v.pos.x > bounds.x.max do bounds.x.max = v.pos.x
+        if v.pos.y < bounds.y.min do bounds.y.min = v.pos.y
+        if v.pos.y > bounds.y.max do bounds.y.max = v.pos.y
+        if v.pos.z < bounds.z.min do bounds.z.min = v.pos.z
+        if v.pos.z > bounds.z.max do bounds.z.max = v.pos.z
 
-model_load_realtime :: proc() {
+        append(&datapoints, data.DataPoint{
+            pos    = v.pos,
+            normal = v.normal,
+            type   = .Vertex,
+            ref    = data.REF_INVALID,
+        })
+    }
 
-	// CACHE DISABLED TEMPORARILY
-	// if os.exists(data.CACHE_PATH) {
-	// 	data_verts, err :=
-	// 		os.read_entire_file_from_path(data.CACHE_PATH, context.allocator)
-	// 	if err != nil do panic("you fool! You've doomed us all!")
-	// 	data.MODEL_DATA.VERTICES = slice.reinterpret([]data.Vertex, data_verts)
+    center = math.vec3{
+        (bounds.x.min + bounds.x.max) * 0.5,
+        (bounds.y.min + bounds.y.max) * 0.5,
+        (bounds.z.min + bounds.z.max) * 0.5,
+    }
 
-	// 	for i in 0 ..< 5 {
-	// 		fmt.println(data_verts[i])
-	// 		fmt.println(data.MODEL_DATA.VERTICES[i])
-	// 	}
-	// } else {
-	// 	data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
-	// 	data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
-	// 	_ = os.write_entire_file(data.CACHE_PATH, slice.to_bytes(data.MODEL_DATA.VERTICES[:]))
-	// }
-
-	data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
-	data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
-	fmt.println("model initialized")
-	data.MODEL_INITIALIZED = true
+    fmt.println("load_model_v1: loaded", len(datapoints), "datapoints, center:", center)
+    return datapoints, bounds, center, true
 }
 
-// Process raw vertices into Model_Data
-process_vertices :: proc(vertices: ^[]data.Vertex, scale_factor: f32) -> data.Model_Data {
+field_create :: proc(bounds: data.Bounds, levels: int) -> data.Field {
+    field: data.Field
+    field.bounds = bounds
+    field.levels = levels
 
+    total    := total_cells(levels + 1)
+    num_u32s := (total + 31) / 32
+    field.bits = make([dynamic]u32, num_u32s)
 
-	// Init bounds from first vertex
-	first := vertices[0]
-	min_x := first.pos.x
-	min_y := first.pos.y
-	min_z := first.pos.z
+    finest_count := i32(1) << uint(levels)
+    finest_count  = finest_count * finest_count * finest_count
+    field.refs = make([dynamic][dynamic]i32, finest_count)
 
-	max_x := min_x
-	max_y := min_y
-	max_z := min_z
-
-	MAX_RADIUS: f32
-
-	// Scale all vertices
-	scaled := make([]data.Vertex, len(vertices)) or_else panic("failed to make")
-	for i in 0 ..< len(vertices) {
-		scaled[i].pos.x = vertices[i].pos.x * scale_factor
-		scaled[i].pos.y = vertices[i].pos.y * scale_factor
-		scaled[i].pos.z = vertices[i].pos.z * scale_factor
-
-		scaled[i].normal = vertices[i].normal
-
-		// Find bounds
-		x := scaled[i].pos.x
-		y := scaled[i].pos.y
-		z := scaled[i].pos.z
-
-		if x < min_x do min_x = x
-		if y < min_y do min_y = y
-		if z < min_z do min_z = z
-
-		if x > max_x do max_x = x
-		if y > max_y do max_y = y
-		if z > max_z do max_z = z
-
-		if MAX_RADIUS < max_x do MAX_RADIUS = max_x
-		if MAX_RADIUS < max_y do MAX_RADIUS = max_y
-		if MAX_RADIUS < max_z do MAX_RADIUS = max_z
-	}
-
-	bounds: data.Bounds
-
-	bounds.x.min = min_x
-	bounds.y.min = min_y
-	bounds.z.min = min_z
-
-
-	bounds.x.max = max_x
-	bounds.y.max = max_y
-	bounds.z.max = max_z
-
-
-	// Sort by floor(x), floor(y), then z
-	slice.sort_by(scaled, proc(a, b: data.Vertex) -> bool {
-		if m.floor(a.pos.x) != m.floor(b.pos.x) do return m.floor(a.pos.x) < m.floor(b.pos.x)
-		if m.floor(a.pos.y) != m.floor(b.pos.y) do return m.floor(a.pos.y) < m.floor(b.pos.y)
-		return a.pos.z < b.pos.z
-	})
-
-	return data.Model_Data{scaled, bounds, MAX_RADIUS}
+    return field
 }
 
-grid_spatial_populate :: proc(model: ^data.Model_Data, cells: ^[dynamic]data.Grid_Key) {
-	
-	if len(model.VERTICES) == 0 do return
+field_populate :: proc(field: ^data.Field, datapoints: []data.DataPoint) {
+    grid_size := i32(1) << uint(field.levels)
+    half      := grid_size / 2
 
-	size_x: int = int(model.BOUNDS.x.max - model.BOUNDS.x.min) + 1
-	size_y: int = int(model.BOUNDS.y.max - model.BOUNDS.y.min) + 1
-	size_z: int = int(model.BOUNDS.z.max - model.BOUNDS.z.min) + 1
+    bx := field.bounds.x.max - field.bounds.x.min
+    by := field.bounds.y.max - field.bounds.y.min
+    bz := field.bounds.z.max - field.bounds.z.min
 
+    for i in 0 ..< len(datapoints) {
+        dp := datapoints[i]
 
-	// Allocate grid
-	cell_scale := data.DEPRACATED_WORLD_SIZE / data.CELL_SIZE * 2
-	total_cells := cell_scale * cell_scale * cell_scale
-	
-	resize(cells, total_cells)
-	fmt.println("Allocated cells:", len(cells))
+        nx := (dp.pos.x - field.bounds.x.min) / bx
+        ny := (dp.pos.y - field.bounds.y.min) / by
+        nz := (dp.pos.z - field.bounds.z.min) / bz
 
-	// Populate with vertices
-	for i in 0 ..< len(model.VERTICES) {
-		x := i32(m.floor(model.VERTICES[i].pos.x))
-		y := i32(m.floor(model.VERTICES[i].pos.y))
-		z := i32(m.floor(model.VERTICES[i].pos.z))
-		
-		cell_curr : = xyz_to_cell(x, y, z)
-		//fmt.println(x,y,z)
-		//fmt.println (xyz_to_cell(x, y, z) ,  len(cells) -xyz_to_cell(x, y, z) )
-		if  cell_curr >= 0  && cell_curr < i32(len(cells)){
-			append(&cells[cell_curr].keys, i32(i))
-			//fmt.println(&cells[xyz_to_cell(x, y, z)].keys)
-		}
-	}
+        x := i32(math.floor_f32(nx * f32(grid_size))) - half
+        y := i32(math.floor_f32(ny * f32(grid_size))) - half
+        z := i32(math.floor_f32(nz * f32(grid_size))) - half
 
-	// 6 directional sweeps
-	sweep_direction(&cells^, &model^) // X forward
-	// X backward
+        if x < -half || x >= half ||
+           y < -half || y >= half ||
+           z < -half || z >= half {
+            continue
+        }
 
-}
+        idx := xyz_to_index(math.ivec3{x, y, z}, field.levels)
+        cell_set_field(field, field.levels, idx, true)
+        append(&field.refs[idx], i32(i))
+    }
 
-sweep_direction :: proc(
-    cells: ^[dynamic]data.Grid_Key,
-    model: ^data.Model_Data,
-) {
-    vert_last := i32(-1)
-    
-    // Iterate over actual world coordinate range
-    for x :i32= 0; x <= data.DEPRACATED_WORLD_SIZE*2; x += 1 {
-        for y :i32=  0; y <= data.DEPRACATED_WORLD_SIZE*2; y += 1 {
-            for z :i32= 0; z <= data.DEPRACATED_WORLD_SIZE*2; z += 1 {
-                ID := xyz_to_cell(x, y, z)
-                
-                if ID < 0 || ID >= i32(len(cells)) do continue
-                
-                if len(cells[ID].keys) > 0 && cells[ID].keys[0] >= 0 {
-                    vert_last = ID
-                } else {
-                    append(&cells[ID].keys, -vert_last)
+    // Propagate fine -> coarse
+    for level := field.levels - 1; level >= 0; level -= 1 {
+        parent_count := i32(1) << (3 * u32(level))
+        for p in 0 ..< parent_count {
+            first_child := i32(p) * 8
+            for c in 0 ..< 8 {
+                if cell_get_field(field, level + 1, first_child + i32(c)) {
+                    cell_set_field(field, level, i32(p), true)
+                    break
                 }
             }
         }
     }
-}
-
-sort_by_axis :: proc(
-	list: ^[]data.Vertex,
-	xs: ^[]data.Sorted_Axis,
-	ys: ^[]data.Sorted_Axis,
-	zs: ^[]data.Sorted_Axis,
-) {
-	xs^ = make([]data.Sorted_Axis, len(list))
-	ys^ = make([]data.Sorted_Axis, len(list))
-	zs^ = make([]data.Sorted_Axis, len(list))
-
-	// Fill them
-	for i in 0 ..< len(list) {
-		xs[i] = data.Sorted_Axis{list[i].pos.x, i}
-		ys[i] = data.Sorted_Axis{list[i].pos.y, i}
-		zs[i] = data.Sorted_Axis{list[i].pos.z, i}
-	}
-
-	// Sort them independently
-
-	for i in 0 ..< len(list^) {
-		xs^[i] = data.Sorted_Axis{list^[i].pos.x, i}
-		ys^[i] = data.Sorted_Axis{list^[i].pos.y, i}
-		zs^[i] = data.Sorted_Axis{list^[i].pos.z, i}
-	}
-
-	slice.sort_by(xs^, proc(a, b: data.Sorted_Axis) -> bool {
-		return a.value < b.value
-	})
-
-	slice.sort_by(ys^, proc(a, b: data.Sorted_Axis) -> bool {
-		return a.value < b.value
-	})
-
-	slice.sort_by(zs^, proc(a, b: data.Sorted_Axis) -> bool {
-		return a.value < b.value
-	})
-
-
-}
-
-
-check_bounds :: proc(x: int, y: int, z: int, bounds: data.Bounds) -> bool {
-	size_x := int(bounds.x.max - bounds.x.min) + 1
-	size_y := int(bounds.y.max - bounds.y.min) + 1
-	size_z := int(bounds.z.max - bounds.z.min) + 1
-
-	if x >= size_x || x < 0 do return false
-	if y >= size_y || y < 0 do return false
-	if z >= size_z || z < 0 do return false
-
-	return true
 }

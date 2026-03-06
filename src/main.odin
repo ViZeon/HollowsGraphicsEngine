@@ -2,10 +2,9 @@ package main
 
 //import "core:imports/imports_vendor"
 //import "core:imports/imports_local"
-import data "core/data"
+import data "core/_data"
 import window "core/modules/window"
 import model "core/modules/model"
-import render "core/modules/render"
 import testing "core/testing"
 import "vendor:glfw"
 import "core:fmt"

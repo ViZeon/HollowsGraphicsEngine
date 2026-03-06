@@ -1,6 +1,6 @@
 package testing
 
-import data "../data"
+import data "../_data"
 
 import "core:os"
 import "core:fmt"

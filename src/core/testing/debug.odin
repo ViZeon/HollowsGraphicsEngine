@@ -1,6 +1,6 @@
 package testing
 
-import data "../data"
+import data "../_data"
 
 import "core:time"
 import "core:fmt"
@@ -92,12 +92,12 @@ debug_frame_end :: proc() {
 				data.CAM_POS.z - debug_stats.last_cam_pos.z,
 			)
 		}
-
+/*
 		fmt.println("Bounds X:", data.MODEL_DATA.BOUNDS.x)
 		fmt.println("Bounds Y:", data.MODEL_DATA.BOUNDS.y)
 		fmt.println("Bounds Z:", data.MODEL_DATA.BOUNDS.z)
 		fmt.println()
-
+*/
 		fmt.println(data.FRAME_TIME, data.APP_TIME)
 
 		debug_stats.last_print_time = f64(current_time)
@@ -205,6 +205,7 @@ debug_draw_overlay :: proc() {
 	}
 }
 
+/*
 debug_grid_population :: proc() {
 	fmt.println("=== GRID POPULATION ===")
 	total_cells_with_data := 0
@@ -246,9 +247,10 @@ debug_pixel_lookup :: proc(pixel_coords: math.vec2, world_pos: math.vec3, cell_I
 }
 
 debug_spatial_map :: proc() {
-			fmt.sbprintf(&data.LOG_BOARD, "%+v\n", data.CELLS)
+			//fmt.sbprintf(&data.LOG_BOARD, "%+v\n", data.CELLS)
 
 }
+*/
 
 // Run at the begin of every frame
 clear_screen :: proc() {

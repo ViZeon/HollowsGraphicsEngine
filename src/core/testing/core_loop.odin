@@ -5,7 +5,7 @@ import math "core:math/linalg/glsl"
 import rl "vendor:raylib"
 import stbi "vendor:stb/image"
 
-import data "../data"
+import data "../_data"
 import model "../modules/model"
 
 import "core:fmt"
@@ -94,7 +94,7 @@ start_functions :: proc() {
 
 
 	// Load model
-	dps, bounds, center, ok := load_model_v1(data.MODEL_PATH)
+	dps, bounds, center, ok := load_model(data.MODEL_PATH)
 	if !ok do return
 	data.datapoints = dps
 
