@@ -30,20 +30,6 @@ trilinear_interp :: proc(
     return c0 * (1 - fz) + c1 * fz
 }
 
-handle_camera_input :: proc() {
-    dt         := rl.GetFrameTime()
-    move_speed := data.CAM_SPEED * dt * 60.0
-
-    if rl.IsKeyDown(.LEFT_SHIFT) do move_speed *= 3.0
-
-    if rl.IsKeyDown(.W) do data.CAM_POS.y += move_speed
-    if rl.IsKeyDown(.S) do data.CAM_POS.y -= move_speed
-    if rl.IsKeyDown(.A) do data.CAM_POS.x -= move_speed
-    if rl.IsKeyDown(.D) do data.CAM_POS.x += move_speed
-    if rl.IsKeyDown(.Q) do data.CAM_POS.z -= move_speed
-    if rl.IsKeyDown(.E) do data.CAM_POS.z += move_speed
-}
-
 ortho_pixel_to_world :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
     uv      := math.vec2{pixel_coords.x / f32(width), pixel_coords.y / f32(height)}
     // OLD: relied on DEPRACATED_WORLD_SIZE, kept for reference
