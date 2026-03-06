@@ -8,8 +8,6 @@ import stbi "vendor:stb/image"
 import "core:fmt"
 import "core:os"
 
-width, height := 320, 240
-
 output_dir :: "image_debug_output/"
 frame_pixels: []u8
 image: rl.Image
@@ -22,8 +20,8 @@ raylib_render_frame :: proc() {
 	// Create image and texture
 	image = rl.Image {
 		data    = raw_data(frame_pixels),
-		width   = i32(width),
-		height  = i32(height),
+		width   = i32(data.SCREEN_WIDTH),
+		height  = i32(data.SCREEN_HEIGHT),
 		mipmaps = 1,
 		format  = .UNCOMPRESSED_R8G8B8,
 	}
@@ -56,7 +54,7 @@ generate_pixels_inplace :: proc(pixels: []u8, width, height: int) {
 
 raylib_render :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE})
-	rl.InitWindow(i32(width), i32(height), "Software Renderer")
+	rl.InitWindow(i32(data.SCREEN_WIDTH), i32(data.SCREEN_HEIGHT), "Software Renderer")
 	defer rl.CloseWindow()
 
 	//rl.SetTargetFPS(60)

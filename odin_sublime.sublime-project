@@ -8,10 +8,17 @@
 	"build_systems": 
 	[
 		{
-			"name": "sublime_odin_template",
+			"name": "Odin - Windows",
 			"shell_cmd": "build_windows.bat",
-    		"working_dir": "${project_path:${folder}}",
+			"working_dir": "${project_path:${folder}}",
 			//"cmd": "src.exe ",
+			"file_regex": "^(.+)\\(([0-9]+):([0-9]+)\\) (.+)$",
+		},
+		{
+			"name": "Odin - Linux",
+			"shell_cmd": "zsh build_linux.sh",
+			"working_dir": "${project_path:${folder}}",
+			//"cmd": "src ",
 			"file_regex": "^(.+)\\(([0-9]+):([0-9]+)\\) (.+)$",
 		}
 	],

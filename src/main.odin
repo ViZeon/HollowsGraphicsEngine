@@ -15,6 +15,7 @@ import "core:strings"
 
 
 main :: proc() {
+    fmt.println("Odin's Online")
     testing.raylib_render()
     //testing.buffer_render()
 }

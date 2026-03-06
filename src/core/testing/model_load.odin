@@ -8,7 +8,6 @@ import "core:math"
 //import "core:"
 import m "core:math/linalg/glsl"
 import os "core:os"
-import os2 "core:os/os2"
 import "core:slice"
 import "vendor:raylib"
 
@@ -18,41 +17,27 @@ tmp_pixel: m.ivec4
 
 model_load_realtime :: proc() {
 
-	if os.exists(data.CACHE_PATH) {
-		data_verts :=
-			os.read_entire_file_from_filename_or_err(data.CACHE_PATH) or_else panic(
-				"you fool! You've doomed us all!",
-			)
-		data.MODEL_DATA.VERTICES = slice.reinterpret([]data.Vertex, data_verts)
+	// CACHE DISABLED TEMPORARILY
+	// if os.exists(data.CACHE_PATH) {
+	// 	data_verts, err :=
+	// 		os.read_entire_file_from_path(data.CACHE_PATH, context.allocator)
+	// 	if err != nil do panic("you fool! You've doomed us all!")
+	// 	data.MODEL_DATA.VERTICES = slice.reinterpret([]data.Vertex, data_verts)
 
-		for i in 0 ..< 5 {
-			fmt.println(data_verts[i])
-			fmt.println(data.MODEL_DATA.VERTICES[i])
-		}
-		//or if you want to check specific errors
-		/*
-		data_verts, err := os.read_entire_file_from_filename_or_err("verts.bin")
-		if err == .Invalid_Dir {
-			fmt.printfln("actually I'm ok with this")
-		}
-		*/
-	} else {
-		data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
-		data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
+	// 	for i in 0 ..< 5 {
+	// 		fmt.println(data_verts[i])
+	// 		fmt.println(data.MODEL_DATA.VERTICES[i])
+	// 	}
+	// } else {
+	// 	data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
+	// 	data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
+	// 	_ = os.write_entire_file(data.CACHE_PATH, slice.to_bytes(data.MODEL_DATA.VERTICES[:]))
+	// }
 
-		os.write_entire_file(data.CACHE_PATH, slice.to_bytes(data.MODEL_DATA.VERTICES[:]))
-	}
+	data.VERTICIES_RAW, data.MODEL_INITIALIZED = model.load_model(data.MODEL_PATH)
+	data.MODEL_DATA = process_vertices(&data.VERTICIES_RAW, data.SCALE_FACTOR)
 	fmt.println("model initialized")
 	data.MODEL_INITIALIZED = true
-	/*
-		data_verts :=
-			os2.read_entire_file("verts.bin") or_else panic(
-				"you fool! You've doomed us all!",
-			)
-*/
-
-	//
-
 }
 
 // Process raw vertices into Model_Data

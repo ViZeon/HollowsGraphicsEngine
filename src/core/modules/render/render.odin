@@ -43,8 +43,8 @@ init_render :: proc(window: glfw.WindowHandle, model: data.Model_Data) -> data.R
     gl.BindImageTexture(0, state.output_texture, 0, gl.FALSE, 0, gl.WRITE_ONLY, gl.RGBA8)
     
     // Load and compile compute shader
-    compute_source, ok := os.read_entire_file(data.COMPUTE_SHADER_PATH, context.allocator)
-    if !ok {
+    compute_source, err := os.read_entire_file(data.COMPUTE_SHADER_PATH, context.allocator)
+    if err != nil {
         fmt.println("Failed to read compute shader")
         return state
     }

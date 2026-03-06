@@ -61,9 +61,9 @@ CACHE_PATH :: "cache/verts.bin"
 
 //Demo models, uncomment the target one
 //
-//MODEL_PATH :: "assets/kenny_blaster/blaster-e.glb"
+MODEL_PATH :: "assets/kenny_blaster/blaster-e.glb"
 //MODEL_PATH :: "assets/1mSphere.glb"
-MODEL_PATH :: "assets/ABeautifulGame.glb"
+//MODEL_PATH :: "assets/ABeautifulGame.glb"
 LOG_PATH :: "./debug/"
 
 SCALE_FACTOR :: 10.0
@@ -93,14 +93,17 @@ Mipmap_Bitfield :: struct {
     transbits: [dynamic]u32,  // Start index for each mip level
 }
 
+/*
 DataPointType :: enum {
 	Cell
 }
+
 
 DataPoint :: struct {
 	Type : DataPointType,
 	ID : int
 }
+*/
 
 // Each entry holds the value and the original index
 Sorted_Axis :: struct {
@@ -151,3 +154,11 @@ Range :: struct {
 	min: f32,
 	max: f32,
 }
+
+MODEL_CENTER: math.vec3  // center of model bounding box
+
+// TEMPORARY: screen resolution, will move to proper render state
+SCREEN_WIDTH:  int = 1280
+SCREEN_HEIGHT: int = 720
+
+//width, height := 1280, 720
