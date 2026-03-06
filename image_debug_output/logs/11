@@ -1,0 +1,384 @@
+assets\1mSphere.glb
+assets\ABeautifulGame.glb
+assets\test.gltf
+assets\test.obj
+assets\kenny_blaster\blaster-a.glb
+assets\kenny_blaster\blaster-b.glb
+assets\kenny_blaster\blaster-c.glb
+assets\kenny_blaster\blaster-d.glb
+assets\kenny_blaster\blaster-e.glb
+assets\kenny_blaster\blaster-f.glb
+assets\kenny_blaster\blaster-g.glb
+assets\kenny_blaster\blaster-h.glb
+assets\kenny_blaster\blaster-i.glb
+assets\kenny_blaster\blaster-j.glb
+assets\kenny_blaster\blaster-k.glb
+assets\kenny_blaster\blaster-l.glb
+assets\kenny_blaster\blaster-m.glb
+assets\kenny_blaster\blaster-n.glb
+assets\kenny_blaster\blaster-o.glb
+assets\kenny_blaster\blaster-p.glb
+assets\kenny_blaster\blaster-q.glb
+assets\kenny_blaster\blaster-r.glb
+assets\kenny_blaster\bullet-foam-thick.glb
+assets\kenny_blaster\bullet-foam-tip-thick.glb
+assets\kenny_blaster\bullet-foam-tip.glb
+assets\kenny_blaster\bullet-foam.glb
+assets\kenny_blaster\clip-large.glb
+assets\kenny_blaster\clip-small.glb
+assets\kenny_blaster\crate-medium.glb
+assets\kenny_blaster\crate-small.glb
+assets\kenny_blaster\crate-wide.glb
+assets\kenny_blaster\grenade-a.glb
+assets\kenny_blaster\grenade-b.glb
+assets\kenny_blaster\scope-large-a.glb
+assets\kenny_blaster\scope-large-b.glb
+assets\kenny_blaster\scope-small.glb
+assets\kenny_blaster\silencer-larger.glb
+assets\kenny_blaster\silencer-small.glb
+assets\kenny_blaster\smoke.glb
+assets\kenny_blaster\target-detail.glb
+assets\kenny_blaster\target-fragment-large.glb
+assets\kenny_blaster\target-fragment-small.glb
+assets\kenny_blaster\target-large.glb
+assets\kenny_blaster\target-small.glb
+assets\kenny_blaster\Textures\colormap.png
+45 File(s) copied
+INFO: Initializing raylib 5.5
+INFO: Platform backend: DESKTOP (GLFW)
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1920 x 1080
+INFO:     > Screen size:  320 x 240
+INFO:     > Render size:  320 x 240
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 224
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Intel
+INFO:     > Renderer: Intel(R) HD Graphics 630
+INFO:     > Version:  3.3.0 - Build 25.20.100.6323
+INFO:     > GLSL:     3.30 - Build 25.20.100.6323
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: GL: ETC2/EAC compressed textures supported
+INFO: GL: ASTC compressed textures supported
+INFO: PLATFORM: DESKTOP (GLFW - Win32): Initialized successfully
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: SYSTEM: Working Directory: H:\Software\TheHollowsEngine\HollowsGraphicsEngine
+Loaded meshes: 15
+model initialized
+RAW Vertex count after loading: 29162
+Vertex count after loading: 29162
+Allocated cells: 8000000
+=== GRID POPULATION ===
+Cells with data: 3980008 / 8000000
+Total vertex refs: 4048726
+Sample populated cells:
+  Cell 3900098 [-2,0,-3]: 40 verts
+  Cell 3900099 [-1,0,-3]: 53 verts
+  Cell 3900100 [0,0,-3]: 75 verts
+  Cell 3900101 [1,0,-3]: 40 verts
+  Cell 3900298 [-2,1,-3]: 20 verts
+=======================
+
+43957
+57 -81 -99
+43957
+debug\text\709
+nil Exist
+First 5 vertex positions:
+  Vert 0: [-2.1, 0.2, -1.6]
+  Vert 1: [-2.1, 0.3, -1.6]
+  Vert 2: [-2.1, 0.2, -1.6]
+  Vert 3: [-2.1, 0.3, -1.6]
+  Vert 4: [-2.1, 0.1, -1.6]
+147
+Bounds{x = Range{min = -2.8035583, max = 2.8035588}, y = Range{min = -3.7252903e-07, max = 15.15419}, z = Range{min = -2.803558, max = 2.803558}}
+false
+false
+[0, 0, 0, 1, 0, 0, 1, 2, 0, 1, 1, 2, 3, 0, 1, 2, 2, 3, 4, 1, 2, 3, 3, 4, 5, 2, 3, 4, 4, 5, 6, 3, 4, 5, 5, 6, 7, 5, 6, 7, 7, 8, 9, 6, 7, 8, 8, 9, 10, 7, 8, 9, 9, 10, 11, 8, 9, 10, 10, 11, 12, 9, 10, 11, 11, 12, 13, 10, 11, 12, 12, 13, 14, 11, 12, 13, 13, 14, 15, 0, 1, 0, 1, 0, 0, 1, 2, 0, 1, 1, 2, 3, 0, 1, 2, 2, 3, 4, 1, 2, 3, 3, 4, 5, 2, 3, 4, 4, 5, 6, 3, 4, 5, 5, 6, 7, 4, 5, 6, 6, 7, 8, 6, 7, 8, 8, 9, 10, 7, 8, 9, 9, 10, 11, 8, 9, 10, 10, 11, 12, 9, 10, 11, 11, 12, 13, 10, 11, 12, 12, 13, 14, 11, 12, 13, 13, 14, 15, 12, 13, 14, 14, 15, 16, 0, 0, 1, 2, 0, 0, 1, 2, 0, 1, 1, 2, 3, 0, 1, 2, 2, 3, 4, 1, 2, 3, 3, 4, 5, 2, 3, 4, 4, 5, 6, 3, 4, 5, 5, 6, 7, 4, 5, 6, 6, 7, 8, 5, 6, 7, 7, 8, 9, 7, 8, 9, 9, 10, 11, 8, 9, 10, 10, 11, 12, 9, 10, 11, 11, 12, 13, 10, 11, 12, 12, 13, 14, 11, 12, 13, 13, 14, 15, 12, 13, 14, 14, 15, 16, 13, 14, 15, 15, 16, 17, 0, 0, 1, 2, 0, 0, 1, 2, 0, 1, 1, 2, 3, 0, 1, 2, 2, 3, 4, 1, 2, 3, 3, 4, 5, 2, 3, 4, 4, 5, 6, 3, 4, 5, 5, 6, 7, 4, 5, 6, 6, 7, 8, 5, 6, 7, 7, 8, 9, 7, 8, 9, 9, 10, 11, 8, 9, 10, 10, 11, 12, 9, 10, 11, 11, 12, 13, 10, 11, 12, 12, 13, 14, 11, 12, 13, 13, 14, 15, 12, 13, 14, 14, 15, 16, 13, 14, 15, 15, 16, 17, 0, 1, 1, 2, 3, 0, 1, 1, 2, 3, 0, 1, 2, 2, 3, 4, 1, 2, 3, 3, 4, 5, 2, 3, 4, 4, 5, 6, 3, 4, 5, 5, 6, 7, 4, 5, 6, 6, 7, 8, 5, 6, 7, 7, 8, 9, 6, 7, 8, 8, 9, 10, 8, 9, 10, 10, 11, 12, 9, 10, 11, 11, 12, 13, 10, 11, 12, 12, 13, 14, 11, 12, 13, 13, 14, 15, 12, 13, 14, 14, 15, 16, 13, 14, 15, 15, 16, 17, 14, 15, 16, 16, 17, 18, 0, 1, 2, 2, 3, 4, 0, 1, 2, 2, 3, 4, 1, 2, 3, 3, 4, 5, 2, 3, 4, 4, 5, 6, 3, 4, 5, 5, 6, 7, 4, 5, 6, 6, 7, 8, 5, 6, 7, 7, 8, 9, 6, 7, 8, 8, 9, 10, 7, 8, 9, 9, 10, 11, 9, 10, 11, 11, 12, 13, 10, 11, 12, 12, 13, 14, 11, 12, 13, 13, 14, 15, 12, 13, 14, 14, 15, 16, 13, 14, 15, 15, 16, 17, 14, 15, 16, 16, 17, 18, 15, 16, 17, 17, 18, 19, 1, 5, 5, 9, 13, 1, 5, 5, 9, 13, -1, 3, 7, 7, 11, 15, 1, 5, 9, 9, 13, 17, 3, 7, 11, 11, 15, 19, 5, 9, 13, 13, 17, 21, 7, 11, 15, 15, 19, 23, 9, 13, 17, 17, 21, 25, 11, 15, 19, 19, 23, 27, 15, 19, 23, 23, 27, 31, 17, 21, 25, 25, 29, 33, 19, 23, 27, 27, 31, 35, 21, 25, 29, 29, 33, 37, 23, 27, 31, 31, 35, 39, 25, 29, 33, 33, 37, 41, 27, 31, 35, 35, 39, 43, 2, 6, 6, 10, 14, 2, 6, 6, 10, 14, 0, 4, 8, 8, 12, 16, 2, 6, 10, 10, 14, 18, 4, 8, 12, 12, 16, 20, 6, 10, 14, 14, 18, 22, 8, 12, 16, 16, 20, 24, 10, 14, 18, 18, 22, 26, 12, 16, 20, 20, 24, 28, 16, 20, 24, 24, 28, 32, 18, 22, 26, 26, 30, 34, 20, 24, 28, 28, 32, 36, 22, 26, 30, 30, 34, 38, 24, 28, 32, 32, 36, 40, 26, 30, 34, 34, 38, 42, 28, 32, 36, 36, 40, 44, -1, 3, 7, 7, 11, 15, -1, 3, 7, 7, 11, 15, 1, 5, 9, 9, 13, 17, 3, 7, 11, 11, 15, 19, 5, 9, 13, 13, 17, 21, 7, 11, 15, 15, 19, 23, 9, 13, 17, 17, 21, 25, 11, 15, 19, 19, 23, 27, 13, 17, 21, 21, 25, 29, 17, 21, 25, 25, 29, 33, 19, 23, 27, 27, 31, 35, 21, 25, 29, 29, 33, 37, 23, 27, 31, 31, 35, 39, 25, 29, 33, 33, 37, 41, 27, 31, 35, 35, 39, 43, 29, 33, 37, 37, 41, 45, -1, 3, 7, 7, 11, 15, -1, 3, 7, 7, 11, 15, 1, 5, 9, 9, 13, 17, 3, 7, 11, 11, 15, 19, 5, 9, 13, 13, 17, 21, 7, 11, 15, 15, 19, 23, 9, 13, 17, 17, 21, 25, 11, 15, 19, 19, 23, 27, 13, 17, 21, 21, 25, 29, 17, 21, 25, 25, 29, 33, 19, 23, 27, 27, 31, 35, 21, 25, 29, 29, 33, 37, 23, 27, 31, 31, 35, 39, 25, 29, 33, 33, 37, 41, 27, 31, 35, 35, 39, 43, 29, 33, 37, 37, 41, 45, 0, 4, 8, 8, 12, 16, 0, 4, 8, 8, 12, 16, 2, 6, 10, 10, 14, 18, 4, 8, 12, 12, 16, 20, 6, 10, 14, 14, 18, 22, 8, 12, 16, 16, 20, 24, 10, 14, 18, 18, 22, 26, 12, 16, 20, 20, 24, 28, 14, 18, 22, 22, 26, 30, 18, 22, 26, 26, 30, 34, 20, 24, 28, 28, 32, 36, 22, 26, 30, 30, 34, 38, 24, 28, 32, 32, 36, 40, 26, 30, 34, 34, 38, 42, 28, 32, 36, 36, 40, 44, 30, 34, 38, 38, 42, 46, 1, 5, 9, 9, 13, 17, 1, 5, 9, 9, 13, 17, 3, 7, 11, 11, 15, 19, 5, 9, 13, 13, 17, 21, 7, 11, 15, 15, 19, 23, 9, 13, 17, 17, 21, 25, 11, 15, 19, 19, 23, 27, 13, 17, 21, 21, 25, 29, 15, 19, 23, 23, 27, 31, 19, 23, 27, 27, 31, 35, 21, 25, 29, 29, 33, 37, 23, 27, 31, 31, 35, 39, 25, 29, 33, 33, 37, 41, 27, 31, 35, 35, 39, 43, 29, 33, 37, 37, 41, 45, 31, 35, 39, 39, 43, 47, 8, 24, 40, 40, 56, 72, 8, 24, 40, 40, 56, 72, 12, 28, 44, 44, 60, 76, 16, 32, 48, 48, 64, 80, 20, 36, 52, 52, 68, 84, 24, 40, 56, 56, 72, 88, 28, 44, 60, 60, 76, 92, 32, 48, 64, 64, 80, 96, 36, 52, 68, 68, 84, 100, 44, 60, 76, 76, 92, 108, 48, 64, 80, 80, 96, 112, 52, 68, 84, 84, 100, 116, 56, 72, 88, 88, 104, 120, 60, 76, 92, 92, 108, 124, 64, 80, 96, 96, 112, 128, 68, 84, 100, 100, 116, 132, 9, 25, 41, 41, 57, 73, 9, 25, 41, 41, 57, 73, 13, 29, 45, 45, 61, 77, 17, 33, 49, 49, 65, 81, 21, 37, 53, 53, 69, 85, 25, 41, 57, 57, 73, 89, 29, 45, 61, 61, 77, 93, 33, 49, 65, 65, 81, 97, 37, 53, 69, 69, 85, 101, 45, 61, 77, 77, 93, 109, 49, 65, 81, 81, 97, 113, 53, 69, 85, 85, 101, 117, 57, 73, 89, 89, 105, 121, 61, 77, 93, 93, 109, 125, 65, 81, 97, 97, 113, 129, 69, 85, 101, 101, 117, 133, 10, 26, 42, 42, 58, 74, 10, 26, 42, 42, 58, 74, 14, 30, 46, 46, 62, 78, 18, 34, 50, 50, 66, 82, 22, 38, 54, 54, 70, 86, 26, 42, 58, 58, 74, 90, 30, 46, 62, 62, 78, 94, 34, 50, 66, 66, 82, 98, 38, 54, 70, 70, 86, 102, 46, 62, 78, 78, 94, 110, 50, 66, 82, 82, 98, 114, 54, 70, 86, 86, 102, 118, 58, 74, 90, 90, 106, 122, 62, 78, 94, 94, 110, 126, 66, 82, 98, 98, 114, 130, 70, 86, 102, 102, 118, 134, 10, 26, 42, 42, 58, 74, 10, 26, 42, 42, 58, 74, 14, 30, 46, 46, 62, 78, 18, 34, 50, 50, 66, 82, 22, 38, 54, 54, 70, 86, 26, 42, 58, 58, 74, 90, 30, 46, 62, 62, 78, 94, 34, 50, 66, 66, 82, 98, 38, 54, 70, 70, 86, 102, 46, 62, 78, 78, 94, 110, 50, 66, 82, 82, 98, 114, 54, 70, 86, 86, 102, 118, 58, 74, 90, 90, 106, 122, 62, 78, 94, 94, 110, 126, 66, 82, 98, 98, 114, 130, 70, 86, 102, 102, 118, 134, 11, 27, 43, 43, 59, 75, 11, 27, 43, 43, 59, 75, 15, 31, 47, 47, 63, 79, 19, 35, 51, 51, 67, 83, 23, 39, 55, 55, 71, 87, 27, 43, 59, 59, 75, 91, 31, 47, 63, 63, 79, 95, 35, 51, 67, 67, 83, 99, 39, 55, 71, 71, 87, 103, 47, 63, 79, 79, 95, 111, 51, 67, 83, 83, 99, 115, 55, 71, 87, 87, 103, 119, 59, 75, 91, 91, 107, 123, 63, 79, 95, 95, 111, 127, 67, 83, 99, 99, 115, 131, 71, 87, 103, 103, 119, 135, 12, 28, 44, 44, 60, 76, 12, 28, 44, 44, 60, 76, 16, 32, 48, 48, 64, 80, 20, 36, 52, 52, 68, 84, 24, 40, 56, 56, 72, 88, 28, 44, 60, 60, 76, 92, 32, 48, 64, 64, 80, 96, 36, 52, 68, 68, 84, 100, 40, 56, 72, 72, 88, 104, 48, 64, 80, 80, 96, 112, 52, 68, 84, 84, 100, 116, 56, 72, 88, 88, 104, 120, 60, 76, 92, 92, 108, 124, 64, 80, 96, 96, 112, 128, 68, 84, 100, 100, 116, 132, 72, 88, 104, 104, 120, 136, 162, 226, 290, 290, 354, 418, 162, 226, 290, 290, 354, 418, 170, 234, 298, 298, 362, 426, 178, 242, 306, 306, 370, 434, 186, 250, 314, 314, 378, 442, 194, 258, 322, 322, 386, 450, 202, 266, 330, 330, 394, 458, 210, 274, 338, 338, 402, 466, 218, 282, 346, 346, 410, 474, 234, 298, 362, 362, 426, 490, 242, 306, 370, 370, 434, 498, 250, 314, 378, 378, 442, 506, 258, 322, 386, 386, 450, 514, 266, 330, 394, 394, 458, 522, 274, 338, 402, 402, 466, 530, 282, 346, 410, 410, 474, 538, 163, 227, 291, 291, 355, 419, 163, 227, 291, 291, 355, 419, 171, 235, 299, 299, 363, 427, 179, 243, 307, 307, 371, 435, 187, 251, 315, 315, 379, 443, 195, 259, 323, 323, 387, 451, 203, 267, 331, 331, 395, 459, 211, 275, 339, 339, 403, 467, 219, 283, 347, 347, 411, 475, 235, 299, 363, 363, 427, 491, 243, 307, 371, 371, 435, 499, 251, 315, 379, 379, 443, 507, 259, 323, 387, 387, 451, 515, 267, 331, 395, 395, 459, 523, 275, 339, 403, 403, 467, 531, 283, 347, 411, 411, 475, 539, 164, 228, 292, 292, 356, 420, 164, 228, 292, 292, 356, 420, 172, 236, 300, 300, 364, 428, 180, 244, 308, 308, 372, 436, 188, 252, 316, 316, 380, 444, 196, 260, 324, 324, 388, 452, 204, 268, 332, 332, 396, 460, 212, 276, 340, 340, 404, 468, 220, 284, 348, 348, 412, 476, 236, 300, 364, 364, 428, 492, 244, 308, 372, 372, 436, 500, 252, 316, 380, 380, 444, 508, 260, 324, 388, 388, 452, 516, 268, 332, 396, 396, 460, 524, 276, 340, 404, 404, 468, 532, 284, 348, 412, 412, 476, 540, 164, 228, 292, 292, 356, 420, 164, 228, 292, 292, 356, 420, 172, 236, 300, 300, 364, 428, 180, 244, 308, 308, 372, 436, 188, 252, 316, 316, 380, 444, 196, 260, 324, 324, 388, 452, 204, 268, 332, 332, 396, 460, 212, 276, 340, 340, 404, 468, 220, 284, 348, 348, 412, 476, 236, 300, 364, 364, 428, 492, 244, 308, 372, 372, 436, 500, 252, 316, 380, 380, 444, 508, 260, 324, 388, 388, 452, 516, 268, 332, 396, 396, 460, 524, 276, 340, 404, 404, 468, 532, 284, 348, 412, 412, 476, 540, 165, 229, 293, 293, 357, 421, 165, 229, 293, 293, 357, 421, 173, 237, 301, 301, 365, 429, 181, 245, 309, 309, 373, 437, 189, 253, 317, 317, 381, 445, 197, 261, 325, 325, 389, 453, 205, 269, 333, 333, 397, 461, 213, 277, 341, 341, 405, 469, 221, 285, 349, 349, 413, 477, 237, 301, 365, 365, 429, 493, 245, 309, 373, 373, 437, 501, 253, 317, 381, 381, 445, 509, 261, 325, 389, 389, 453, 517, 269, 333, 397, 397, 461, 525, 277, 341, 405, 405, 469, 533, 285, 349, 413, 413, 477, 541, 166, 230, 294, 294, 358, 422, 166, 230, 294, 294, 358, 422, 174, 238, 302, 302, 366, 430, 182, 246, 310, 310, 374, 438, 190, 254, 318, 318, 382, 446, 198, 262, 326, 326, 390, 454, 206, 270, 334, 334, 398, 462, 214, 278, 342, 342, 406, 470, 222, 286, 350, 350, 414, 478, 238, 302, 366, 366, 430, 494, 246, 310, 374, 374, 438, 502, 254, 318, 382, 382, 446, 510, 262, 326, 390, 390, 454, 518, 270, 334, 398, 398, 462, 526, 278, 342, 406, 406, 470, 534, 286, 350, 414, 414, 478, 542]
+INFO: TEXTURE: [ID 3] Texture loaded successfully (320x240 | R8G8B8 | 1 mipmaps)
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.0ms | Texture: 0.000ms | FPS: 0
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, 7.8]
+Camera moved: delta [581.8, 231.8, 8.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1768843086275857700 1768843086275857700
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.572ms | FPS: 585
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, 7.8]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1706500 1768843089001185300
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.379ms | FPS: 740
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -7.7]
+Camera moved: delta [0.0, 0.0, -15.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1350800 1768843092001109900
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.399ms | FPS: 670
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.3]
+Camera moved: delta [0.0, 0.0, -1.7]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1491700 1768843095000029600
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.7ms | Texture: 0.440ms | FPS: 710
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.0]
+Camera moved: delta [0.0, 0.0, 0.3]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1406800 1768843098001237800
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.8ms | Texture: 1.104ms | FPS: 378
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.5]
+Camera moved: delta [0.0, 0.0, -0.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+2644400 1768843101001842200
+INFO: FILEIO: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot000.png] File saved successfully
+INFO: FILEIO: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot000.png] Image exported successfully
+INFO: SYSTEM: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot000.png] Screenshot taken successfully
+debug\text\710
+nil Exist
+=== DEBUG FRAME CAPTURED ===
+Camera: [0.0, 7.6, -9.5]
+FPS: 581
+Avg verts checked: NaN
+Range: 2147483647 - 0 vertices
+===========================
+
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.7ms | Texture: 0.374ms | FPS: 723
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1381800 1768843104000937300
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.8ms | Texture: 0.503ms | FPS: 673
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1485800 1768843107000061600
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.8ms | Texture: 0.497ms | FPS: 616
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1621100 1768843110000608900
+INFO: FILEIO: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot001.png] File saved successfully
+INFO: FILEIO: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot001.png] Image exported successfully
+INFO: SYSTEM: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot001.png] Screenshot taken successfully
+debug\text\711
+nil Exist
+=== DEBUG FRAME CAPTURED ===
+Camera: [0.0, 7.6, -9.5]
+FPS: 602
+Avg verts checked: NaN
+Range: 2147483647 - 0 vertices
+===========================
+
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.466ms | FPS: 706
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1415500 1768843113000355100
+INFO: FILEIO: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot002.png] File saved successfully
+INFO: FILEIO: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot002.png] Image exported successfully
+INFO: SYSTEM: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot002.png] Screenshot taken successfully
+debug\text\712
+nil Exist
+=== DEBUG FRAME CAPTURED ===
+Camera: [0.0, 7.6, -9.5]
+FPS: 608
+Avg verts checked: NaN
+Range: 2147483647 - 0 vertices
+===========================
+
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.301ms | FPS: 888
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1125700 1768843116000544800
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.570ms | FPS: 719
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -8.1]
+Camera moved: delta [0.0, 0.0, 1.3]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1389600 1768843119000303300
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.291ms | FPS: 937
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -8.8]
+Camera moved: delta [0.0, 0.0, -0.6]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1066400 1768843122000930000
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.397ms | FPS: 729
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.3]
+Camera moved: delta [0.0, 0.0, -0.5]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1370600 1768843125001251200
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.627ms | FPS: 675
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.3]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1481100 1768843128000330700
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.6ms | Texture: 0.376ms | FPS: 772
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.3]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+1293900 1768843131000954900
+INFO: FILEIO: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot003.png] File saved successfully
+INFO: FILEIO: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot003.png] Image exported successfully
+INFO: SYSTEM: [H:\Software\TheHollowsEngine\HollowsGraphicsEngine/screenshot003.png] Screenshot taken successfully
+debug\text\713
+nil Exist
+=== DEBUG FRAME CAPTURED ===
+Camera: [0.0, 7.6, -9.3]
+FPS: 668
+Avg verts checked: NaN
+Range: 2147483647 - 0 vertices
+===========================
+
+=== PERFORMANCE ===
+Input: 0.000ms | Pixels: 0.7ms | Texture: 1.540ms | FPS: 251
+=== VERTEX CHECKS ===
+This frame avg: NaN verts/pixel | Overall avg: NaN verts/pixel
+Range sizes - Min: 2147483647 | Max: 0
+=== CAMERA ===
+Pos: [0.0, 7.6, -9.3]
+Bounds X: Range{min = -2.8035583, max = 2.8035588}
+Bounds Y: Range{min = -3.7252903e-07, max = 15.15419}
+Bounds Z: Range{min = -2.803558, max = 2.803558}
+
+3978200 1768843134003563300
+INFO: TEXTURE: [ID 2] Unloaded texture data from VRAM (GPU)
+INFO: SHADER: [ID 3] Default shader unloaded successfully
+INFO: TEXTURE: [ID 1] Default texture unloaded successfully
+INFO: Window closed successfully
+[Finished in 56.4s]
