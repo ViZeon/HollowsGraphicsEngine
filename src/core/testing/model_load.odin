@@ -5,9 +5,9 @@ import model "../modules/model"
 import math "core:math/linalg/glsl"
 import "core:fmt"
 
-load_model :: proc(path: cstring) -> (datapoints: [dynamic]data.DataPoint, bounds: data.Bounds, center: math.vec3, ok: bool) {
+load_model :: proc(path: cstring) -> (bounds: data.Bounds, center: math.vec3, ok: bool) {
     raw_verts, loaded := model.load_model(path)
-    if !loaded do return {}, {}, {}, false
+    if !loaded do return {}, {}, false
 
     bounds.x.min = raw_verts[0].pos.x
     bounds.x.max = raw_verts[0].pos.x
@@ -24,12 +24,19 @@ load_model :: proc(path: cstring) -> (datapoints: [dynamic]data.DataPoint, bound
         if v.pos.z < bounds.z.min do bounds.z.min = v.pos.z
         if v.pos.z > bounds.z.max do bounds.z.max = v.pos.z
 
-        append(&datapoints, data.DataPoint{
-            pos    = v.pos,
-            normal = v.normal,
-            type   = .Vertex,
-            ref    = data.REF_INVALID,
-        })
+        vert_meta := add(&data.vertex_Direct, &data.vertex_Direct_meta, &data.vertex_Direct_free,
+            data.Vertex{pos = v.pos, normal = v.normal})
+
+        cached_meta := add(&data.cached_vertex_Flat, &data.cached_vertex_Flat_meta, &data.cached_vertex_Flat_free,
+            data.Vertex_Cached{ref = data.Ref{index = i32(vert_meta.index), version = 0}})
+
+        add(&data.datapoint_Composite, &data.datapoint_Composite_meta, &data.datapoint_Composite_free,
+            data.DataPoint{
+                pos    = v.pos,
+                normal = v.normal,
+                type   = .Vertex,
+                ref    = data.Ref{index = i32(cached_meta.index), version = 0},
+            })
     }
 
     center = math.vec3{
@@ -38,8 +45,8 @@ load_model :: proc(path: cstring) -> (datapoints: [dynamic]data.DataPoint, bound
         (bounds.z.min + bounds.z.max) * 0.5,
     }
 
-    fmt.println("load_model_v1: loaded", len(datapoints), "datapoints, center:", center)
-    return datapoints, bounds, center, true
+    fmt.println("load_model: loaded", len(data.datapoint_Composite), "datapoints, center:", center)
+    return bounds, center, true
 }
 
 field_create :: proc(bounds: data.Bounds, levels: int) -> data.Field {
@@ -88,7 +95,6 @@ field_populate :: proc(field: ^data.Field, datapoints: []data.DataPoint) {
         append(&field.refs[idx], i32(i))
     }
 
-    // Propagate fine -> coarse
     for level := field.levels - 1; level >= 0; level -= 1 {
         parent_count := i32(1) << (3 * u32(level))
         for p in 0 ..< parent_count {

@@ -1,124 +1,118 @@
 package testing
 
 import data "../_data"
-
 import "core:time"
 import "core:fmt"
 import math "core:math/linalg/glsl"
 import rl "vendor:raylib"
 
-// Initialize debug system
 debug_init :: proc() {
-    data.debug_stats = data.Debug_Stats{}
-    data.debug_stats.min_range_size = max(i32)
-    data.debug_stats.last_print_time = rl.GetTime()
-    data.debug_stats.last_cam_pos = data.CAM_POS
+    stats := data.Debug_Stats{}
+    stats.min_range_size  = max(i32)
+    stats.last_print_time = rl.GetTime()
+    stats.last_cam_pos    = get(data.cam_pos).(math.vec3)
+    set(data.debug_stats, stats)
 }
 
-// Reset per-frame counters
 debug_frame_begin :: proc() {
-    data.debug_stats.frame_vertices_checked = 0
-    data.debug_stats.frame_pixels_processed = 0
+    stats := get(data.debug_stats).(data.Debug_Stats)
+    stats.frame_vertices_checked = 0
+    stats.frame_pixels_processed = 0
+    set(data.debug_stats, stats)
 }
 
-// Print frame statistics
 debug_frame_end :: proc() {
-    data.FRAME_TIME = time.now()._nsec - data.APP_TIME
-    data.FPS = calc_FPS(data.FRAME_TIME)
-    data.APP_TIME = time.now()._nsec
-    current_time := data.APP_TIME / 1000000000
+    app_time  := get(data.app_time).(i64)
+    frame_t   := time.now()._nsec - app_time
+    set(data.frame_time, frame_t)
+    set(data.fps, calc_FPS(frame_t))
+    set(data.app_time, time.now()._nsec)
 
-    if f64(current_time) - data.debug_stats.last_print_time > data.DEBUG_TIME {
-        avg_vertices_per_pixel :=
-            f32(data.debug_stats.total_vertices_checked) / f32(data.debug_stats.total_pixels_processed)
-        frame_avg :=
-            f32(data.debug_stats.frame_vertices_checked) / f32(data.debug_stats.frame_pixels_processed)
+    current_time := get(data.app_time).(i64) / 1000000000
+    stats        := get(data.debug_stats).(data.Debug_Stats)
+    debug_time   := get(data.debug_time).(f64)
+
+    if f64(current_time) - stats.last_print_time > debug_time {
+        avg_vertices_per_pixel := f32(stats.total_vertices_checked) / f32(stats.total_pixels_processed)
+        frame_avg              := f32(stats.frame_vertices_checked)  / f32(stats.frame_pixels_processed)
 
         fmt.printf("=== PERFORMANCE ===\n")
         fmt.printf(
             "Input: %.3fms | Pixels: %.1fms | Texture: %.3fms | FPS: %d\n",
-            data.debug_stats.input_time * 1000,
-            data.debug_stats.pixel_time * 1000,
-            data.debug_stats.texture_time * 1000,
-            data.FPS,
+            stats.input_time   * 1000,
+            stats.pixel_time   * 1000,
+            stats.texture_time * 1000,
+            get(data.fps).(int),
         )
-
         fmt.printf("=== VERTEX CHECKS ===\n")
         fmt.printf(
             "This frame avg: %.1f verts/pixel | Overall avg: %.1f verts/pixel\n",
-            frame_avg,
-            avg_vertices_per_pixel,
+            frame_avg, avg_vertices_per_pixel,
         )
-        fmt.printf(
-            "Range sizes - Min: %d | Max: %d\n",
-            data.debug_stats.min_range_size,
-            data.debug_stats.max_range_size,
-        )
+        fmt.printf("Range sizes - Min: %d | Max: %d\n", stats.min_range_size, stats.max_range_size)
 
+        cam_pos := get(data.cam_pos).(math.vec3)
         fmt.printf("=== CAMERA ===\n")
-        fmt.printf("Pos: [%.1f, %.1f, %.1f]\n", data.CAM_POS.x, data.CAM_POS.y, data.CAM_POS.z)
+        fmt.printf("Pos: [%.1f, %.1f, %.1f]\n", cam_pos.x, cam_pos.y, cam_pos.z)
 
-        if data.CAM_POS != data.debug_stats.last_cam_pos {
+        if cam_pos != stats.last_cam_pos {
             fmt.printf(
                 "Camera moved: delta [%.1f, %.1f, %.1f]\n",
-                data.CAM_POS.x - data.debug_stats.last_cam_pos.x,
-                data.CAM_POS.y - data.debug_stats.last_cam_pos.y,
-                data.CAM_POS.z - data.debug_stats.last_cam_pos.z,
+                cam_pos.x - stats.last_cam_pos.x,
+                cam_pos.y - stats.last_cam_pos.y,
+                cam_pos.z - stats.last_cam_pos.z,
             )
         }
 
-        fmt.println(data.FRAME_TIME, data.APP_TIME)
+        fmt.println(get(data.frame_time).(i64), get(data.app_time).(i64))
 
-        data.debug_stats.last_print_time = f64(current_time)
-        data.debug_stats.last_cam_pos = data.CAM_POS
+        stats.last_print_time = f64(current_time)
+        stats.last_cam_pos    = cam_pos
+        set(data.debug_stats, stats)
     }
 }
 
-// Record timing for input
 debug_time_input :: proc(t: f64) {
-    data.debug_stats.input_time = t
+    stats := get(data.debug_stats).(data.Debug_Stats)
+    stats.input_time = t
+    set(data.debug_stats, stats)
 }
 
-// Record timing for pixel generation
 debug_time_pixels :: proc(t: f64) {
-    data.debug_stats.pixel_time = t
+    stats := get(data.debug_stats).(data.Debug_Stats)
+    stats.pixel_time = t
+    set(data.debug_stats, stats)
 }
 
-// Record timing for texture update
 debug_time_texture :: proc(t: f64) {
-    data.debug_stats.texture_time = t
+    stats := get(data.debug_stats).(data.Debug_Stats)
+    stats.texture_time = t
+    set(data.debug_stats, stats)
 }
 
-// Record vertex search stats
 debug_record_pixel_search :: proc(range_size: i32) {
-    data.debug_stats.total_pixels_processed += 1
-    data.debug_stats.frame_pixels_processed += 1
-    data.debug_stats.total_vertices_checked += int(range_size)
-    data.debug_stats.frame_vertices_checked += int(range_size)
-
-    if range_size > data.debug_stats.max_range_size {
-        data.debug_stats.max_range_size = range_size
-    }
-    if range_size < data.debug_stats.min_range_size && range_size > 0 {
-        data.debug_stats.min_range_size = range_size
-    }
+    stats := get(data.debug_stats).(data.Debug_Stats)
+    stats.total_pixels_processed += 1
+    stats.frame_pixels_processed += 1
+    stats.total_vertices_checked += int(range_size)
+    stats.frame_vertices_checked += int(range_size)
+    if range_size > stats.max_range_size do stats.max_range_size = range_size
+    if range_size < stats.min_range_size && range_size > 0 do stats.min_range_size = range_size
+    set(data.debug_stats, stats)
 }
 
-// Write debug image with info overlay
 debug_write_image :: proc(pixels: []u8, width, height: int) {
     frame_write_to_image()
+    cam_pos := get(data.cam_pos).(math.vec3)
+    stats   := get(data.debug_stats).(data.Debug_Stats)
     fmt.println("=== DEBUG FRAME CAPTURED ===")
-    fmt.printf("Camera: [%.1f, %.1f, %.1f]\n", data.CAM_POS.x, data.CAM_POS.y, data.CAM_POS.z)
+    fmt.printf("Camera: [%.1f, %.1f, %.1f]\n", cam_pos.x, cam_pos.y, cam_pos.z)
     fmt.printf("FPS: %d\n", rl.GetFPS())
-    fmt.printf(
-        "Avg verts checked: %.1f\n",
-        f32(data.debug_stats.frame_vertices_checked) / f32(data.debug_stats.frame_pixels_processed),
-    )
-    fmt.printf("Range: %d - %d vertices\n", data.debug_stats.min_range_size, data.debug_stats.max_range_size)
+    fmt.printf("Avg verts checked: %.1f\n", f32(stats.frame_vertices_checked) / f32(stats.frame_pixels_processed))
+    fmt.printf("Range: %d - %d vertices\n", stats.min_range_size, stats.max_range_size)
     fmt.println("===========================\n")
 }
 
-// Print model loading stats
 debug_model_loaded :: proc(vertex_count: int, bounds: data.Bounds) {
     fmt.println("=== MODEL LOADED ===")
     fmt.printf("Vertices: %d\n", vertex_count)
@@ -128,30 +122,21 @@ debug_model_loaded :: proc(vertex_count: int, bounds: data.Bounds) {
     fmt.println("===================\n")
 }
 
-// Draw on-screen debug overlay
 debug_draw_overlay :: proc() {
+    stats   := get(data.debug_stats).(data.Debug_Stats)
+    cam_pos := get(data.cam_pos).(math.vec3)
+
     if rl.IsKeyDown(.F1) {
         rl.DrawRectangle(10, 10, 300, 120, rl.ColorAlpha(rl.BLACK, 0.7))
-
         y := i32(20)
         rl.DrawText(fmt.ctprintf("FPS: %d", rl.GetFPS()), 20, y, 20, rl.GREEN)
         y += 25
-
-        rl.DrawText(
-            fmt.ctprintf("Cam: [%.0f, %.0f, %.0f]", data.CAM_POS.x, data.CAM_POS.y, data.CAM_POS.z),
-            20, y, 20, rl.WHITE,
-        )
+        rl.DrawText(fmt.ctprintf("Cam: [%.0f, %.0f, %.0f]", cam_pos.x, cam_pos.y, cam_pos.z), 20, y, 20, rl.WHITE)
         y += 25
-
-        avg := f32(data.debug_stats.frame_vertices_checked) / f32(data.debug_stats.frame_pixels_processed)
+        avg := f32(stats.frame_vertices_checked) / f32(stats.frame_pixels_processed)
         rl.DrawText(fmt.ctprintf("Verts/Pixel: %.1f", avg), 20, y, 20, rl.YELLOW)
         y += 25
-
-        rl.DrawText(
-            fmt.ctprintf("Range: %d-%d", data.debug_stats.min_range_size, data.debug_stats.max_range_size),
-            20, y, 20, rl.WHITE,
-        )
-
+        rl.DrawText(fmt.ctprintf("Range: %d-%d", stats.min_range_size, stats.max_range_size), 20, y, 20, rl.WHITE)
         rl.DrawText("Hold F1 for debug overlay", 10, 550, 16, rl.GRAY)
         rl.DrawText("F12: Capture debug image",  10, 570, 16, rl.GRAY)
     } else {
@@ -159,18 +144,10 @@ debug_draw_overlay :: proc() {
     }
 }
 
-// OLD - flat grid system removed
-// debug_grid_population :: proc() { ... }
-// debug_pixel_lookup :: proc() { ... }
-// debug_spatial_map :: proc() { ... }
-
-// Run at the begin of every frame
 clear_screen :: proc() {
     fmt.print("\e[3J\e8")
 }
 
-// Run before at least once before `clear_screen`.
-// Anything after this point will be reset every frame.
 save_screen_pos :: proc() {
     fmt.print("\e7", flush = false)
 }

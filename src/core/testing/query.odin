@@ -3,8 +3,8 @@ package testing
 import data "../_data"
 import math "core:math/linalg/glsl"
 
-ref_valid :: proc(ref: data.Ref, generation: u32) -> bool {
-    return ref.index >= 0 && ref.generation == generation
+ref_valid :: proc(ref: data.Ref, version: u32) -> bool {
+    return ref.index >= 0 && ref.version == version
 }
 
 field_query :: proc(field: ^data.Field, world_x, world_y: f32) -> bool {

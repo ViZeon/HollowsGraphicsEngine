@@ -15,3 +15,9 @@ Debug_Stats :: struct {
     frame_pixels_processed: int,
     last_cam_pos:           math.vec3,
 }
+
+FrameData :: struct {
+    frame_count:   int,
+    previous_time: f64,
+    FRAME_TITLE:   cstring,
+}
