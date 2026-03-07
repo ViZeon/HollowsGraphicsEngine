@@ -24,19 +24,18 @@ load_model :: proc(path: cstring) -> (bounds: data.Bounds, center: math.vec3, ok
         if v.pos.z < bounds.z.min do bounds.z.min = v.pos.z
         if v.pos.z > bounds.z.max do bounds.z.max = v.pos.z
 
-        vert_meta := add(&data.vertex_Direct, &data.vertex_Direct_meta, &data.vertex_Direct_free,
-            data.Vertex{pos = v.pos, normal = v.normal})
+        vert_meta := add(.Vertex, data.Vertex{pos = v.pos, normal = v.normal})
 
-        cached_meta := add(&data.cached_vertex_Flat, &data.cached_vertex_Flat_meta, &data.cached_vertex_Flat_free,
-            data.Vertex_Cached{ref = data.Ref{index = i32(vert_meta.index), version = 0}})
+        cached_meta := add(.Vertex_Cached, data.Vertex_Cached{
+            ref = data.Ref{index = i32(vert_meta.index), version = 0},
+        })
 
-        add(&data.datapoint_Composite, &data.datapoint_Composite_meta, &data.datapoint_Composite_free,
-            data.DataPoint{
-                pos    = v.pos,
-                normal = v.normal,
-                type   = .Vertex,
-                ref    = data.Ref{index = i32(cached_meta.index), version = 0},
-            })
+        add(.DataPoint, data.DataPoint{
+            pos    = v.pos,
+            normal = v.normal,
+            type   = .Vertex,
+            ref    = data.Ref{index = i32(cached_meta.index), version = 0},
+        })
     }
 
     center = math.vec3{
@@ -45,7 +44,7 @@ load_model :: proc(path: cstring) -> (bounds: data.Bounds, center: math.vec3, ok
         (bounds.z.min + bounds.z.max) * 0.5,
     }
 
-    fmt.println("load_model: loaded", len(data.datapoint_Composite), "datapoints, center:", center)
+    fmt.println("load_model: loaded", len(data.arrays[.DataPoint]), "datapoints, center:", center)
     return bounds, center, true
 }
 

@@ -9,8 +9,8 @@ image:   rl.Image
 texture: rl.Texture2D
 
 raylib_render_frame :: proc() {
-    screen_w := get(data.screen_width).(int)
-    screen_h := get(data.screen_height).(int)
+    screen_w := (^int)(get(data.screen_width))^
+    screen_h := (^int)(get(data.screen_height))^
     image = rl.Image{
         data    = raw_data(data.frame_pixels),
         width   = i32(screen_w),
@@ -22,8 +22,8 @@ raylib_render_frame :: proc() {
 }
 
 raylib_render :: proc() {
-    screen_w := get(data.screen_width).(int)
-    screen_h := get(data.screen_height).(int)
+    screen_w := (^int)(get(data.screen_width))^
+    screen_h := (^int)(get(data.screen_height))^
     rl.SetConfigFlags({.WINDOW_RESIZABLE})
     rl.InitWindow(i32(screen_w), i32(screen_h), "Software Renderer")
     defer rl.CloseWindow()
@@ -66,22 +66,21 @@ raylib_update_functions :: proc() {
     debug_draw_overlay()
 
     if rl.IsKeyPressed(.F12) {
-        debug_write_image(data.frame_pixels, get(data.screen_width).(int), get(data.screen_height).(int))
+        debug_write_image(data.frame_pixels, (^int)(get(data.screen_width))^, (^int)(get(data.screen_height))^)
     }
 }
 
 raylib_handle_camera_input :: proc() {
     dt         := rl.GetFrameTime()
-    cam_speed  := get(data.cam_speed).(f32)
+    cam_speed  := (^f32)(get(data.cam_speed))^
     move_speed := cam_speed * dt * 60.0
     if rl.IsKeyDown(.LEFT_SHIFT) do move_speed *= 3.0
 
-    cam := get(data.cam_pos).(math.vec3)
+    cam := (^math.vec3)(get(data.cam_pos))
     if rl.IsKeyDown(.W) do cam.y += move_speed
     if rl.IsKeyDown(.S) do cam.y -= move_speed
     if rl.IsKeyDown(.A) do cam.x -= move_speed
     if rl.IsKeyDown(.D) do cam.x += move_speed
     if rl.IsKeyDown(.Q) do cam.z -= move_speed
     if rl.IsKeyDown(.E) do cam.z += move_speed
-    set(data.cam_pos, cam)
 }

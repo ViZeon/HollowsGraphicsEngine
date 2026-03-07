@@ -7,8 +7,7 @@ import data "../_data"
 import "core:fmt"
 
 calc_FPS :: proc(frame_time: i64) -> int {
-    fps := 1000000000 / frame_time
-    return int(fps)
+    return int(1000000000 / frame_time)
 }
 
 trilinear_interp :: proc(c: [8]f32, fx, fy, fz: f32) -> f32 {
@@ -23,12 +22,12 @@ trilinear_interp :: proc(c: [8]f32, fx, fy, fz: f32) -> f32 {
 
 ortho_pixel_to_world :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
     uv := math.vec2{pixel_coords.x / f32(width), pixel_coords.y / f32(height)}
-    return math.vec3{uv.x, uv.y, get(data.cam_pos).(math.vec3).z}
+    return math.vec3{uv.x, uv.y, (^math.vec3)(get(data.cam_pos)).z}
 }
 
 pixel_to_world_fov :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
-    cam_pos := get(data.cam_pos).(math.vec3)
-    fov     := get(data.fov).(int)
+    cam_pos := (^math.vec3)(get(data.cam_pos))
+    fov     := (^int)(get(data.fov))^
 
     ndc_x := f64(pixel_coords.x / f32(width))  * 2.0 - 1.0
     ndc_y := f64(pixel_coords.y / f32(height)) * 2.0 - 1.0
@@ -85,13 +84,8 @@ xyz_to_index :: proc(xyz: math.ivec3, level: int) -> i32 {
     return z * grid_size * grid_size + y * grid_size + x
 }
 
-parent_index :: proc(child_index: int) -> int {
-    return child_index / 8
-}
-
-first_child_index :: proc(parent_index: int) -> int {
-    return parent_index * 8
-}
+parent_index :: proc(child_index: int) -> int { return child_index / 8 }
+first_child_index :: proc(parent_index: int) -> int { return parent_index * 8 }
 
 cell_get_field :: proc(field: ^data.Field, level: int, index: i32) -> bool {
     absolute_index := level_offset(i32(level)) + index
@@ -116,13 +110,3 @@ cell_set_field :: proc(field: ^data.Field, level: int, index: i32, value: bool) 
 field_cache_warm :: proc(field: ^data.Field) {
     for b in field.bits { _ = b }
 }
-
-// OLD - Mipmap_Bitfield system, replaced by Field
-// level_count :: proc ...
-// bitfield_create :: proc ...
-// cell_get :: proc ...
-// cell_set :: proc ...
-// model_bitfield_set :: proc ...
-// model_bitfield_get :: proc ...
-// ray_aabb_hit :: proc ...
-// octree_query :: proc ...

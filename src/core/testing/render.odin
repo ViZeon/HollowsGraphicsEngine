@@ -23,7 +23,7 @@ generate_pixels_inplace :: proc(pixels: []u8, width, height: int) {
 
 buffer_render :: proc() {
     start_functions()
-    for !get(data.app_closed).(bool) {
+    for !(^bool)(get(data.app_closed))^ {
         update_fuctions()
     }
 }
