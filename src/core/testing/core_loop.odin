@@ -74,8 +74,30 @@ update_fuctions :: proc() {
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
     px := int(pixel_coords.x)
     py := int(pixel_coords.y)
-    if prepass_pixel_hit(&g_screen_field, px, py, g_screen_w) {
-        return math.ivec4{255, 0, 0, 255}
+
+    pixel_idx := i32(py * g_screen_w + px)
+
+    if pixel_idx < 0 || pixel_idx >= i32(len(g_screen_field.data)) {
+        return math.ivec4{0,0,0,255}
     }
-    return math.ivec4{0, 0, 0, 255}
+
+    refs := g_screen_field.data[pixel_idx]
+if len(refs) == 0 {
+    return math.ivec4{0,0,0,255}
+}
+
+proxy_idx := refs[0]
+
+entry := vault.arrays[.DataPoint][proxy_idx]
+dp := (^vault.DataPoint)(entry.data)
+
+light_dir := math.normalize_vec3(math.vec3{0.4,0.8,0.3})
+
+n := math.normalize_vec3(dp.normal)
+d := math.dot(n, light_dir)
+if d < 0 do d = 0
+
+c := i32(d * 255)
+
+return math.ivec4{c,c,c,255}
 }
