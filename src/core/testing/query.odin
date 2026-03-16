@@ -1,13 +1,19 @@
 package testing
 
-import data "../_data"
-import math "core:math/linalg/glsl"
+import vault "../_vault"
+import data  "../modules/data"
+import math  "core:math/linalg/glsl"
 
-ref_valid :: proc(ref: data.Ref, version: u32) -> bool {
+ref_valid :: proc(ref: vault.Ref, version: u32) -> bool {
     return ref.index >= 0 && ref.version == version
 }
 
-field_query :: proc(field: ^data.Field, world_x, world_y: f32) -> bool {
+field_query :: proc(field: ^vault.Field, world_x, world_y, cam_z: f32) -> bool {
+    if cam_z <= field.bounds.z.min do return false
+
+    z_depth := field.bounds.z.max - field.bounds.z.min
+    flat    := z_depth < 0.01 || field.dims < 3
+
     bx := field.bounds.x.max - field.bounds.x.min
     by := field.bounds.y.max - field.bounds.y.min
 
@@ -27,9 +33,20 @@ field_query :: proc(field: ^data.Field, world_x, world_y: f32) -> bool {
         }
 
         any_occupied := false
-        for lz_u := grid_size - 1; lz_u >= 0; lz_u -= 1 {
+        bz     := field.bounds.z.max - field.bounds.z.min
+        cell_z := bz / f32(grid_size)
+
+        z_count := grid_size if field.dims == 3 else i32(1)
+
+        for lz_u := z_count - 1; lz_u >= 0; lz_u -= 1 {
             lz := lz_u - half
-            idx := xyz_to_index(math.ivec3{lx, ly, lz}, level)
+
+            if !flat && field.dims == 3 {
+                cell_world_z := field.bounds.z.min + f32(lz_u + 1) * cell_z
+                if cell_world_z >= cam_z do continue
+            }
+
+            idx := cell_index(math.ivec3{lx, ly, lz}, level, field.dims)
             if cell_get_field(field, level, idx) {
                 any_occupied = true
                 if level == field.levels do return true

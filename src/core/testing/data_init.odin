@@ -1,38 +1,45 @@
 package testing
 
-import data "../_data"
-import math "core:math/linalg/glsl"
+import vault "../../core/_vault"
+import data  "../modules/data"
+import math  "core:math/linalg/glsl"
 import "core:strings"
 
 data_init :: proc() {
-    data.app_closed   = add(.Bool, false,  "app_closed")
-    data.app_time     = add(.I64,  i64(0), "app_time")
-    data.frame_time   = add(.I64,  i64(0), "frame_time")
-    data.fps          = add(.Int,  0,      "fps")
+    vault.app_closed   = data.add(.Bool, false,  "app_closed")
+    vault.app_time     = data.add(.I64,  i64(0), "app_time")
+    vault.frame_time   = data.add(.I64,  i64(0), "frame_time")
+    vault.fps          = data.add(.Int,  0,      "fps")
 
-    data.debug_time      = add(.F64, 2.0, "debug_time")
-    data.debug_last_time = add(.F64, 0.0, "debug_last_time")
+    vault.debug_time      = data.add(.F64, f64(2.0), "debug_time")
+    vault.debug_last_time = data.add(.F64, f64(0.0), "debug_last_time")
 
-    data.window_width_percent  = add(.F32,     f32(0.7),         "window_width_percent")
-    data.window_height_percent = add(.F32,     f32(0.8),         "window_height_percent")
-    data.window_title          = add(.CString, cstring("Compute Engine"), "window_title")
+    vault.window_width_percent  = data.add(.F32,     f32(0.7),                 "window_width_percent")
+    vault.window_height_percent = data.add(.F32,     f32(0.8),                 "window_height_percent")
+    vault.window_title          = data.add(.CString, cstring("Compute Engine"), "window_title")
 
-    data.cam_pos   = add(.Vec3, math.vec3{}, "cam_pos")
-    data.cam_speed = add(.F32,  f32(0.1),    "cam_speed")
+    vault.cam_pos   = data.add(.Vec3, math.vec3{}, "cam_pos")
+    vault.cam_speed = data.add(.F32,  f32(0.1),    "cam_speed")
 
-    data.screen_width  = add(.Int, 1280, "screen_width")
-    data.screen_height = add(.Int, 720,  "screen_height")
+    vault.screen_width  = data.add(.Int, 1280, "screen_width")
+    vault.screen_height = data.add(.Int, 720,  "screen_height")
 
-    data.model_path          = add(.CString, cstring("assets/ABeautifulGame.glb"), "model_path")
-    data.log_path            = add(.CString, cstring("./debug/"),                  "log_path")
-    data.output_dir          = add(.CString, cstring("image_debug_output/"),       "output_dir")
-    data.compute_shader_path = add(.CString, cstring("test_compute.glsl"),         "compute_shader_path")
+    vault.model_path          = data.add(.CString, cstring("assets/ABeautifulGame.glb"), "model_path")
+    vault.compute_shader_path = data.add(.CString, cstring("test_compute.glsl"),         "compute_shader_path")
 
-    data.scale_factor  = add(.F32, f32(10.0),  "scale_factor")
-    data.fov           = add(.Int, 60,         "fov")
-    data.culling_range = add(.F32, f32(300.0), "culling_range")
+    // Debug paths — all under ./debug/
+    vault.log_path         = data.add(.CString, cstring("./debug/"),             "log_path")
+    vault.output_dir       = data.add(.CString, cstring("./debug/images/"),      "output_dir")
+    vault.session_log_path = data.add(.CString, cstring("./debug/session.log"),  "session_log_path")
 
-    data.frame_data  = add(.FrameData,      data.FrameData{},   "frame_data")
-    data.debug_stats = add(.Debug_Stats,    data.Debug_Stats{}, "debug_stats")
-    data.log_board   = add(.Strings_Builder, strings.Builder{}, "log_board")
+    vault.scale_factor  = data.add(.F32, f32(10.0),  "scale_factor")
+    vault.fov           = data.add(.Int, 60,          "fov")
+    vault.culling_range = data.add(.F32, f32(300.0),  "culling_range")
+
+    // Scene — world_dp initialized by scene_init at startup, placeholder here
+    vault.world_dp = vault.Metadata{valid = false}
+
+    vault.frame_data  = data.add(.FrameData,       vault.FrameData{},   "frame_data")
+    vault.debug_stats = data.add(.Debug_Stats,     vault.Debug_Stats{}, "debug_stats")
+    vault.log_board   = data.add(.Strings_Builder, strings.Builder{},   "log_board")
 }

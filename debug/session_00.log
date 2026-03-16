@@ -1,0 +1,1395 @@
+=== HOLLOWS ENGINE ===
+FPS: 0 | Pixel: 0.0ms | Input: 0.000ms | Texture: 0.000ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                5529612 / 0 / 0
+  I64                2 / 0 / 0
+  F32                1 / 0 / 0
+  F64                1 / 0 / 0
+  CString            2 / 0 / 0
+  Vec3               1843204 / 0 / 0
+  Debug_Stats        3 / 0 / 0
+  Strings_Builder    1 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.1ms | Input: 0.000ms | Texture: 0.954ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                165888181 / 0 / 0
+  I64                120 / 0 / 0
+  F32                60 / 0 / 0
+  F64                60 / 0 / 0
+  Vec3               55296121 / 0 / 0
+  Debug_Stats        300 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.958ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.1ms | Input: 0.000ms | Texture: 0.954ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.955ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.1ms | Input: 0.000ms | Texture: 0.953ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.951ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.1ms | Input: 0.000ms | Texture: 0.942ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.001ms | Texture: 0.952ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.963ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.941ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.951ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.1ms | Input: 0.000ms | Texture: 0.943ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.948ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.945ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.2ms | Input: 0.000ms | Texture: 0.946ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.1ms | Input: 0.000ms | Texture: 0.959ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 32.1ms | Input: 0.000ms | Texture: 0.944ms
+Camera: [0.00, 0.08, 3.43]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                168652984 / 0 / 0
+  I64                122 / 0 / 0
+  F32                61 / 0 / 0
+  F64                61 / 0 / 0
+  Vec3               56217723 / 0 / 0
+  Debug_Stats        305 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 10 | Pixel: 98.7ms | Input: 0.001ms | Texture: 0.960ms
+Camera: [0.00, 0.08, -0.01]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                152064166 / 0 / 0
+  I64                110 / 0 / 0
+  F32                55 / 0 / 0
+  F64                55 / 0 / 0
+  Vec3               50688111 / 0 / 0
+  Debug_Stats        275 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 11 | Pixel: 89.3ms | Input: 0.000ms | Texture: 0.984ms
+Camera: [0.00, 0.08, -0.01]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                96768106 / 0 / 0
+  I64                70 / 0 / 0
+  F32                35 / 0 / 0
+  F64                35 / 0 / 0
+  Vec3               32256071 / 0 / 0
+  Debug_Stats        175 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 11 | Pixel: 89.3ms | Input: 0.000ms | Texture: 0.996ms
+Camera: [0.00, 0.08, -0.01]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                60825667 / 0 / 0
+  I64                44 / 0 / 0
+  F32                22 / 0 / 0
+  F64                22 / 0 / 0
+  Vec3               20275245 / 0 / 0
+  Debug_Stats        110 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 30 | Pixel: 31.7ms | Input: 0.000ms | Texture: 0.939ms
+Camera: [0.00, 0.08, -0.55]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                110592121 / 0 / 0
+  I64                80 / 0 / 0
+  F32                40 / 0 / 0
+  F64                40 / 0 / 0
+  Vec3               36864081 / 0 / 0
+  Debug_Stats        200 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 23 | Pixel: 41.3ms | Input: 0.000ms | Texture: 0.939ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                135475348 / 0 / 0
+  I64                98 / 0 / 0
+  F32                49 / 0 / 0
+  F64                49 / 0 / 0
+  Vec3               45158499 / 0 / 0
+  Debug_Stats        245 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 23 | Pixel: 41.2ms | Input: 0.000ms | Texture: 0.939ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                132710545 / 0 / 0
+  I64                96 / 0 / 0
+  F32                48 / 0 / 0
+  F64                48 / 0 / 0
+  Vec3               44236897 / 0 / 0
+  Debug_Stats        240 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 23 | Pixel: 41.2ms | Input: 0.000ms | Texture: 0.952ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                132710566 / 0 / 0
+  I64                96 / 0 / 0
+  F32                48 / 0 / 0
+  F64                48 / 0 / 0
+  Vec3               44236897 / 0 / 0
+  Debug_Stats        240 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 23 | Pixel: 41.3ms | Input: 0.000ms | Texture: 0.961ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                132710593 / 0 / 0
+  I64                96 / 0 / 0
+  F32                48 / 0 / 0
+  F64                48 / 0 / 0
+  Vec3               44236897 / 0 / 0
+  Debug_Stats        240 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 835.9ms | Input: 0.002ms | Texture: 1.035ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                19353629 / 0 / 0
+  I64                14 / 0 / 0
+  F32                7 / 0 / 0
+  F64                7 / 0 / 0
+  Vec3               6451215 / 0 / 0
+  Debug_Stats        36 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                893347373 / 0 / 0
+  I64                1058 / 0 / 0
+  F32                901 / 0 / 0
+  F64                618 / 0 / 0
+  Vec3               297795981 / 0 / 0
+  Debug_Stats        1414 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 834.7ms | Input: 0.001ms | Texture: 1.007ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294413 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                893113512 / 0 / 0
+  I64                1126 / 0 / 0
+  F32                892 / 0 / 0
+  F64                784 / 0 / 0
+  Vec3               297650661 / 0 / 0
+  Debug_Stats        2301 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 835.8ms | Input: 0.001ms | Texture: 1.037ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294411 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                893711177 / 0 / 0
+  I64                2002 / 0 / 0
+  F32                976 / 0 / 0
+  F64                623 / 0 / 0
+  Vec3               297851894 / 0 / 0
+  Debug_Stats        2292 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 835.9ms | Input: 0.001ms | Texture: 1.017ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294413 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                893468574 / 0 / 0
+  I64                1113 / 0 / 0
+  F32                636 / 0 / 0
+  F64                555 / 0 / 0
+  Vec3               297869860 / 0 / 0
+  Debug_Stats        2089 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 836.0ms | Input: 0.001ms | Texture: 1.009ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294411 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                893630778 / 0 / 0
+  I64                1544 / 0 / 0
+  F32                825 / 0 / 0
+  F64                511 / 0 / 0
+  Vec3               297875710 / 0 / 0
+  Debug_Stats        1748 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 836.0ms | Input: 0.001ms | Texture: 1.011ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294411 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                893425634 / 0 / 0
+  I64                1322 / 0 / 0
+  F32                931 / 0 / 0
+  F64                647 / 0 / 0
+  Vec3               297810431 / 0 / 0
+  Debug_Stats        2292 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 836.1ms | Input: 0.001ms | Texture: 0.987ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294413 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                893755718 / 0 / 0
+  I64                1075 / 0 / 0
+  F32                633 / 0 / 0
+  F64                544 / 0 / 0
+  Vec3               297807451 / 0 / 0
+  Debug_Stats        1887 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 835.9ms | Input: 0.001ms | Texture: 1.029ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294411 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                894010301 / 0 / 0
+  I64                1258 / 0 / 0
+  F32                747 / 0 / 0
+  F64                380 / 0 / 0
+  Vec3               298008414 / 0 / 0
+  Debug_Stats        1937 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 835.8ms | Input: 0.001ms | Texture: 1.023ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294410 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                893971548 / 0 / 0
+  I64                1155 / 0 / 0
+  F32                915 / 0 / 0
+  F64                379 / 0 / 0
+  Vec3               298050313 / 0 / 0
+  Debug_Stats        1929 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 838.2ms | Input: 0.001ms | Texture: 0.991ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294415 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  CString            2 / 0 / 0
+  Vec3               2764808 / 0 / 0
+  Debug_Stats        16 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                895872359 / 0 / 0
+  I64                1082 / 0 / 0
+  F32                939 / 0 / 0
+  F64                454 / 0 / 0
+  CString            362 / 0 / 0
+  Vec3               298545797 / 0 / 0
+  Debug_Stats        2113 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 838.4ms | Input: 0.001ms | Texture: 1.032ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294410 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                896257383 / 0 / 0
+  I64                1008 / 0 / 0
+  F32                738 / 0 / 0
+  F64                585 / 0 / 0
+  Vec3               298760829 / 0 / 0
+  Debug_Stats        2325 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 837.8ms | Input: 0.001ms | Texture: 1.001ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                8294413 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               2764807 / 0 / 0
+  Debug_Stats        15 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                895184671 / 0 / 0
+  I64                1605 / 0 / 0
+  F32                678 / 0 / 0
+  F64                580 / 0 / 0
+  Vec3               298394481 / 0 / 0
+  Debug_Stats        1890 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 1 | Pixel: 837.1ms | Input: 0.001ms | Texture: 0.990ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                16588825 / 0 / 0
+  I64                12 / 0 / 0
+  F32                6 / 0 / 0
+  F64                6 / 0 / 0
+  Vec3               5529613 / 0 / 0
+  Debug_Stats        32 / 0 / 0
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                894452284 / 0 / 0
+  I64                978 / 0 / 0
+  F32                1223 / 0 / 0
+  F64                492 / 0 / 0
+  Vec3               298209537 / 0 / 0
+  Debug_Stats        1926 / 0 / 0
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 23 | Pixel: 41.6ms | Input: 0.000ms | Texture: 0.972ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                80179306 / 0 / 0
+  I64                58 / 0 / 0
+  F32                29 / 0 / 0
+  F64                29 / 0 / 0
+  Vec3               26726459 / 0 / 0
+  Debug_Stats        146 / 0 / 0
+
+[F2: enable fetch timing]
+
+---
+=== HOLLOWS ENGINE ===
+FPS: 23 | Pixel: 41.3ms | Input: 0.000ms | Texture: 0.949ms
+Camera: [0.00, 0.08, -0.15]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  Vertex_Cached      29162 / 29162
+  DataPoint          29162 / 29162
+  Field              1 / 1
+  TOTAL              87511 / 87511
+
+--- FETCHES (edit / copy / set) ---
+  Int                124416141 / 0 / 0
+  I64                90 / 0 / 0
+  F32                45 / 0 / 0
+  F64                45 / 0 / 0
+  CString            2 / 0 / 0
+  Vec3               41472092 / 0 / 0
+  Debug_Stats        226 / 0 / 0
+
+[F2: enable fetch timing]
+
+---

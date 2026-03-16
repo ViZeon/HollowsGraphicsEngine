@@ -1,42 +1,59 @@
 package testing
 
-import data "../_data"
-import model "../modules/model"
-import math "core:math/linalg/glsl"
+import vault  "../_vault"
+import data   "../modules/data"
+import gltf   "../modules/model"
+import math   "core:math/linalg/glsl"
 import "core:fmt"
 
-load_model :: proc(path: cstring) -> (bounds: data.Bounds, center: math.vec3, ok: bool) {
-    raw_verts, loaded := model.load_model(path)
+load_model :: proc(path: cstring) -> (bounds: vault.Bounds, center: math.vec3, ok: bool) {
+    raw_mesh, loaded := gltf.load_gltf(path)
     if !loaded do return {}, {}, false
+    defer gltf.free_raw_mesh(&raw_mesh)
 
-    bounds.x.min = raw_verts[0].pos.x
-    bounds.x.max = raw_verts[0].pos.x
-    bounds.y.min = raw_verts[0].pos.y
-    bounds.y.max = raw_verts[0].pos.y
-    bounds.z.min = raw_verts[0].pos.z
-    bounds.z.max = raw_verts[0].pos.z
+    vert_count := len(raw_mesh.positions)
 
-    for v in raw_verts {
-        if v.pos.x < bounds.x.min do bounds.x.min = v.pos.x
-        if v.pos.x > bounds.x.max do bounds.x.max = v.pos.x
-        if v.pos.y < bounds.y.min do bounds.y.min = v.pos.y
-        if v.pos.y > bounds.y.max do bounds.y.max = v.pos.y
-        if v.pos.z < bounds.z.min do bounds.z.min = v.pos.z
-        if v.pos.z > bounds.z.max do bounds.z.max = v.pos.z
+    data.preallocate(.Vertex,       vert_count)
+    data.preallocate(.Vertex_Cache, vert_count)
+    data.preallocate(.DataPoint,    vert_count)
 
-        vert_meta := add(.Vertex, data.Vertex{pos = v.pos, normal = v.normal})
+    bounds.x.min = raw_mesh.positions[0].x
+    bounds.x.max = raw_mesh.positions[0].x
+    bounds.y.min = raw_mesh.positions[0].y
+    bounds.y.max = raw_mesh.positions[0].y
+    bounds.z.min = raw_mesh.positions[0].z
+    bounds.z.max = raw_mesh.positions[0].z
 
-        cached_meta := add(.Vertex_Cached, data.Vertex_Cached{
-            ref = data.Ref{index = i32(vert_meta.index), version = 0},
+    dp_offset := len(vault.arrays[.DataPoint])
+
+    for i in 0 ..< vert_count {
+        pos    := raw_mesh.positions[i]
+        normal := raw_mesh.normals[i]
+
+        if pos.x < bounds.x.min do bounds.x.min = pos.x
+        if pos.x > bounds.x.max do bounds.x.max = pos.x
+        if pos.y < bounds.y.min do bounds.y.min = pos.y
+        if pos.y > bounds.y.max do bounds.y.max = pos.y
+        if pos.z < bounds.z.min do bounds.z.min = pos.z
+        if pos.z > bounds.z.max do bounds.z.max = pos.z
+
+        vert_meta := data.add(.Vertex, vault.Vertex{pos = pos, normal = normal})
+
+        cache_meta := data.add(.Vertex_Cache, vault.Vertex_Cache{
+            ref     = vault.Ref{index = i32(vert_meta.index), version = 0},
+            mip_ref = vault.REF_INVALID,
         })
 
-        add(.DataPoint, data.DataPoint{
-            pos    = v.pos,
-            normal = v.normal,
+        data.add(.DataPoint, vault.DataPoint{
+            pos    = pos,
+            normal = normal,
             type   = .Vertex,
-            ref    = data.Ref{index = i32(cached_meta.index), version = 0},
+            ref    = vault.Ref{index = i32(cache_meta.index), version = 0},
         })
     }
+
+    // Build neighbor refs from face topology
+    build_neighbors_from_indices(raw_mesh.indices, dp_offset)
 
     center = math.vec3{
         (bounds.x.min + bounds.x.max) * 0.5,
@@ -44,66 +61,55 @@ load_model :: proc(path: cstring) -> (bounds: data.Bounds, center: math.vec3, ok
         (bounds.z.min + bounds.z.max) * 0.5,
     }
 
-    fmt.println("load_model: loaded", len(data.arrays[.DataPoint]), "datapoints, center:", center)
+    fmt.println("load_model: verts:", vert_count, "faces:", len(raw_mesh.indices) / 3, "center:", center)
     return bounds, center, true
 }
 
-field_create :: proc(bounds: data.Bounds, levels: int) -> data.Field {
-    field: data.Field
+// dims: 1, 2, or 3
+field_create :: proc(bounds: vault.Bounds, levels: int, dims: int = 3) -> vault.Field {
+    field: vault.Field
     field.bounds = bounds
     field.levels = levels
+    field.dims   = dims
 
-    total    := total_cells(levels + 1)
+    total    := total_cells(levels + 1, dims)
     num_u32s := (total + 31) / 32
-    field.bits = make([dynamic]u32, num_u32s)
+    field.bits_any = make([dynamic]u32, num_u32s)
+    field.bits_all = make([dynamic]u32, num_u32s)
 
-    finest_count := i32(1) << uint(levels)
-    finest_count  = finest_count * finest_count * finest_count
-    field.refs = make([dynamic][dynamic]i32, finest_count)
+    finest_count := i32(1) << (uint(levels) * uint(dims))
+    field.data = make([dynamic][dynamic]i32, finest_count)
 
     return field
 }
 
-field_populate :: proc(field: ^data.Field, datapoints: []data.DataPoint) {
-    grid_size := i32(1) << uint(field.levels)
-    half      := grid_size / 2
-
-    bx := field.bounds.x.max - field.bounds.x.min
-    by := field.bounds.y.max - field.bounds.y.min
-    bz := field.bounds.z.max - field.bounds.z.min
-
-    for i in 0 ..< len(datapoints) {
-        dp := datapoints[i]
-
-        nx := (dp.pos.x - field.bounds.x.min) / bx
-        ny := (dp.pos.y - field.bounds.y.min) / by
-        nz := (dp.pos.z - field.bounds.z.min) / bz
-
-        x := i32(math.floor_f32(nx * f32(grid_size))) - half
-        y := i32(math.floor_f32(ny * f32(grid_size))) - half
-        z := i32(math.floor_f32(nz * f32(grid_size))) - half
-
-        if x < -half || x >= half ||
-           y < -half || y >= half ||
-           z < -half || z >= half {
-            continue
-        }
-
-        idx := xyz_to_index(math.ivec3{x, y, z}, field.levels)
-        cell_set_field(field, field.levels, idx, true)
-        append(&field.refs[idx], i32(i))
+// Populates field using polygon coverage — each face maps to all cells it covers
+// dp_offset: first DataPoint index for this model
+field_populate :: proc(field: ^vault.Field, dp_offset: int, indices: []u32) {
+    face_count := len(indices) / 3
+    for f in 0 ..< face_count {
+        i0 := dp_offset + int(indices[f * 3 + 0])
+        i1 := dp_offset + int(indices[f * 3 + 1])
+        i2 := dp_offset + int(indices[f * 3 + 2])
+        map_polygon_to_field(field, [3]int{i0, i1, i2})
     }
 
+    // Propagate occupancy upward through levels
     for level := field.levels - 1; level >= 0; level -= 1 {
-        parent_count := i32(1) << (3 * u32(level))
-        for p in 0 ..< parent_count {
-            first_child := i32(p) * 8
-            for c in 0 ..< 8 {
+        children_per_cell := i32(1) << uint(field.dims)
+        parent_count      := i32(1) << (uint(field.dims) * uint(level))
+        for pi in 0 ..< parent_count {
+            first_child := pi * children_per_cell
+            for c in 0 ..< children_per_cell {
                 if cell_get_field(field, level + 1, first_child + i32(c)) {
-                    cell_set_field(field, level, i32(p), true)
+                    cell_set_field(field, level, i32(pi), true)
                     break
                 }
             }
         }
     }
+}
+
+build_mip_refs :: proc(field: ^vault.Field) {
+    // TODO: per-cell averaged DataPoint for mip early-out
 }

@@ -2,7 +2,7 @@ package main
 
 //import "core:imports/imports_vendor"
 //import "core:imports/imports_local"
-import data "core/_data"
+import data "core/_vault"
 import window "core/modules/window"
 import model "core/modules/model"
 import testing "core/testing"

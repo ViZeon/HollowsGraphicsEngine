@@ -1,7 +1,8 @@
 package testing
 
-import data "../_data"
-import math "core:math/linalg/glsl"
+import vault "../../core/_vault"
+import data  "../modules/data"
+import math  "core:math/linalg/glsl"
 
 generate_pixels :: proc(width, height: int) -> []u8 {
     pixels := make([]u8, width * height * 3)
@@ -23,7 +24,7 @@ generate_pixels_inplace :: proc(pixels: []u8, width, height: int) {
 
 buffer_render :: proc() {
     start_functions()
-    for !(^bool)(get(data.app_closed))^ {
+    for !(^bool)(data.edit(vault.app_closed))^ {
         update_fuctions()
     }
 }

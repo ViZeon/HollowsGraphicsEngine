@@ -1,70 +1,81 @@
 package testing
 
-import math "core:math/linalg/glsl"
-import data "../_data"
+import math  "core:math/linalg/glsl"
+import vault "../_vault"
+import data  "../modules/data"
+import gltf  "../modules/model"
 import "core:fmt"
 import "core:strings"
 
+@(private) g_screen_field: vault.Field
+@(private) g_screen_w:     int
+@(private) g_screen_h:     int
+
 start_functions :: proc() {
-    strings.builder_reset((^strings.Builder)(get(data.log_board)))
+    session_init()
+    strings.builder_reset((^strings.Builder)(data.edit(vault.log_board)))
     debug_init()
-    screen_w := (^int)(get(data.screen_width))^
-    screen_h := (^int)(get(data.screen_height))^
-    data.frame_pixels   = make([]u8, screen_w * screen_h * 3)
-    data.prepass_buffer = make([]math.ivec4, screen_w * screen_h)
-    bounds, center, ok := load_model((^cstring)(get(data.model_path))^)
+
+    g_screen_w = (^int)(data.edit(vault.screen_width))^
+    g_screen_h = (^int)(data.edit(vault.screen_height))^
+    vault.frame_pixels   = make([]u8, g_screen_w * g_screen_h * 3)
+    vault.prepass_buffer = make([]vault.Ref, g_screen_w * g_screen_h)
+
+    scene_init()
+
+    // Load model — get bounds and raw mesh for field populate
+    model_path := (^cstring)(data.edit(vault.model_path))^
+    bounds, center, ok := load_model(model_path)
     if !ok do return
-    cam := (^math.vec3)(get(data.cam_pos))
+
+    cam := (^math.vec3)(data.edit(vault.cam_pos))
     cam.x = center.x
     cam.y = center.y
     cam.z = bounds.z.max + 5.0
-    field := field_create(bounds, 4)
-    dp_slice := make([]data.DataPoint, len(data.arrays[.DataPoint]))
-    for i in 0 ..< len(data.arrays[.DataPoint]) {
-        dp_slice[i] = data.arrays[.DataPoint][i].(data.DataPoint)
-    }
-    fmt.println("First dp pos:", dp_slice[0].pos)
-    fmt.println("Last dp pos:", dp_slice[len(dp_slice)-1].pos)
-    field_populate(&field, dp_slice[:])
-    delete(dp_slice)
-    add(.Field, field, "model_field")
-    field_ptr := (^data.Field)(data.arrays[.Field][0].data)
+
+    // Re-load raw mesh for index data needed by field_populate
+    // (raw_mesh freed after load_model, need indices for polygon mapping)
+    raw_mesh, raw_ok := gltf.load_gltf(model_path)
+    if !raw_ok do return
+    defer gltf.free_raw_mesh(&raw_mesh)
+
+    dp_offset := len(vault.arrays[.DataPoint]) - len(raw_mesh.positions)
+
+    field := field_create(bounds, WORLD_FIELD_LEVELS, 3)
+    field_populate(&field, dp_offset, raw_mesh.indices)
+
+    model_field_meta := data.add(.Field, field, "model_field")
+    scene_add_model(bounds, i32(model_field_meta.index))
+
+    field_ptr := (^vault.Field)(data.edit(model_field_meta))
     fmt.println("Level 0 root occupied:", cell_get_field(field_ptr, 0, 0))
+
     occupied_finest := 0
     grid_size := i32(1) << uint(field_ptr.levels)
     for i in 0 ..< grid_size * grid_size * grid_size {
         if cell_get_field(field_ptr, field_ptr.levels, i32(i)) do occupied_finest += 1
     }
     fmt.println("Occupied finest cells:", occupied_finest)
-    fmt.println("Field built, cells:", len((^data.Field)(data.arrays[.Field][0].data).bits))
-    generate_pixels_inplace(data.frame_pixels, screen_w, screen_h)
+    fmt.println("Field built, cells:",    len(field_ptr.bits_any))
+
+    g_screen_field = prepass_run(g_screen_w, g_screen_h)
+    generate_pixels_inplace(vault.frame_pixels, g_screen_w, g_screen_h)
     frame_write_to_image()
 }
 
 update_fuctions :: proc() {
     debug_frame_begin()
-    screen_w := (^int)(get(data.screen_width))^
-    screen_h := (^int)(get(data.screen_height))^
-    generate_pixels_inplace(data.frame_pixels, screen_w, screen_h)
+    prepass_free(&g_screen_field)
+    g_screen_field = prepass_run(g_screen_w, g_screen_h)
+    generate_pixels_inplace(vault.frame_pixels, g_screen_w, g_screen_h)
     debug_frame_end()
-    strings.builder_reset((^strings.Builder)(get(data.log_board)))
 }
 
 cpu_fragment_shader :: proc(pixel_coords: math.vec2) -> (PIXEL: math.ivec4) {
-    screen_w := (^int)(get(data.screen_width))^
-    screen_h := (^int)(get(data.screen_height))^
-    idx := int(pixel_coords.y) * screen_w + int(pixel_coords.x)
-    if data.prepass_buffer != nil && idx < len(data.prepass_buffer) {
-        sample := data.prepass_buffer[idx]
-        if sample.w > 0 do return sample
-    }
-
-    world := pixel_to_world_fov(pixel_coords, screen_w, screen_h)
-    if len(data.arrays[.Field]) > 0 {
-        field := (^data.Field)(data.arrays[.Field][0].data)
-        if field_query(field, world.x, world.y) {
-            return math.ivec4{255, 0, 0, 255}
-        }
+    px := int(pixel_coords.x)
+    py := int(pixel_coords.y)
+    if prepass_pixel_hit(&g_screen_field, px, py, g_screen_w) {
+        return math.ivec4{255, 0, 0, 255}
     }
     return math.ivec4{0, 0, 0, 255}
 }
