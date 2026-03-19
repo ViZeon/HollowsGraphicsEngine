@@ -196,12 +196,21 @@ prepass_process_cell :: proc(
 					screen_field.bits_any[slot] |= (1 << bit)
 				}
 
-// Store proxy + original verts
-append(&screen_field.data[pixel_idx], proxy_idx)
-				append(&screen_field.data[pixel_idx], i0)
-				append(&screen_field.data[pixel_idx], i1)
-				append(&screen_field.data[pixel_idx], i2)
+                if (len(screen_field.data[pixel_idx]) >= 4 ) {
+				// Store proxy + original verts
+				screen_field.data[pixel_idx][0] = proxy_idx
+				screen_field.data[pixel_idx][1] = i0
+				screen_field.data[pixel_idx][2] = i1
+				screen_field.data[pixel_idx][3] = i2
 			}
+            else{
+                    // Store proxy + original verts
+                append(&screen_field.data[pixel_idx], proxy_idx)
+                append(&screen_field.data[pixel_idx], i0)
+                append(&screen_field.data[pixel_idx], i1)
+                append(&screen_field.data[pixel_idx], i2)
+            }
+        }
 		}
 	}
 }
