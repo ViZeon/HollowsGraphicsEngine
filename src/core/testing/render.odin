@@ -11,6 +11,11 @@ generate_pixels :: proc(width, height: int) -> []u8 {
 }
 
 generate_pixels_inplace :: proc(pixels: []u8, width, height: int) {
+        for i in 0 ..< len(pixels) {
+        pixels[i] = vault.frame_pixels[i]
+    }
+
+    /*
     for y in 0 ..< height {
         for x in 0 ..< width {
             idx   := (y * width + x) * 3
@@ -19,7 +24,8 @@ generate_pixels_inplace :: proc(pixels: []u8, width, height: int) {
             pixels[idx + 1] = u8(pixel.y)
             pixels[idx + 2] = u8(pixel.z)
         }
-    }
+    }*/
+    
 }
 
 buffer_render :: proc() {
