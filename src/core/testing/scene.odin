@@ -9,15 +9,12 @@ WORLD_FIELD_LEVELS  :: 4
 WORLD_FIELD_DEFAULT :: f32(16.0)
 
 // ---- field_sync ----
-// Primary interface for all Field operations.
-// Creates, reuses, or nests upward to ensure target_bounds is covered.
-// Returns the (possibly updated) root DataPoint index.
 field_sync :: proc(root_dp_index: i32, target_bounds: vault.Bounds) -> i32 {
     if root_dp_index < 0 {
-        aligned     := bounds_align_to_grid(target_bounds, WORLD_FIELD_LEVELS)
-        field       := field_create(aligned, WORLD_FIELD_LEVELS)
-        field_meta  := data.add(.Field, field, "field")
-        dp_meta     := data.add(.DataPoint, vault.DataPoint{
+        aligned    := bounds_align_to_grid(target_bounds, WORLD_FIELD_LEVELS)
+        field      := field_create(aligned, WORLD_FIELD_LEVELS)
+        field_meta := data.add(.Field, field, "field")
+        dp_meta    := data.add(.DataPoint, vault.DataPoint{
             pos    = bounds_center(aligned),
             normal = math.vec3{0, 1, 0},
             type   = .Field,
@@ -71,27 +68,27 @@ scene_init :: proc() {
         y = vault.Range{min = -8, max = 8},
         z = vault.Range{min = -8, max = 8},
     }
-
     world_dp_index := field_sync(-1, default_bounds)
     vault.world_dp = vault.Metadata{
         index   = int(world_dp_index),
         type_id = .DataPoint,
         valid   = true,
     }
-
     fmt.println("scene_init: world field created, bounds:", default_bounds)
 }
 
 // ---- scene_add_model ----
-// Adds model into world hierarchy.
-// Registers model as a DataPoint of type .Model and inserts it into the world Field.
-scene_add_model :: proc(model_bounds: vault.Bounds, model_field_index: i32) {
-    // Ensure world covers model bounds — nest upward if needed
-    world_dp_index  := i32(vault.world_dp.index)
-    world_dp_index   = field_sync(world_dp_index, model_bounds)
-    vault.world_dp.index = int(world_dp_index)
+// Registers model in the world hierarchy.
+// model_ref indexes into vault.arrays[.Model] — the Model struct owns field and face_list.
+scene_add_model :: proc(model_ref: vault.Ref) {
+    model        := (^vault.Model)(vault.arrays[.Model][model_ref.index].data)
+    model_bounds := model.bounds
 
-    // Get world field
+    // Ensure world covers model bounds
+    world_dp_index       := i32(vault.world_dp.index)
+    world_dp_index        = field_sync(world_dp_index, model_bounds)
+    vault.world_dp.index  = int(world_dp_index)
+
     world_dp := (^vault.DataPoint)(data.edit(vault.Metadata{
         index   = int(world_dp_index),
         type_id = .DataPoint,
@@ -105,12 +102,12 @@ scene_add_model :: proc(model_bounds: vault.Bounds, model_field_index: i32) {
 
     center := bounds_center(model_bounds)
 
-    // Register model DataPoint
+    // DataPoint of type .Model — ref indexes into vault.arrays[.Model]
     model_dp_meta := data.add(.DataPoint, vault.DataPoint{
         pos    = center,
         normal = math.vec3{0, 1, 0},
         type   = .Model,
-        ref    = vault.Ref{index = model_field_index, version = 0},
+        ref    = model_ref,
     }, "model_dp")
 
     // Insert model DataPoint into world field at its position
@@ -128,6 +125,7 @@ scene_add_model :: proc(model_bounds: vault.Bounds, model_field_index: i32) {
     idx := cell_index(math.ivec3{cx, cy, cz}, world_field.levels, world_field.dims)
     cell_set_field(world_field, world_field.levels, idx, true)
     append(&world_field.data[idx], i32(model_dp_meta.index))
+
     // Propagate occupancy upward
     for level := world_field.levels - 1; level >= 0; level -= 1 {
         children_per_cell := i32(1) << uint(world_field.dims)

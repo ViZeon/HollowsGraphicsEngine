@@ -105,11 +105,32 @@ debug_print_snapshot :: proc(snapshot: string) {
 
 debug_field_occupancy :: proc(sb: ^strings.Builder) {
     fmt.sbprintf(sb, "\n--- FIELD OCCUPANCY ---\n")
+
+    // Only print non-sf fields in full, summarize sf fields
+    sf_count    := 0
+    sf_occupied := 0
+
     for i in 0 ..< len(vault.meta_arrays[.Field]) {
         meta := vault.meta_arrays[.Field][i]
         if !meta.valid do continue
         field := (^vault.Field)(vault.arrays[.Field][i].data)
-        fmt.sbprintf(sb, "  Field[%d] '%s' levels:%d\n", i, meta.name, field.levels)
+
+        // Screen fields — summarize instead of printing each one
+        if meta.name == "sf" {
+            sf_count += 1
+            // Count any occupied cells at finest level
+            grid_size := i32(1) << uint(field.levels)
+            total_2d  := grid_size * grid_size
+            for idx in 0 ..< total_2d {
+                if cell_get_field(field, field.levels, i32(idx)) {
+                    sf_occupied += 1
+                    break
+                }
+            }
+            continue
+        }
+
+        fmt.sbprintf(sb, "  Field[%d] '%s' levels:%d dims:%d\n", i, meta.name, field.levels, field.dims)
         fmt.sbprintf(sb, "    bounds X:[%.4f,%.4f] Y:[%.4f,%.4f] Z:[%.4f,%.4f]\n",
             field.bounds.x.min, field.bounds.x.max,
             field.bounds.y.min, field.bounds.y.max,
@@ -117,12 +138,40 @@ debug_field_occupancy :: proc(sb: ^strings.Builder) {
         )
         for level in 0..=field.levels {
             grid_size := i32(1) << uint(level)
-            total     := grid_size * grid_size * grid_size
-            occupied  := 0
+            // Dims-aware total cell count
+            total := i32(1)
+            for _ in 0 ..< field.dims { total *= grid_size }
+            occupied := 0
             for idx in 0 ..< total {
                 if cell_get_field(field, level, i32(idx)) do occupied += 1
             }
             fmt.sbprintf(sb, "    level %d: %d / %d cells occupied\n", level, occupied, total)
+        }
+    }
+
+    // Screen field summary
+    if sf_count > 0 {
+        fmt.sbprintf(sb, "\n  Screen Fields: %d total | %d with occupied cells\n", sf_count, sf_occupied)
+        // Print root screen field (first sf) in detail
+        for i in 0 ..< len(vault.meta_arrays[.Field]) {
+            meta := vault.meta_arrays[.Field][i]
+            if !meta.valid || meta.name != "sf" do continue
+            field := (^vault.Field)(vault.arrays[.Field][i].data)
+            fmt.sbprintf(sb, "  Root SF [%d] levels:%d dims:%d bounds X:[%.0f,%.0f] Y:[%.0f,%.0f]\n",
+                i, field.levels, field.dims,
+                field.bounds.x.min, field.bounds.x.max,
+                field.bounds.y.min, field.bounds.y.max,
+            )
+            for level in 0..=field.levels {
+                grid_size := i32(1) << uint(level)
+                total     := grid_size * grid_size  // dims=2
+                occupied  := 0
+                for idx in 0 ..< total {
+                    if cell_get_field(field, level, i32(idx)) do occupied += 1
+                }
+                fmt.sbprintf(sb, "    level %d: %d / %d\n", level, occupied, total)
+            }
+            break  // only root
         }
     }
 }

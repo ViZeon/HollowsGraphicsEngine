@@ -42,4 +42,12 @@ data_init :: proc() {
     vault.frame_data  = data.add(.FrameData,       vault.FrameData{},   "frame_data")
     vault.debug_stats = data.add(.Debug_Stats,     vault.Debug_Stats{}, "debug_stats")
     vault.log_board   = data.add(.Strings_Builder, strings.Builder{},   "log_board")
+
+    // Screen field config
+    // cell_size must be a power of 4 (64, 256, 1024, 4096...)
+    // At nesting=2, cell_size=1024: ~470 KB total, ~1M finest cells (good for 1080p)
+    // At nesting=3, cell_size=256:  ~2.9MB total, ~16M finest cells (good for 4K)
+    vault.screen_field_nesting   = data.add(.Int,  2,    "screen_field_nesting")
+    vault.screen_field_cell_size = data.add(.Int,  1024, "screen_field_cell_size")
+    vault.screen_field_dirty     = data.add(.Bool, true, "screen_field_dirty")  // triggers rebuild on first frame
 }

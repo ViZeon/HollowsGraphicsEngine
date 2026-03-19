@@ -1,0 +1,63 @@
+=== HOLLOWS ENGINE ===
+FPS: 9 | Pixel: 43.4ms | Input: 0.002ms | Texture: 0.987ms
+Camera: [0.00, 0.08, 0.21]
+
+--- DATA (valid / total) ---
+  Bool               2 / 2
+  Int                6 / 6
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             29162 / 29162
+  Vertex_Cache       29162 / 29162
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  DataPoint          29164 / 29164
+  Field              1027 / 1027
+  TOTAL              88542 / 88542
+
+--- FETCHES (edit / copy / set) ---
+  Bool               4 / 0 / 0
+  Int                614616 / 0 / 0
+  I64                8 / 0 / 0
+  F32                4 / 0 / 0
+  F64                4 / 0 / 0
+  Vec3               14 / 0 / 0
+  Debug_Stats        24 / 0 / 0
+
+--- FIELD OCCUPANCY ---
+  Field[0] 'field' levels:4 dims:3
+    bounds X:[-8.0000,8.0000] Y:[-8.0000,8.0000] Z:[-8.0000,8.0000]
+    level 0: 1 / 1 cells occupied
+    level 1: 1 / 8 cells occupied
+    level 2: 1 / 64 cells occupied
+    level 3: 1 / 512 cells occupied
+    level 4: 1 / 4096 cells occupied
+  Field[1] 'model_field' levels:4 dims:3
+    bounds X:[-0.0280,0.0280] Y:[-0.0000,0.1515] Z:[-0.0280,0.0280]
+    level 0: 1 / 1 cells occupied
+    level 1: 8 / 8 cells occupied
+    level 2: 47 / 64 cells occupied
+    level 3: 308 / 512 cells occupied
+    level 4: 1217 / 4096 cells occupied
+
+  Screen Fields: 1025 total | 77 with occupied cells
+  Root SF [2] levels:5 dims:2 bounds X:[0,1280] Y:[0,720]
+    level 0: 0 / 1
+    level 1: 0 / 4
+    level 2: 0 / 16
+    level 3: 0 / 64
+    level 4: 0 / 256
+    level 5: 76 / 1024
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Bool               627 / 0 / 0
+  Int                66466805 / 0 / 0
+  I64                1100 / 0 / 0
+  F32                916 / 0 / 0
+  F64                644 / 0 / 0
+  Vec3               2759 / 0 / 0
+  Debug_Stats        3539 / 0 / 0
