@@ -21,8 +21,8 @@ data_init :: proc() {
     vault.cam_pos   = data.add(.Vec3, math.vec3{}, "cam_pos")
     vault.cam_speed = data.add(.F32,  f32(0.1),    "cam_speed")
 
-    vault.screen_width  = data.add(.Int, 1280, "screen_width")
-    vault.screen_height = data.add(.Int, 720,  "screen_height")
+    vault.screen_width  = data.add(.Int, 800, "screen_width")
+    vault.screen_height = data.add(.Int, 600,  "screen_height")
 
     vault.model_path          = data.add(.CString, cstring("assets/ABeautifulGame.glb"), "model_path")
     vault.compute_shader_path = data.add(.CString, cstring("test_compute.glsl"),         "compute_shader_path")
@@ -44,10 +44,9 @@ data_init :: proc() {
     vault.log_board   = data.add(.Strings_Builder, strings.Builder{},   "log_board")
 
     // Screen field config
-    // cell_size must be a power of 4 (64, 256, 1024, 4096...)
-    // At nesting=2, cell_size=1024: ~470 KB total, ~1M finest cells (good for 1080p)
-    // At nesting=3, cell_size=256:  ~2.9MB total, ~16M finest cells (good for 4K)
-    vault.screen_field_nesting   = data.add(.Int,  2,    "screen_field_nesting")
-    vault.screen_field_cell_size = data.add(.Int,  1024, "screen_field_cell_size")
-    vault.screen_field_dirty     = data.add(.Bool, true, "screen_field_dirty")  // triggers rebuild on first frame
+    // FIX: Nesting=3, Cell_Size=256 creates a 4096x4096 grid.
+    // Each cell is ~0.31 pixels wide. Guarantees gapless screen coverage.
+    vault.screen_field_nesting   = data.add(.Int,  3,    "screen_field_nesting")
+    vault.screen_field_cell_size = data.add(.Int,  256,  "screen_field_cell_size")
+    vault.screen_field_dirty     = data.add(.Bool, true, "screen_field_dirty")
 }
