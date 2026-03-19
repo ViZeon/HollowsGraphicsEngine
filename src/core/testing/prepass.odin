@@ -4,240 +4,468 @@ import vault "../_vault"
 import data  "../modules/data"
 import math  "core:math/linalg/glsl"
 
-// Runs the prepass for one frame.
-// Iterates model fields spatially (front to back), walks polygons,
-// applies instance transforms, interpolates surface per pixel,
-// writes results to a local screen-space field.
-// Returns screen field — caller must call prepass_free after rendering.
-prepass_run :: proc(screen_w, screen_h: int) -> vault.Field {
+// ============================================================
+// PREPASS — face-driven Hermite surface walk
+//
+// For each face: walks edges and face interior in 3D world space
+// using cubic Hermite curves (pos + normal as tangent).
+// Each step projects to its screen pixel — no 2D interpolation.
+// Step size = pixel footprint at current surface depth.
+// Boundary edges are walked for all 3 edges.
+// Face interior: each base edge point spawns an inward walk toward
+// opposite vert. Base edge = closest to camera (highest avg Z).
+// Adjacent faces share an edge — identical walk → no seams.
+// ============================================================
+
+prepass_run :: proc(screen_w, screen_h: int) {
     cam_pos := (^math.vec3)(data.edit(vault.cam_pos))^
-    cam_z   := cam_pos.z
+    cam_fov := (^int)(data.edit(vault.fov))^
 
-    // Allocate flat 2D screen field — one cell per pixel
-    pixel_count := screen_w * screen_h
-    num_u32s    := (pixel_count + 31) / 32
-
-    screen_field: vault.Field
-    screen_field.bounds = vault.Bounds{
-        x = vault.Range{min = 0, max = f32(screen_w)},
-        y = vault.Range{min = 0, max = f32(screen_h)},
-        z = vault.Range{min = 0, max = 0},
+    for i in 0 ..< len(vault.frame_pixels) {
+        vault.frame_pixels[i] = 0
     }
-    screen_field.levels   = 0
-    screen_field.dims     = 2
-    screen_field.bits_any = make([dynamic]u32, num_u32s)
-    screen_field.bits_all = make([dynamic]u32, num_u32s)
-    screen_field.data     = make([dynamic][dynamic]i32, pixel_count)
 
-    // Walk all model fields
-    for fi in 0 ..< len(vault.meta_arrays[.Field]) {
-        meta := vault.meta_arrays[.Field][fi]
-        if !meta.valid || meta.name != "model_field" do continue
+    // TODO: per-instance transforms via Model_Cache iteration
+    // For now: identity transform, all instances share one transform
+    transform := vault.Transform{
+        pos   = math.vec3{0, 0, 0},
+       rot   = transmute(math.quat)[4]f32{0, 0, 0, 1},
+        scale = math.vec3{1, 1, 1},
+    }
 
-        model_field := (^vault.Field)(vault.arrays[.Field][fi].data)
+    // Iterate DataPoints of type .Model — each ref indexes vault.arrays[.Model]
+    for dp_idx in 0 ..< len(vault.arrays[.DataPoint]) {
+        meta := vault.meta_arrays[.DataPoint][dp_idx]
+        if !meta.valid do continue
+        dp := (^vault.DataPoint)(vault.arrays[.DataPoint][dp_idx].data)
+        if dp.type != .Model do continue
 
-        // Find all Model_Cache instances referencing this field
-        // For now: identity transform only (one instance)
-        // TODO: iterate Model_Cache array for multiple instances
-        transform := vault.Transform{
-            pos   = math.vec3{0, 0, 0},
-             rot   = transmute(math.quat)[4]f32{0, 0, 0, 1},
-            scale = math.vec3{1, 1, 1},
+        model     := (^vault.Model)(vault.arrays[.Model][dp.ref.index].data)
+        face_list := (^vault.Face_List)(vault.arrays[.Face_List][model.face_list.index].data)
+
+        for face in face_list.faces {
+            prepass_process_face(face, transform, cam_pos, cam_fov, screen_w, screen_h)
         }
-
-        prepass_walk_field(
-            model_field,
-            &screen_field,
-            transform,
-            cam_pos,
-            screen_w,
-            screen_h,
-        )
     }
-
-    return screen_field
 }
 
-// Walks a model field spatially front-to-back, processes each occupied cell's polygons
-prepass_walk_field :: proc(
-    model_field:  ^vault.Field,
-    screen_field: ^vault.Field,
-    transform:    vault.Transform,
-    cam_pos:      math.vec3,
-    screen_w,
-    screen_h:     int,
+// Processes one face: backface cull, find base edge, walk all edges + fill
+prepass_process_face :: proc(
+    face:      [3]i32,
+    transform: vault.Transform,
+    cam_pos:   math.vec3,
+    cam_fov:   int,
+    screen_w, screen_h: int,
 ) {
-    grid_size := i32(1) << uint(model_field.levels)
-    half      := grid_size / 2
+    dp_count := len(vault.arrays[.DataPoint])
+    if int(face[0]) >= dp_count || int(face[1]) >= dp_count || int(face[2]) >= dp_count do return
 
-    bz     := model_field.bounds.z.max - model_field.bounds.z.min
-    cell_z := bz / f32(grid_size)
+    dp0 := (^vault.DataPoint)(vault.arrays[.DataPoint][face[0]].data)
+    dp1 := (^vault.DataPoint)(vault.arrays[.DataPoint][face[1]].data)
+    dp2 := (^vault.DataPoint)(vault.arrays[.DataPoint][face[2]].data)
 
-    // Walk Z front to back (closest Z to camera first)
-    for lz_u := grid_size - 1; lz_u >= 0; lz_u -= 1 {
-        cell_world_z := model_field.bounds.z.min + f32(lz_u) * cell_z
-        if cell_world_z >= cam_pos.z do continue
+    p := [3]math.vec3{
+        apply_transform(dp0.pos, transform),
+        apply_transform(dp1.pos, transform),
+        apply_transform(dp2.pos, transform),
+    }
+    n := [3]math.vec3{
+        apply_transform_normal(dp0.normal, transform),
+        apply_transform_normal(dp1.normal, transform),
+        apply_transform_normal(dp2.normal, transform),
+    }
 
-        lz := lz_u - half
+    // Quick z-cull: skip if all verts behind camera
+    if p[0].z >= cam_pos.z && p[1].z >= cam_pos.z && p[2].z >= cam_pos.z do return
 
-        for ly_u := i32(0); ly_u < grid_size; ly_u += 1 {
-            ly := ly_u - half
-            for lx_u := i32(0); lx_u < grid_size; lx_u += 1 {
-                lx := lx_u - half
+    // Backface cull using face normal
+    edge0       := p[1] - p[0]
+    edge1       := p[2] - p[0]
+    face_normal := math.normalize_vec3(vec3_cross(edge0, edge1))
+    to_cam      := math.normalize_vec3(cam_pos - p[0])
+    if math.dot(face_normal, to_cam) <= 0 do return
 
-                idx := cell_index(math.ivec3{lx, ly, lz}, model_field.levels, model_field.dims)
-                if !cell_get_field(model_field, model_field.levels, idx) do continue
-                if len(model_field.data[idx]) == 0 do continue
+    // Base edge = closest to camera = highest average Z
+    avg_z := [3]f32{
+        (p[0].z + p[1].z) * 0.5,
+        (p[1].z + p[2].z) * 0.5,
+        (p[2].z + p[0].z) * 0.5,
+    }
+    base := 0
+    if avg_z[1] > avg_z[base] do base = 1
+    if avg_z[2] > avg_z[base] do base = 2
 
-                prepass_process_cell(
-                    model_field,
-                    screen_field,
-                    idx,
-                    transform,
-                    cam_pos,
-                    screen_w,
-                    screen_h,
-                )
-            }
+    // Reorder: pa/pb = base edge verts, pc = opposite vert
+    ia := base
+    ib := (base + 1) % 3
+    ic := (base + 2) % 3
+
+    pa := p[ia]; na := n[ia]
+    pb := p[ib]; nb := n[ib]
+    pc := p[ic]; nc := n[ic]
+
+    // Walk the two non-base edges for boundary coverage
+    walk_edge(pa, na, pc, nc, cam_pos, cam_fov, screen_w, screen_h)
+    walk_edge(pb, nb, pc, nc, cam_pos, cam_fov, screen_w, screen_h)
+
+    // Walk base edge — each step also spawns inward fill toward pc
+    ma_ab, mb_ab := edge_tangents(pa, na, pb, nb)
+
+    t := f32(0)
+    for t <= 1.0001 {
+        tc    := clamp(t, 0, 1)
+        pos_e := hermite_pos(pa, ma_ab, pb, mb_ab, tc)
+        norm_e := hermite_normal(na, nb, tc)
+
+        // Write base edge pixel
+        px, py, edge_ok := project_to_screen(pos_e, cam_pos, cam_fov, screen_w, screen_h)
+        if edge_ok {
+            write_surface_pixel(px, py, pos_e, norm_e, screen_w, screen_h)
         }
+
+        // Inward walk from this edge point toward pc
+        walk_inward(pos_e, norm_e, pc, nc, cam_pos, cam_fov, screen_w, screen_h)
+
+        if t >= 1.0 do break
+        tang     := hermite_tangent(pa, ma_ab, pb, mb_ab, tc)
+        tang_len := math.length(tang)
+        if tang_len < 1e-6 do break
+        pws := pixel_world_size(cam_pos.z, pos_e.z, cam_fov, screen_h)
+        if pws <= 0 do break
+        dt := pws / tang_len
+        t   = min(t + dt, 1.0001)
     }
 }
 
-// Processes all polygon data in one cell — deduplicates polygon triples,
-// checks normal facing, interpolates surface, writes to screen field
-prepass_process_cell :: proc(
-    model_field:  ^vault.Field,
-    screen_field: ^vault.Field,
-    cell_idx:     i32,
-    transform:    vault.Transform,
-    cam_pos:      math.vec3,
-    screen_w,
-    screen_h:     int,
+// Walks edge A→B as Hermite curve, writes each step to its screen pixel
+walk_edge :: proc(
+    pa, na, pb, nb: math.vec3,
+    cam_pos: math.vec3,
+    cam_fov, screen_w, screen_h: int,
 ) {
-    cell_data := model_field.data[cell_idx]
-    if len(cell_data) == 0 do return
+    ma, mb := edge_tangents(pa, na, pb, nb)
+    t := f32(0)
+    for t <= 1.0001 {
+        tc   := clamp(t, 0, 1)
+        pos  := hermite_pos(pa, ma, pb, mb, tc)
+        norm := hermite_normal(na, nb, tc)
 
-    // Data is stored as triples (i0, i1, i2) per polygon
-    // Process in groups of 3
-    poly_count := len(cell_data) / 3
-    for p in 0 ..< poly_count {
-        i0 := cell_data[p * 3 + 0]
-        i1 := cell_data[p * 3 + 1]
-        i2 := cell_data[p * 3 + 2]
+        px, py, ok := project_to_screen(pos, cam_pos, cam_fov, screen_w, screen_h)
+        if ok do write_surface_pixel(px, py, pos, norm, screen_w, screen_h)
 
-        if int(i0) >= len(vault.arrays[.DataPoint]) ||
-           int(i1) >= len(vault.arrays[.DataPoint]) ||
-           int(i2) >= len(vault.arrays[.DataPoint]) {
-           	continue}
-
-        dp0 := (^vault.DataPoint)(vault.arrays[.DataPoint][i0].data)
-        dp1 := (^vault.DataPoint)(vault.arrays[.DataPoint][i1].data)
-        dp2 := (^vault.DataPoint)(vault.arrays[.DataPoint][i2].data)
-
-        // Apply instance transform to positions
-        p0 := apply_transform(dp0.pos, transform)
-        p1 := apply_transform(dp1.pos, transform)
-        p2 := apply_transform(dp2.pos, transform)
-
-        // Apply transform to normals (rotation only, no translation/scale)
-        n0 := apply_transform_normal(dp0.normal, transform)
-        n1 := apply_transform_normal(dp1.normal, transform)
-        n2 := apply_transform_normal(dp2.normal, transform)
-
-        // Polygon average normal
-        avg_normal := math.normalize(n0 + n1 + n2)
-
-        // Back-face culling — skip if polygon faces away from camera
-        // IMPORTANT: this check uses base geometry normal only.
-        // At finer detail levels (displacement maps, normal maps), the effective
-        // normal direction may differ. This culling may need revision when
-        // finer detail levels are introduced. Do NOT remove this comment.
-        to_cam := math.normalize(cam_pos - (p0 + p1 + p2) / 3.0)
-        if math.dot(avg_normal, to_cam) <= 0 do continue
-
-        // Project all 3 verts to screen to get pixel coverage region
-        px0, py0, ok0 := world_to_pixel(p0, screen_w, screen_h)
-        px1, py1, ok1 := world_to_pixel(p1, screen_w, screen_h)
-        px2, py2, ok2 := world_to_pixel(p2, screen_w, screen_h)
-
-        // Skip if all verts are off screen
-        if !ok0 && !ok1 && !ok2 do continue
-
-        // Pixel bounding box of polygon
-        min_px := max(0,          min(px0, min(px1, px2)))
-        max_px := min(screen_w-1, max(px0, max(px1, px2)))
-        min_py := max(0,          min(py0, min(py1, py2)))
-        max_py := min(screen_h-1, max(py0, max(py1, py2)))
-
-        // For each pixel in bbox, interpolate and write
-        for py := min_py; py <= max_py; py += 1 {
-            for px := min_px; px <= max_px; px += 1 {
-                pixel_idx := i32(py * screen_w + px)
-                slot      := pixel_idx / 32
-                bit       := u32(pixel_idx % 32)
-
-                // Skip already resolved pixels
-                if int(slot) < len(screen_field.bits_any) &&
-                   (screen_field.bits_any[slot] & (1 << bit)) != 0 
-                   {continue}
-
-                // Get world position for this pixel
-                world := pixel_to_world_fov(
-                    math.vec2{f32(px), f32(py)},
-                    screen_w, screen_h,
-                )
-
-                // Interpolate surface at this world position
-                interp_pos, interp_normal := interpolate_surface(
-                    p0, n0, p1, n1, p2, n2, world,
-                )
-
-                // Verify interpolated point is actually within the polygon
-                bary := barycentric(p0, p1, p2, interp_pos)
-                if bary.x < -0.01 || bary.y < -0.01 || bary.z < -0.01 do continue
-
-                // Mark pixel resolved
-                if int(slot) < len(screen_field.bits_any) {
-                    screen_field.bits_any[slot] |= (1 << bit)
-                }
-
-                // Store source vert refs
-                append(&screen_field.data[pixel_idx], i0)
-                append(&screen_field.data[pixel_idx], i1)
-                append(&screen_field.data[pixel_idx], i2)
-            }
-        }
+        if t >= 1.0 do break
+        tang     := hermite_tangent(pa, ma, pb, mb, tc)
+        tang_len := math.length(tang)
+        if tang_len < 1e-6 do break
+        pws := pixel_world_size(cam_pos.z, pos.z, cam_fov, screen_h)
+        if pws <= 0 do break
+        t = min(t + pws / tang_len, 1.0001)
     }
 }
 
-// Applies position transform (translation + scale, no rotation yet)
-// TODO: apply quaternion rotation when needed
+// Walks from a base edge point inward toward opposite vert pc
+// Normal interpolated between edge normal and nc across the inward path
+walk_inward :: proc(
+    pe, ne, pc, nc: math.vec3,
+    cam_pos: math.vec3,
+    cam_fov, screen_w, screen_h: int,
+) {
+    me, mc := edge_tangents(pe, ne, pc, nc)
+    t := f32(0)
+    for t <= 1.0001 {
+        tc   := clamp(t, 0, 1)
+        pos  := hermite_pos(pe, me, pc, mc, tc)
+        norm := hermite_normal(ne, nc, tc)
+
+        px, py, ok := project_to_screen(pos, cam_pos, cam_fov, screen_w, screen_h)
+        if ok do write_surface_pixel(px, py, pos, norm, screen_w, screen_h)
+
+        if t >= 1.0 do break
+        tang     := hermite_tangent(pe, me, pc, mc, tc)
+        tang_len := math.length(tang)
+        if tang_len < 1e-6 do break
+        pws := pixel_world_size(cam_pos.z, pos.z, cam_fov, screen_h)
+        if pws <= 0 do break
+        t = min(t + pws / tang_len, 1.0001)
+    }
+}
+
+// Writes a shaded pixel if not already covered by screen field
+write_surface_pixel :: proc(px, py: int, pos, normal: math.vec3, screen_w, screen_h: int) {
+    if !screen_pixel_mark(px, py, screen_w, screen_h) do return
+    proxy := vault.DataPoint{
+        pos    = pos,
+        normal = normal,
+        type   = .Vertex,
+        ref    = vault.REF_INVALID,
+    }
+    color   := cpu_fragment_shader(&proxy)
+    buf_idx := (py * screen_w + px) * 3
+    vault.frame_pixels[buf_idx + 0] = u8(color.x)
+    vault.frame_pixels[buf_idx + 1] = u8(color.y)
+    vault.frame_pixels[buf_idx + 2] = u8(color.z)
+}
+
+// ---- Hermite curve math ----
+
+// Cubic Hermite position at t in [0,1]
+// pa, pb: endpoint positions — ma, mb: tangent vectors at each endpoint
+hermite_pos :: proc(pa, ma, pb, mb: math.vec3, t: f32) -> math.vec3 {
+    t2 := t * t
+    t3 := t2 * t
+    h00 := 2*t3 - 3*t2 + 1
+    h10 := t3 - 2*t2 + t
+    h01 := -2*t3 + 3*t2
+    h11 := t3 - t2
+    return pa*h00 + ma*h10 + pb*h01 + mb*h11
+}
+
+// Cubic Hermite tangent (derivative of hermite_pos) at t
+hermite_tangent :: proc(pa, ma, pb, mb: math.vec3, t: f32) -> math.vec3 {
+    t2   := t * t
+    dh00 := 6*t2 - 6*t
+    dh10 := 3*t2 - 4*t + 1
+    dh01 := -6*t2 + 6*t
+    dh11 := 3*t2 - 2*t
+    return pa*dh00 + ma*dh10 + pb*dh01 + mb*dh11
+}
+
+// Interpolated surface normal at t — linear blend normalized
+// Preserves surface curvature from normal field
+hermite_normal :: proc(na, nb: math.vec3, t: f32) -> math.vec3 {
+    return math.normalize_vec3(na*(1-t) + nb*t)
+}
+
+// Derives Hermite tangent vectors from an edge's positions and normals.
+// Projects the chord direction onto the tangent plane at each endpoint.
+// This makes the curve arrive/leave tangent to the local surface.
+edge_tangents :: proc(pa, na, pb, nb: math.vec3) -> (ma, mb: math.vec3) {
+    chord := pb - pa
+    if math.length(chord) < 1e-6 do return chord, chord
+
+    ma = chord - math.dot(chord, na) * na
+    mb = chord - math.dot(chord, nb) * nb
+
+    // Fallback: if tangent collapses (chord nearly parallel to normal), use chord
+    if math.length(ma) < 1e-6 do ma = chord
+    if math.length(mb) < 1e-6 do mb = chord
+    return
+}
+
+// Cross product (not in glsl import directly accessible — local helper)
+vec3_cross :: proc(a, b: math.vec3) -> math.vec3 {
+    return math.vec3{
+        a.y*b.z - a.z*b.y,
+        a.z*b.x - a.x*b.z,
+        a.x*b.y - a.y*b.x,
+    }
+}
+
+// ---- Screen field coverage ----
+
+// Marks pixel as covered. Returns true if newly covered, false if already covered.
+// BUG FIX 1: bits_any now propagated upward via screen_field_propagate_any
+// BUG FIX 2: bits_all propagation fixed in screen_field_propagate_all (uses cell_get_all not cell_get_field)
+screen_pixel_mark :: proc(px, py, screen_w, screen_h: int) -> bool {
+    if len(vault.screen_field_ids) == 0 do return true
+
+    nesting   := (^int)(data.edit(vault.screen_field_nesting))^
+    cell_size := (^int)(data.edit(vault.screen_field_cell_size))^
+
+    levels := 0
+    cs     := 1
+    for cs < cell_size { cs *= 4; levels += 1 }
+    grid_1d := i32(1) << uint(levels)
+
+    MAX_NESTING :: 8
+    nest_field_idx: [MAX_NESTING]int
+    nest_cx:        [MAX_NESTING]i32
+    nest_cy:        [MAX_NESTING]i32
+
+    local_px    := f32(px)
+    local_py    := f32(py)
+    parent_flat := 0
+
+    for nest in 0 ..< nesting {
+        field_vault_idx := int(vault.screen_field_ids[nest]) + (nest == 0 ? 0 : parent_flat)
+        if field_vault_idx >= len(vault.arrays[.Field]) do return true
+
+        field := (^vault.Field)(vault.arrays[.Field][field_vault_idx].data)
+
+        if screen_field_covered_early(field, local_px, local_py) do return false
+
+        cx, cy     := screen_pixel_to_cell_2d(local_px, local_py, field.bounds, field.levels)
+        finest_idx := cell_idx_2d(cx, cy, field.levels)
+        cell_flat  := int(cy) * int(grid_1d) + int(cx)
+
+        nest_field_idx[nest] = field_vault_idx
+        nest_cx[nest]        = cx
+        nest_cy[nest]        = cy
+
+        if nest == nesting - 1 {
+            if cell_get_field(field, field.levels, finest_idx) do return false
+            cell_set_field(field, field.levels, finest_idx, true)
+
+            // Propagate within this Field — bits_any first, then bits_all
+            screen_field_propagate_any(field, cx, cy)
+            screen_field_propagate_all(field, cx, cy)
+
+            // Propagate upward through parent nesting levels
+            for n := nest - 1; n >= 0; n -= 1 {
+                parent_field := (^vault.Field)(vault.arrays[.Field][nest_field_idx[n]].data)
+                pcx  := nest_cx[n]
+                pcy  := nest_cy[n]
+                pidx := cell_idx_2d(pcx, pcy, parent_field.levels)
+
+                cell_set_field(parent_field, parent_field.levels, pidx, true)
+                screen_field_propagate_any(parent_field, pcx, pcy)
+                screen_field_propagate_all(parent_field, pcx, pcy)
+
+                if !cell_get_all(parent_field, 0, 0) do break
+            }
+
+            return true
+        } else {
+            bw     := field.bounds.x.max - field.bounds.x.min
+            bh     := field.bounds.y.max - field.bounds.y.min
+            cell_w := bw / f32(grid_1d)
+            cell_h := bh / f32(grid_1d)
+            local_px    -= f32(cx) * cell_w
+            local_py    -= f32(cy) * cell_h
+            parent_flat  = parent_flat * cell_size + cell_flat
+        }
+    }
+
+    return false
+}
+
+// ---- Transform helpers ----
+
 apply_transform :: proc(pos: math.vec3, t: vault.Transform) -> math.vec3 {
     return pos * t.scale + t.pos
 }
 
-// Applies rotation-only transform to a normal
 apply_transform_normal :: proc(normal: math.vec3, t: vault.Transform) -> math.vec3 {
-    // TODO: apply quaternion rotation to normal
-    // For identity transform this is a no-op
     return normal
 }
 
-// Checks if a pixel is resolved in the screen field
-prepass_pixel_hit :: proc(screen_field: ^vault.Field, px, py, screen_w: int) -> bool {
-    pixel_idx := i32(py * screen_w + px)
-    slot      := pixel_idx / 32
-    bit       := u32(pixel_idx % 32)
-    if int(slot) >= len(screen_field.bits_any) do return false
-    return (screen_field.bits_any[slot] & (1 << bit)) != 0
+// ============================================================
+// OLD VERT-DRIVEN PREPASS — kept for reference, not called
+// Remove when face walk is confirmed stable
+// ============================================================
+
+/*
+prepass_run_verts :: proc(screen_w, screen_h: int) {
+    cam_pos := (^math.vec3)(data.edit(vault.cam_pos))^
+    cam_fov := (^int)(data.edit(vault.fov))^
+
+    for i in 0 ..< len(vault.frame_pixels) {
+        vault.frame_pixels[i] = 0
+    }
+
+    for fi in 0 ..< len(vault.meta_arrays[.Field]) {
+        meta := vault.meta_arrays[.Field][fi]
+        if !meta.valid || meta.name != "model_field" do continue
+        transform := vault.Transform{
+            pos   = math.vec3{0, 0, 0},
+            rot   = transmute(math.quat)[4]f32{0, 0, 0, 1},
+            scale = math.vec3{1, 1, 1},
+        }
+        prepass_process_model(transform, cam_pos, cam_fov, screen_w, screen_h)
+    }
 }
 
-// Frees screen field memory
-prepass_free :: proc(screen_field: ^vault.Field) {
-    for i in 0 ..< len(screen_field.data) {
-        delete(screen_field.data[i])
+prepass_process_model :: proc(
+    transform: vault.Transform,
+    cam_pos:   math.vec3,
+    cam_fov:   int,
+    screen_w, screen_h: int,
+) {
+    dp_count := len(vault.arrays[.DataPoint])
+    for dp_idx in 0 ..< dp_count {
+        meta := vault.meta_arrays[.DataPoint][dp_idx]
+        if !meta.valid do continue
+        dp := (^vault.DataPoint)(vault.arrays[.DataPoint][dp_idx].data)
+        if dp.type != .Vertex do continue
+
+        pos    := apply_transform(dp.pos, transform)
+        normal := apply_transform_normal(dp.normal, transform)
+
+        to_cam := math.normalize_vec3(cam_pos - pos)
+        if math.dot(normal, to_cam) <= 0 do continue
+
+        px, py, ok := project_to_screen(pos, cam_pos, cam_fov, screen_w, screen_h)
+        if !ok do continue
+
+        if dp.ref.index < 0 do continue
+        cache := (^vault.Vertex_Cache)(vault.arrays[.Vertex_Cache][dp.ref.index].data)
+
+        prepass_write_pixel(px, py, dp_idx, pos, normal, cache, transform, cam_pos, cam_fov, screen_w, screen_h)
+
+        for n_ref in cache.neighbors {
+            if int(n_ref.index) >= dp_count do continue
+            n_dp  := (^vault.DataPoint)(vault.arrays[.DataPoint][n_ref.index].data)
+            n_pos := apply_transform(n_dp.pos, transform)
+            n_px, n_py, n_ok := project_to_screen(n_pos, cam_pos, cam_fov, screen_w, screen_h)
+            if !n_ok do continue
+            prepass_write_pixel(n_px, n_py, dp_idx, pos, normal, cache, transform, cam_pos, cam_fov, screen_w, screen_h)
+        }
     }
-    delete(screen_field.bits_any)
-    delete(screen_field.bits_all)
-    delete(screen_field.data)
 }
+
+prepass_write_pixel :: proc(
+    px, py:    int,
+    src_idx:   int,
+    src_pos:   math.vec3,
+    src_norm:  math.vec3,
+    cache:     ^vault.Vertex_Cache,
+    transform: vault.Transform,
+    cam_pos:   math.vec3,
+    cam_fov:   int,
+    screen_w, screen_h: int,
+) {
+    if !screen_pixel_mark(px, py, screen_w, screen_h) do return
+
+    dp_count    := len(vault.arrays[.DataPoint])
+    pixel_world := unproject_from_screen(px, py, cam_pos, cam_fov, screen_w, screen_h)
+
+    total_w     := f32(0)
+    interp_pos  := math.vec3{0, 0, 0}
+    interp_norm := math.vec3{0, 0, 0}
+
+    self_d := math.length(pixel_world - src_pos)
+    self_w := f32(1.0) / (self_d + 0.0001)
+    interp_pos  += src_pos  * self_w
+    interp_norm += src_norm * self_w
+    total_w     += self_w
+
+    for n_ref in cache.neighbors {
+        if int(n_ref.index) >= dp_count do continue
+        n_dp   := (^vault.DataPoint)(vault.arrays[.DataPoint][n_ref.index].data)
+        n_pos  := apply_transform(n_dp.pos, transform)
+        n_norm := apply_transform_normal(n_dp.normal, transform)
+        n_d    := math.length(pixel_world - n_pos)
+        n_w    := f32(1.0) / (n_d + 0.0001)
+        interp_pos  += n_pos  * n_w
+        interp_norm += n_norm * n_w
+        total_w     += n_w
+    }
+
+    if total_w > 0 {
+        interp_pos  /= total_w
+        interp_norm  = math.normalize_vec3(interp_norm / total_w)
+    }
+
+    proxy := vault.DataPoint{
+        pos    = interp_pos,
+        normal = interp_norm,
+        type   = .Vertex,
+        ref    = vault.REF_INVALID,
+    }
+    color   := cpu_fragment_shader(&proxy)
+    buf_idx := (py * screen_w + px) * 3
+    vault.frame_pixels[buf_idx + 0] = u8(color.x)
+    vault.frame_pixels[buf_idx + 1] = u8(color.y)
+    vault.frame_pixels[buf_idx + 2] = u8(color.z)
+}
+*/
