@@ -41,14 +41,12 @@ culling_range: Metadata
 world_dp: Metadata   // DataPoint of type .Field — root of the world hierarchy
 
 // Frame
+screen_texture: Metadata
+screen_field_levels: Metadata
+
 frame_data:  Metadata
 debug_stats: Metadata
 
 // External
 log_board: Metadata
 
-// Screen field config
-// screen_field_ids lives in arrays.odin as [dynamic]i32 — start index per nesting level
-screen_field_nesting:   Metadata   // int  — how many Fields deep (default 2)
-screen_field_cell_size: Metadata   // int  — finest cells per Field (default 1024, must be power of 4)
-screen_field_dirty:     Metadata   // bool — triggers rebuild on next frame

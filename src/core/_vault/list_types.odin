@@ -10,15 +10,19 @@ Type_ID :: enum {
     U32,
     CString,
     Vec3,
+
     Vertex,
-    Vertex_Cache,
-    Model_Cache,
+    Polygon,
+    Edge,
+    Model,
+    Texture,
+    Bounds,
+
     Transform,
     Debug_Stats,
     FrameData,
     Strings_Builder,
     DataPoint,
     Field,
-    Model,
-    Face_List,
+    Metadata,
 }

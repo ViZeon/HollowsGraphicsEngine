@@ -1,0 +1,148 @@
+=== HOLLOWS ENGINE ===
+FPS: 0 | Pixel: 0.0ms | Input: 0.001ms | Texture: 0.000ms
+Camera: [0.00, 0.08, 5.03]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                5 / 5
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             1655 / 1655
+  Model              1 / 1
+  Texture            1 / 1
+  Bounds             71 / 71
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  DataPoint          1 / 1
+  Field              11 / 11
+  Metadata           1765 / 1765
+  TOTAL              3530 / 3530
+
+--- FETCHES (edit / copy / set) ---
+  Int                21 / 0 / 0
+  I64                2 / 0 / 0
+  F32                1 / 0 / 0
+  F64                1 / 0 / 0
+  CString            5 / 0 / 0
+  Vec3               6 / 0 / 0
+  Model              1 / 0 / 0
+  Texture            3 / 0 / 0
+  Bounds             94282 / 0 / 0
+  Debug_Stats        3 / 0 / 0
+  Strings_Builder    1 / 0 / 0
+  DataPoint          3 / 0 / 0
+  Field              343865 / 0 / 0
+
+--- FIELD OCCUPANCY ---
+  Field[0] 'world_field' levels:4 dims:3
+    bounds X:[-8.0000,8.0000] Y:[-8.0000,8.0000] Z:[-8.0000,8.0000]
+    level 0: 1 / 1 cells occupied
+    level 1: 1 / 8 cells occupied
+    level 2: 1 / 64 cells occupied
+    level 3: 1 / 512 cells occupied
+    level 4: 1 / 4096 cells occupied
+  Field[1] 'model_field' levels:4 dims:3
+    bounds X:[-0.0280,0.0280] Y:[-0.0000,0.1515] Z:[-0.0280,0.0280]
+    level 0: 1 / 1 cells occupied
+    level 1: 8 / 8 cells occupied
+    level 2: 51 / 64 cells occupied
+    level 3: 348 / 512 cells occupied
+    level 4: 1655 / 4096 cells occupied
+  Field[2] 'screen_root' levels:7 dims:2
+    bounds X:[0.0000,800.0000] Y:[0.0000,600.0000] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 8 / 16384 cells occupied
+  Field[3] 'screen_tile' levels:7 dims:2
+    bounds X:[393.7500,400.0000] Y:[290.6250,295.3125] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 9 / 16384 cells occupied
+  Field[4] 'screen_tile' levels:7 dims:2
+    bounds X:[400.0000,406.2500] Y:[290.6250,295.3125] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 9 / 16384 cells occupied
+  Field[5] 'screen_tile' levels:7 dims:2
+    bounds X:[400.0000,406.2500] Y:[300.0000,304.6875] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 10 / 16384 cells occupied
+  Field[6] 'screen_tile' levels:7 dims:2
+    bounds X:[393.7500,400.0000] Y:[300.0000,304.6875] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 10 / 16384 cells occupied
+  Field[7] 'screen_tile' levels:7 dims:2
+    bounds X:[393.7500,400.0000] Y:[295.3125,300.0000] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 8 / 16384 cells occupied
+  Field[8] 'screen_tile' levels:7 dims:2
+    bounds X:[400.0000,406.2500] Y:[295.3125,300.0000] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 8 / 16384 cells occupied
+  Field[9] 'screen_tile' levels:7 dims:2
+    bounds X:[400.0000,406.2500] Y:[304.6875,309.3750] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 4 / 16384 cells occupied
+  Field[10] 'screen_tile' levels:7 dims:2
+    bounds X:[393.7500,400.0000] Y:[304.6875,309.3750] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 4 / 16384 cells occupied
+
+[F2: enable fetch timing]
+
+---

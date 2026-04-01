@@ -204,3 +204,10 @@ cell > what xyz coordinates are in this cell?
 
 one loop within bounds, accounts for multiplications
 
+
+
+
+Prepass:
+- Go over the field and store what datapoints(currently objects only) are there, and what refs exist in each datapoint (need to map out the data structure)
+- for each data type (currently object only) walk through each vertex, each ref of the vertex (Hot cache the refs) and map it mathematically to the screen
+- The mapping logic is: inverse project from FOV, cam datapoint, and the resolution to see what screen region maps to current vert, then calc the pixel positions that are in this region (Also hot cache all these too) 

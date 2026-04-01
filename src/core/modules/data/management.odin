@@ -1,19 +1,31 @@
 package data
 
 import vault "../../_vault"
-
 import "core:mem"
 import "core:reflect"
 import "core:time"
 
-// Internal: direct pointer to debug stats, bypasses management system
-// Returns nil if debug_stats not yet initialized — safe to call at any point
 _debug_ptr :: proc() -> ^vault.Debug_Stats {
     if !vault.debug_stats.valid do return nil
     return (^vault.Debug_Stats)(vault.arrays[.Debug_Stats][vault.debug_stats.index].data)
 }
 
-// Adds a value to the typed store, returns a handle
+_fetch_begin :: proc(meta: vault.Metadata, op: vault.Fetch_Op) -> i64 {
+    stats := _debug_ptr()
+    if stats == nil do return 0
+    stats.fetch_counts[meta.type_id][op] += 1
+    if stats.timing_enabled do return time.now()._nsec
+    return 0
+}
+
+_fetch_end :: proc(meta: vault.Metadata, op: vault.Fetch_Op, start: i64) {
+    if start == 0 do return
+    stats := _debug_ptr()
+    if stats == nil do return
+    stats.fetch_times[meta.type_id][op] += f64(time.now()._nsec - start)
+}
+
+// Adds a value to the typed store, registers its Metadata, returns a Metadata copy
 add :: proc(type_id: vault.Type_ID, value: any, name: string = "") -> vault.Metadata {
     size   := reflect.size_of_typeid(value.id)
     ptr, _  := mem.alloc(size)
@@ -31,63 +43,67 @@ add :: proc(type_id: vault.Type_ID, value: any, name: string = "") -> vault.Meta
         append(&vault.arrays[type_id],      stable)
         append(&vault.meta_arrays[type_id], vault.Metadata{index = idx, name = name, valid = true, type_id = type_id})
     }
+
+    // Register Metadata in vault.arrays[.Metadata] — assigns universal id
+    meta     := vault.meta_arrays[type_id][idx]
+    meta_id  := len(vault.arrays[.Metadata])
+    meta.id   = meta_id
+
+    meta_ptr, _ := mem.alloc(size_of(vault.Metadata))
+    mem.copy(meta_ptr, &meta, size_of(vault.Metadata))
+    append(&vault.arrays[.Metadata],      any{data = meta_ptr, id = typeid_of(vault.Metadata)})
+    append(&vault.meta_arrays[.Metadata], vault.Metadata{id = meta_id, index = meta_id, name = name, valid = true, type_id = .Metadata})
+
+    // Update stored meta with id
+    vault.meta_arrays[type_id][idx].id = meta_id
+
     return vault.meta_arrays[type_id][idx]
 }
 
-// Returns a pointer to the stored value — modify in place, no copy
+// Resolves a universal Metadata id to its Metadata
+// Use to look up type_id + index from an i32 stored in field.data[cell]
+resolve :: proc(id: i32) -> vault.Metadata {
+    if int(id) < 0 || int(id) >= len(vault.arrays[.Metadata]) do return vault.Metadata{}
+    return (^vault.Metadata)(vault.arrays[.Metadata][id].data)^
+}
+
 edit :: proc(meta: vault.Metadata) -> rawptr {
-    stats := _debug_ptr()
-    start := i64(0)
-    if stats != nil {
-        stats.fetch_counts[meta.type_id][.Edit] += 1
-        if stats.timing_enabled do start = time.now()._nsec
-    }
+    start  := _fetch_begin(meta, .Edit)
+    
+
+
+
     result := vault.arrays[meta.type_id][meta.index].data
-    if stats != nil && stats.timing_enabled && start != 0 {
-        stats.fetch_times[meta.type_id][.Edit] += f64(time.now()._nsec - start)
-    }
+    _fetch_end(meta, .Edit, start)
     return result
 }
 
-// Returns a copy of the stored value
 copy :: proc(meta: vault.Metadata) -> any {
-    stats := _debug_ptr()
-    start := i64(0)
-    if stats != nil {
-        stats.fetch_counts[meta.type_id][.Copy] += 1
-        if stats.timing_enabled do start = time.now()._nsec
-    }
+    start  := _fetch_begin(meta, .Copy)
     result := vault.arrays[meta.type_id][meta.index]
-    if stats != nil && stats.timing_enabled && start != 0 {
-        stats.fetch_times[meta.type_id][.Copy] += f64(time.now()._nsec - start)
-    }
+    _fetch_end(meta, .Copy, start)
     return result
 }
 
-// Overwrites the stored value
 set :: proc(meta: vault.Metadata, value: any) {
-    stats := _debug_ptr()
-    start := i64(0)
-    if stats != nil {
-        stats.fetch_counts[meta.type_id][.Set] += 1
-        if stats.timing_enabled do start = time.now()._nsec
-    }
+    start := _fetch_begin(meta, .Set)
     vault.arrays[meta.type_id][meta.index] = value
-    if stats != nil && stats.timing_enabled && start != 0 {
-        stats.fetch_times[meta.type_id][.Set] += f64(time.now()._nsec - start)
-    }
+    _fetch_end(meta, .Set, start)
 }
 
-// Frees the slot and marks it available for reuse
 remove :: proc(meta: vault.Metadata) {
     mem.free(vault.arrays[meta.type_id][meta.index].data)
     vault.meta_arrays[meta.type_id][meta.index].valid = false
     append(&vault.free_lists[meta.type_id], meta.index)
 }
 
-// Reserves capacity upfront — call after knowing count, before populating
-// Prevents reallocation and keeps pointers stable
 preallocate :: proc(type_id: vault.Type_ID, capacity: int) {
     reserve(&vault.arrays[type_id],      capacity)
     reserve(&vault.meta_arrays[type_id], capacity)
+}
+
+
+data_check_occupancy :: proc(index_type: int, index_id: int) -> string{
+    // add a check for the existence of metadata
+    return ""
 }

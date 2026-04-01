@@ -1,0 +1,66 @@
+=== HOLLOWS ENGINE ===
+FPS: 4 | Pixel: 182.0ms | Input: 0.002ms | Texture: 0.525ms
+Camera: [0.00, 0.08, 0.16]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                5 / 5
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             1655 / 1655
+  Model              1 / 1
+  Texture            1 / 1
+  Bounds             307385 / 307385
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  DataPoint          1 / 1
+  Field              3 / 3
+  Metadata           309071 / 309071
+  TOTAL              618142 / 618142
+
+--- FETCHES (edit / copy / set) ---
+  Int                1214293 / 0 / 0
+  I64                6 / 0 / 0
+  F32                3 / 0 / 0
+  F64                3 / 0 / 0
+  Vec3               11 / 0 / 0
+  Texture            3 / 0 / 0
+  Bounds             1140627 / 0 / 0
+  Debug_Stats        19 / 0 / 0
+  DataPoint          3 / 0 / 0
+  Field              3 / 0 / 0
+
+--- FIELD OCCUPANCY ---
+  Field[0] 'world_field' levels:4 dims:3
+    bounds X:[-8.0000,8.0000] Y:[-8.0000,8.0000] Z:[-8.0000,8.0000]
+    level 0: 1 / 1 cells occupied
+    level 1: 1 / 8 cells occupied
+    level 2: 1 / 64 cells occupied
+    level 3: 1 / 512 cells occupied
+    level 4: 1 / 4096 cells occupied
+  Field[1] 'model_field' levels:4 dims:3
+    bounds X:[-0.0280,0.0280] Y:[-0.0000,0.1515] Z:[-0.0280,0.0280]
+    level 0: 1 / 1 cells occupied
+    level 1: 8 / 8 cells occupied
+    level 2: 51 / 64 cells occupied
+    level 3: 348 / 512 cells occupied
+    level 4: 1655 / 4096 cells occupied
+  Field[2] 'screen_field' levels:0 dims:2
+    bounds X:[0.0000,800.0000] Y:[0.0000,600.0000] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                131383448 / 0 / 0
+  I64                729 / 0 / 0
+  F32                1009 / 0 / 0
+  F64                420 / 0 / 0
+  Vec3               2061 / 0 / 0
+  Texture            444 / 0 / 0
+  Bounds             124993222 / 0 / 0
+  Debug_Stats        2202 / 0 / 0
+  DataPoint          853 / 0 / 0
+  Field              385 / 0 / 0

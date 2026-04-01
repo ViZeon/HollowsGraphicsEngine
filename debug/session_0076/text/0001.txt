@@ -1,0 +1,63 @@
+=== HOLLOWS ENGINE ===
+FPS: 26 | Pixel: 0.4ms | Input: 0.001ms | Texture: 0.585ms
+Camera: [0.00, 0.00, 6.04]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                5 / 5
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Vertex             140 / 140
+  Model              1 / 1
+  Texture            1 / 1
+  Bounds             6 / 6
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  DataPoint          1 / 1
+  Field              3 / 3
+  Metadata           177 / 177
+  TOTAL              354 / 354
+
+--- FETCHES (edit / copy / set) ---
+  Bool               10566 / 0 / 0
+  Int                3525 / 0 / 0
+  I64                3522 / 0 / 0
+  F32                1761 / 0 / 0
+  F64                1761 / 0 / 0
+  Vec3               5285 / 0 / 0
+  Texture            1761 / 0 / 0
+  Debug_Stats        8809 / 0 / 0
+  DataPoint          1761 / 0 / 0
+  Field              3522 / 0 / 0
+
+--- FIELD OCCUPANCY ---
+  Field[0] 'world_field' levels:4 dims:3
+    bounds X:[-8.0000,8.0000] Y:[-8.0000,8.0000] Z:[-8.0000,8.0000]
+    level 0: 1 / 1 cells occupied
+    level 1: 2 / 8 cells occupied
+    level 2: 4 / 64 cells occupied
+    level 3: 6 / 512 cells occupied
+    level 4: 6 / 4096 cells occupied
+  Field[1] 'model_field' levels:4 dims:3
+    bounds X:[-1.0000,1.0000] Y:[-1.0000,1.0000] Z:[-1.0000,1.0000]
+    level 0: 1 / 1 cells occupied
+    level 1: 6 / 8 cells occupied
+    level 2: 28 / 64 cells occupied
+    level 3: 96 / 512 cells occupied
+    level 4: 140 / 4096 cells occupied
+  Field[2] 'screen_root' levels:7 dims:2
+    bounds X:[0.0000,800.0000] Y:[0.0000,600.0000] Z:[0.0000,1.0000]
+    level 0: 0 / 1 cells occupied
+    level 1: 0 / 4 cells occupied
+    level 2: 0 / 16 cells occupied
+    level 3: 0 / 64 cells occupied
+    level 4: 0 / 256 cells occupied
+    level 5: 0 / 1024 cells occupied
+    level 6: 0 / 4096 cells occupied
+    level 7: 0 / 16384 cells occupied
+
+[F2: enable fetch timing]

@@ -1,0 +1,37 @@
+=== HOLLOWS ENGINE ===
+FPS: 27 | Pixel: 0.4ms | Input: 0.002ms | Texture: 0.529ms
+Camera: [0.00, 0.00, 0.00]
+
+--- DATA (valid / total) ---
+  Bool               1 / 1
+  Int                4 / 4
+  I64                2 / 2
+  F32                5 / 5
+  F64                2 / 2
+  CString            6 / 6
+  Vec3               1 / 1
+  Texture            1 / 1
+  Debug_Stats        1 / 1
+  FrameData          1 / 1
+  Strings_Builder    1 / 1
+  TOTAL              25 / 25
+
+--- FETCHES (edit / copy / set) ---
+  Int                2318 / 0 / 0
+  I64                2314 / 0 / 0
+  F32                1157 / 0 / 0
+  F64                1157 / 0 / 0
+  Vec3               2316 / 0 / 0
+  Texture            1157 / 0 / 0
+  Debug_Stats        5790 / 0 / 0
+
+--- FIELD OCCUPANCY ---
+
+--- FETCH TIMES ns (edit / copy / set) ---
+  Int                288843 / 0 / 0
+  I64                334327 / 0 / 0
+  F32                176596 / 0 / 0
+  F64                140311 / 0 / 0
+  Vec3               301904 / 0 / 0
+  Texture            152812 / 0 / 0
+  Debug_Stats        665692 / 0 / 0
