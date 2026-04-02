@@ -42,7 +42,7 @@ load_model :: proc(path: cstring) -> (model_meta: vault.Metadata, center: math.v
         source = source,
         cache  = vault.Model_Cache{
             bounds = bounds,
-            field  = vault.Ref{index = i32(field_meta.index), version = 0},
+            field  = field_meta
         },
     }, "model")
 

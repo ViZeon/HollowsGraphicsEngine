@@ -10,9 +10,10 @@ Model_Source :: struct {
     edges: [dynamic]Edge,
 }
 
+//TODO: Replace Ref field type with MetaData
 Model_Cache :: struct {
     bounds:         Bounds,
-    field:          Ref,
+    field:          Metadata,
     occupied_cells: [dynamic]i32,
 }
 

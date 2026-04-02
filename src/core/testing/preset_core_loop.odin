@@ -7,9 +7,6 @@ import gltf  "../modules/model"
 import "core:fmt"
 import "core:strings"
 
-g_screen_w: int
-g_screen_h: int
-scene: vault.Metadata
 
 start_functions :: proc() {
     session_init()
@@ -19,7 +16,7 @@ start_functions :: proc() {
     g_screen_w = (^int)(data.edit(vault.screen_width))^
     g_screen_h = (^int)(data.edit(vault.screen_height))^
 
-    scene_init()
+    scene = scene_init()
 
     //prepass_run(g_screen_w, g_screen_h)
     frame_write_to_image()

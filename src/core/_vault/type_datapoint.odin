@@ -12,7 +12,7 @@ DataPointType :: enum {
 DataPoint :: struct {
     pos:    math.vec3,
     normal: math.vec3,
-    type:   DataPointType,
+    //type:   DataPointType,
     metadata:    Metadata,
 }
 

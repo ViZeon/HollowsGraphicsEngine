@@ -6,4 +6,5 @@ Metadata :: struct {
     name:    string,
     valid:   bool,
     type_id: Type_ID,
+    ref:     Ref
 }

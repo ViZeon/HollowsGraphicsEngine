@@ -67,3 +67,8 @@ data_init :: proc() {
 
 // globals
 screen_tex :^vault.Texture
+
+g_screen_w: int
+g_screen_h: int
+
+scene: vault.Metadata

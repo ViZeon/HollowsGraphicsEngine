@@ -9,5 +9,5 @@ prepass_run :: proc(scene : vault.Metadata) {
 	scene_field:= (^vault.Field)(data.edit(scene_datapoint.metadata))
 
 	//debug_print(scene_datapoint)
-	debug_print(scene_field)
+	//debug_print(scene_field.bounds)
 } 
