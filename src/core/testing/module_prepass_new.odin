@@ -523,27 +523,71 @@ fill_edges :: proc(pixels: []u8, width, height: int, poly: Polygon, cam: Camera)
 
 Internal_Quad :: struct {
     p: [4]Vec3,
-    n: [4]Vec3,
-    is_outer: [4]bool, 
+    n: [4]Vec3, 
 }
 
 // ----------------------------------------------------------------
 // Surface Math
 // ----------------------------------------------------------------
 
-eval_coons :: proc(q: Internal_Quad, u, v: f32) -> (pos, norm: Vec3) {
-    // Edge interp: Hermite for boundaries, Linear for internal cuts
-    c0 := q.is_outer[0] ? hermite_pos(q.p[0], q.n[0], q.p[1], q.n[1], u) : math.lerp(q.p[0], q.p[1], u)
-    c1 := q.is_outer[1] ? hermite_pos(q.p[1], q.n[1], q.p[2], q.n[2], v) : math.lerp(q.p[1], q.p[2], v)
-    c2 := q.is_outer[2] ? hermite_pos(q.p[3], q.n[3], q.p[2], q.n[2], u) : math.lerp(q.p[3], q.p[2], u)
-    c3 := q.is_outer[3] ? hermite_pos(q.p[0], q.n[0], q.p[3], q.n[3], v) : math.lerp(q.p[0], q.p[3], v)
+eval_coons :: proc(q: Internal_Quad, u, v: f32) -> (pos: Vec3, norm: Vec3) {
+    TANGENT_SCALE :: 1.0
 
-    lc_uv := math.lerp(c3, c1, u)
-    ld_uv := math.lerp(c0, c2, v)
+    // Tangents (scaled normals)
+    t0 := q.n[0] * TANGENT_SCALE
+    t1 := q.n[1] * TANGENT_SCALE
+    t2 := q.n[2] * TANGENT_SCALE
+    t3 := q.n[3] * TANGENT_SCALE
+
+    // Edge curves (Hermite)
+    // Bottom edge: p0 -> p1 (along u, v=0)
+    C0_u   := hermite_pos(q.p[0], t0, q.p[1], t1, u)
+    dC0_du := hermite_deriv(q.p[0], t0, q.p[1], t1, u)
+
+    // Right edge: p1 -> p2 (along v, u=1)
+    C1_v   := hermite_pos(q.p[1], t1, q.p[2], t2, v)
+    dC1_dv := hermite_deriv(q.p[1], t1, q.p[2], t2, v)
+
+    // Top edge: p3 -> p2 (along u, v=1) – note direction
+    C2_u   := hermite_pos(q.p[3], t3, q.p[2], t2, u)
+    dC2_du := hermite_deriv(q.p[3], t3, q.p[2], t2, u)
+
+    // Left edge: p0 -> p3 (along v, u=0)
+    C3_v   := hermite_pos(q.p[0], t0, q.p[3], t3, v)
+    dC3_dv := hermite_deriv(q.p[0], t0, q.p[3], t3, v)
+
+    // Coons blending for position
+    lc_uv := math.lerp(C3_v, C1_v, u)          // linear blend between left and right curves
+    ld_uv := math.lerp(C0_u, C2_u, v)          // linear blend between bottom and top curves
     b_uv  := math.lerp(math.lerp(q.p[0], q.p[1], u), math.lerp(q.p[3], q.p[2], u), v)
 
     pos = lc_uv + ld_uv - b_uv
-    norm = math.normalize(math.lerp(math.lerp(q.n[0], q.n[1], u), math.lerp(q.n[3], q.n[2], u), v))
+
+    // Compute partial derivatives of the Coons patch
+    // dP/du = ∂(lc_uv)/∂u + ∂(ld_uv)/∂u - ∂(b_uv)/∂u
+    // dP/dv = ∂(lc_uv)/∂v + ∂(ld_uv)/∂v - ∂(b_uv)/∂v
+
+    // ∂(lc_uv)/∂u = C1_v - C3_v   (since lerp derivative w.r.t u is difference)
+    dlc_du := C1_v - C3_v
+    // ∂(lc_uv)/∂v = lerp(dC3_dv, dC1_dv, u)
+    dlc_dv := math.lerp(dC3_dv, dC1_dv, u)
+
+    // ∂(ld_uv)/∂u = lerp(dC0_du, dC2_du, v)
+    dld_du := math.lerp(dC0_du, dC2_du, v)
+    // ∂(ld_uv)/∂v = C2_u - C0_u
+    dld_dv := C2_u - C0_u
+
+    // ∂(b_uv)/∂u = lerp(q.p[1] - q.p[0], q.p[2] - q.p[3], v)
+    db_du  := math.lerp(q.p[1] - q.p[0], q.p[2] - q.p[3], v)
+    // ∂(b_uv)/∂v = lerp(q.p[3] - q.p[0], q.p[2] - q.p[1], u)
+    db_dv  := math.lerp(q.p[3] - q.p[0], q.p[2] - q.p[1], u)
+
+    dP_du := dlc_du + dld_du - db_du
+    dP_dv := dlc_dv + dld_dv - db_dv
+
+    // Normal = cross(dP_du, dP_dv)
+    norm = math.normalize(math.cross(dP_du, dP_dv))
+
     return
 }
 
@@ -590,9 +634,26 @@ fill_quad :: proc(pixels: []u8, w, h: int, q: Internal_Quad, cam: Camera) {
 
 subdivide_and_fill :: proc(pixels: []u8, w, h: int, poly: Polygon, cam: Camera) {
     n := len(poly.verts)
-    cp, cn := Vec3{}, Vec3{}
-    for i in 0..<n { cp += poly.verts[i]; cn += poly.normals[i] }
-    cp /= f32(n); cn = math.normalize(cn)
+
+    // Compute center position (average of vertices)
+    cp := Vec3{}
+    for i in 0..<n { cp += poly.verts[i] }
+    cp /= f32(n)
+
+    // --- Compute a smooth center normal using Mean Value Coordinates ---
+    // Project to 2D (assuming Y=0 plane; adapt if general)
+    local2d := make([][2]f32, n)
+    defer delete(local2d)
+    for i in 0..<n { local2d[i] = to_local2d(poly.verts[i]) }
+
+    // Find center in 2D
+    center2d := [2]f32{cp.x, cp.z}
+    w_buf := make([]f32, n)
+    defer delete(w_buf)
+
+    // eval_surface will give us a normal that matches the edge-driven surface
+    _, cn := eval_surface(center2d, poly, local2d, w_buf)
+    // ----------------------------------------------------------------
 
     for i in 0..<n {
         prev := (i + n - 1) % n
@@ -606,7 +667,6 @@ subdivide_and_fill :: proc(pixels: []u8, w, h: int, poly: Polygon, cam: Camera) 
         q := Internal_Quad{
             p = { poly.verts[i], m_next_p, cp, m_prev_p },
             n = { poly.normals[i], m_next_n, cn, m_prev_n },
-            is_outer = { true, false, false, true },
         }
         fill_quad(pixels, w, h, q, cam)
     }
