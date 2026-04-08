@@ -36,3 +36,5 @@ buffer_render :: proc() {
         update_fuctions()
     }
 }
+
+

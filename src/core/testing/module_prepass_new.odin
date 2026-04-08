@@ -4,6 +4,18 @@ import vault "../_vault"
 import data  "../modules/data"
 import math  "core:math/linalg/glsl"
 
+
+cam :Camera
+
+// Global or persistent state
+cam_theta  : f32 = 0.0
+cam_phi    : f32 = 0.4 // Slight top-down tilt
+cam_radius : f32 = 10.0
+target_pos : Vec3 = {0, 0, 0}
+
+    // Rotation speed: 1.0 means ~57 degrees per second
+    rotation_speed : f32 = 10.0
+
 prepass_run :: proc(scene : vault.Metadata) {
 	scene_datapoint:= (^vault.DataPoint)(data.edit(scene))
 	scene_field:= (^vault.Field)(data.edit(scene_datapoint.metadata))
@@ -100,26 +112,72 @@ hermite_deriv :: proc(p0, t0, p1, t1: Vec3, t: f32) -> Vec3 {
            (3*t2 - 2*t    )*t1
 }
 
-// ----------------------------------------------------------------
-// Projection
-// ----------------------------------------------------------------
 
+update_turntable :: proc(dt: f32) {
+
+    
+    // We pass a fake "mouse delta" based purely on time
+    fake_delta := [2]f32{ rotation_speed * dt, 0.0 }
+    
+    update_camera_orbit(&cam, target_pos, fake_delta, cam_radius, &cam_theta, &cam_phi)
+}
+
+// Call this every frame before your prepass loop
+// mouse_delta is {delta_x, delta_y} from your input handler
+update_camera_orbit :: proc(cam: ^Camera, target: Vec3, mouse_delta: [2]f32, radius: f32, theta, phi: ^f32) {
+    theta^ += mouse_delta.x * 0.01
+    phi^   -= mouse_delta.y * 0.01
+    
+    // Clamp pitch to avoid breaking the neck (gimbal lock)
+    phi^ = clamp(phi^, -math.PI/2 + 0.01, math.PI/2 - 0.01)
+
+    cam.pos.x = target.x + radius * math.cos(phi^) * math.sin(theta^)
+    cam.pos.y = target.y + radius * math.sin(phi^)
+    cam.pos.z = target.z + radius * math.cos(phi^) * math.cos(theta^)
+
+    cam.dir = math.normalize(target - cam.pos)
+}
+
+// Replaces your old project function
 project :: proc(p: Vec3, cam: Camera, w, h: int) -> ([2]f32, bool) {
-    rel := p - cam.pos
-    // TODO: apply cam.dir rotation here
+    forward  := math.normalize(cam.dir)
+    world_up := Vec3{0, 1, 0}
+    
+    // Fallback if looking straight down/up
+    if math.abs(math.dot(forward, world_up)) > 0.999 do world_up = {0, 0, -1}
+    
+    right := math.normalize(math.cross(forward, world_up))
+    up    := math.cross(right, forward)
 
-    if rel.z >= 0 do return {}, false
+    // Transform point to camera space
+    rel := p - cam.pos
+    p_cam := Vec3{
+        math.dot(rel, right),
+        math.dot(rel, up),
+        math.dot(rel, forward), 
+    }
+
+    // Behind camera check
+    if p_cam.z <= 0.1 do return {}, false
 
     aspect  := f32(w) / f32(h)
     inv_tan := 1.0 / math.tan(cam.fov * 0.5)
 
-    ndc_x :=  (rel.x / -rel.z) * inv_tan / aspect
-    ndc_y :=  (rel.y / -rel.z) * inv_tan
+    ndc_x := (p_cam.x / p_cam.z) * inv_tan / aspect
+    ndc_y := (p_cam.y / p_cam.z) * inv_tan
 
     px := (ndc_x + 1) * 0.5 * f32(w)
     py := (1 - (ndc_y + 1) * 0.5) * f32(h)
 
     return {px, py}, true
+}
+
+write_splat :: proc(pixels: []u8, x, y, w, h: int, color: Vec3) {
+    // Writes a 2x2 block. Cheap antialiasing and gap-filling.
+    write_pixel(pixels, x,   y,   w, h, color)
+    write_pixel(pixels, x+1, y,   w, h, color)
+    write_pixel(pixels, x,   y+1, w, h, color)
+    write_pixel(pixels, x+1, y+1, w, h, color)
 }
 
 // ----------------------------------------------------------------
@@ -513,11 +571,16 @@ fill_quad :: proc(pixels: []u8, w, h: int, q: Internal_Quad, cam: Camera) {
             s0, ok  := project(pos, cam, w, h)
             s1, _   := project(p_u1, cam, w, h)
             
+// Inside your nested loop in fill_quad:
             du := 1.0 / (math.length(s1 - s0) / eps + 0.01)
+            
+            // Multiply step by 0.75 to overlap samples and prevent stretching gaps
+            du *= 0.75 
 
             if ok {
                 color := Vec3{(norm.x + 1) * 127, (norm.y + 1) * 127, (norm.z + 1) * 127}
-                write_pixel(pixels, int(s0.x), int(s0.y), w, h, color)
+                // Use splat instead of single pixel
+                write_splat(pixels, int(s0.x), int(s0.y), w, h, color)
             }
             u += max(du, 0.001)
         }
@@ -554,7 +617,7 @@ subdivide_and_fill :: proc(pixels: []u8, w, h: int, poly: Polygon, cam: Camera) 
 // ----------------------------------------------------------------
 
 prepass :: proc(pixels: []u8, width, height: int) {
-    cam := Camera{ pos = {0, 3, 12}, dir = {0, 0, -1}, fov = math.PI / 2.0 }
+    
     scene := make_test_scene()
     defer {
         for p in scene do free_polygon(p)

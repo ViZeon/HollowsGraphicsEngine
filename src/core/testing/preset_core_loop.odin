@@ -16,6 +16,8 @@ start_functions :: proc() {
     g_screen_w = (^int)(data.edit(vault.screen_width))^
     g_screen_h = (^int)(data.edit(vault.screen_height))^
 
+cam = Camera{ pos = {0, 3, 12}, dir = {0, 0, -1}, fov = math.PI / 2.0 }
+    
     scene = scene_init()
 
     //prepass_run(g_screen_w, g_screen_h)
@@ -24,6 +26,16 @@ start_functions :: proc() {
 
 update_fuctions :: proc() {
     debug_frame_begin()
+
+
+
+
+
+update_turntable(0.016)
+
+    for i in 0 ..< len(screen_tex.source.pixels) {
+        screen_tex.source.pixels[i]= 0
+}
 
     //prepass_run(g_screen_w, g_screen_h)
     prepass_run(scene)

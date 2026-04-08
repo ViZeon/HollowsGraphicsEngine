@@ -21,8 +21,8 @@ data_init :: proc() {
     vault.cam_pos   = data.add(.Vec3, math.vec3{}, "cam_pos")
     vault.cam_speed = data.add(.F32,  f32(0.01),    "cam_speed")
 
-    vault.screen_width  = data.add(.Int, 800, "screen_width")
-    vault.screen_height = data.add(.Int, 600,  "screen_height")
+    vault.screen_width  = data.add(.Int, 1920, "screen_width")
+    vault.screen_height = data.add(.Int, 1080,  "screen_height")
 
     vault.screen_field_levels = data.add(.Int, 7, "screen_field_levels")
 
@@ -67,6 +67,7 @@ data_init :: proc() {
 
 // globals
 screen_tex :^vault.Texture
+//screen_tex_empty :^vault.Texture
 
 g_screen_w: int
 g_screen_h: int
