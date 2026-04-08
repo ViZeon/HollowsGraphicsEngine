@@ -28,7 +28,7 @@ update_fuctions :: proc() {
     debug_frame_begin()
 
 
-
+lua_start()
 
 
 update_turntable(0.016)
