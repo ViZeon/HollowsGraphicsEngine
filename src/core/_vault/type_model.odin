@@ -1,6 +1,6 @@
 package vault
 
-import math "core:math/linalg/glsl"
+import wr "../_wrappers"
 
 Model_Source :: struct {
     name:  string,
@@ -21,7 +21,6 @@ Model :: struct {
     source: Model_Source,
     cache:  Model_Cache,
 }
-
 
 
 // TODO: PBR material — albedo, metallic, roughness, normal map, emissive

@@ -1,35 +1,32 @@
 package model
 
 import vault "../../_vault"
-import math  "core:math/linalg/glsl"
-import "core:fmt"
-import "core:strings"
-import cgltf "vendor:cgltf"
+import wr "../../_wrappers"
 
 load_gltf :: proc(path: string) -> (source: vault.Model_Source, ok: bool) {
-    path_c := strings.clone_to_cstring(path)
+    path_c := wr.strings_clone_to_cstring(path)
     defer delete(path_c)
 
-    options: cgltf.options
-    gltf_data, result := cgltf.parse_file(options, path_c)
-    if result != .success {
-        fmt.println("gltf_load: failed to parse:", result)
+    options: wr.CGLTF_Options
+    gltf_data, result := wr.cgltf_parse_file(options, path_c)
+    if result != wr.CGLTF_Result_Success {
+        wr.fmt_println("gltf_load: failed to parse:", result)
         return {}, false
     }
-    defer cgltf.free(gltf_data)
+    defer wr.cgltf_free(gltf_data)
 
-    result = cgltf.load_buffers(options, gltf_data, path_c)
-    if result != .success {
-        fmt.println("gltf_load: failed to load buffers:", result)
+    result = wr.cgltf_load_buffers(options, gltf_data, path_c)
+    if result != wr.CGLTF_Result_Success {
+        wr.fmt_println("gltf_load: failed to load buffers:", result)
         return {}, false
     }
 
-    fmt.println("gltf_load: meshes found:", len(gltf_data.meshes))
+    wr.fmt_println("gltf_load: meshes found:", len(gltf_data.meshes))
 
     primitive := gltf_data.meshes[0].primitives[0]
 
-    position_accessor: ^cgltf.accessor
-    normal_accessor:   ^cgltf.accessor
+    position_accessor: wr.CGLTF_Accessor
+    normal_accessor:   wr.CGLTF_Accessor
 
     for attrib in primitive.attributes {
         if attrib.type == .position do position_accessor = attrib.data
@@ -37,24 +34,24 @@ load_gltf :: proc(path: string) -> (source: vault.Model_Source, ok: bool) {
     }
 
     if position_accessor == nil {
-        fmt.println("gltf_load: no POSITION attribute found")
+        wr.fmt_println("gltf_load: no POSITION attribute found")
         return {}, false
     }
 
-    source.name = strings.clone(path)
-    source.path = strings.clone(path)
+    source.name = wr.strings_clone(path)
+    source.path = wr.strings_clone(path)
 
     vertex_count := position_accessor.count
     for i in 0 ..< vertex_count {
         vert: vault.Vertex
         pos: [3]f32
-        if cgltf.accessor_read_float(position_accessor, i, &pos[0], 3) {
-            vert.source.pos = math.vec3{pos[0], pos[1], pos[2]}
+        if wr.cgltf_accessor_read_float(position_accessor, i, &pos[0], 3) {
+            vert.source.pos = wr.Vec3{pos[0], pos[1], pos[2]}
         }
         if normal_accessor != nil {
             norm: [3]f32
-            if cgltf.accessor_read_float(normal_accessor, i, &norm[0], 3) {
-                vert.source.normal = math.vec3{norm[0], norm[1], norm[2]}
+            if wr.cgltf_accessor_read_float(normal_accessor, i, &norm[0], 3) {
+                vert.source.normal = wr.Vec3{norm[0], norm[1], norm[2]}
             }
         }
         vert.source.color = {1, 1, 1}
@@ -65,17 +62,17 @@ load_gltf :: proc(path: string) -> (source: vault.Model_Source, ok: bool) {
     if primitive.indices != nil {
         index_count := primitive.indices.count
         face_count  := index_count / 3
-        fmt.println("gltf_load: indices:", index_count, "faces:", face_count)
+        wr.fmt_println("gltf_load: indices:", index_count, "faces:", face_count)
         for f in 0 ..< face_count {
             poly: vault.Polygon
-            append(&poly.source.vert_indices, i32(cgltf.accessor_read_index(primitive.indices, f * 3 + 0)))
-            append(&poly.source.vert_indices, i32(cgltf.accessor_read_index(primitive.indices, f * 3 + 1)))
-            append(&poly.source.vert_indices, i32(cgltf.accessor_read_index(primitive.indices, f * 3 + 2)))
+            append(&poly.source.vert_indices, i32(wr.cgltf_accessor_read_index(primitive.indices, f * 3 + 0)))
+            append(&poly.source.vert_indices, i32(wr.cgltf_accessor_read_index(primitive.indices, f * 3 + 1)))
+            append(&poly.source.vert_indices, i32(wr.cgltf_accessor_read_index(primitive.indices, f * 3 + 2)))
             poly.source.material_slot = 0
             append(&source.polys, poly)
         }
     } else {
-        fmt.println("gltf_load: no index buffer — generating sequential triangles")
+        wr.fmt_println("gltf_load: no index buffer — generating sequential triangles")
         face_count := vertex_count / 3
         for f in 0 ..< face_count {
             poly: vault.Polygon
@@ -86,6 +83,6 @@ load_gltf :: proc(path: string) -> (source: vault.Model_Source, ok: bool) {
         }
     }
 
-    fmt.println("gltf_load: verts:", len(source.verts), "polys:", len(source.polys))
+    wr.fmt_println("gltf_load: verts:", len(source.verts), "polys:", len(source.polys))
     return source, true
 }

@@ -1,6 +1,6 @@
 package vault
 
-import math "core:math/linalg/glsl"
+import wr "../_wrappers"
 
 Polygon_Source :: struct {
     vert_indices:  [dynamic]i32,  // indices into Model.source.verts, supports tris/quads/ngons
@@ -8,8 +8,8 @@ Polygon_Source :: struct {
 }
 
 Polygon_Cache :: struct {
-    normal:    math.vec3,        // derived face normal
-    neighbors: [dynamic]i32,     // adjacent polygon indices
+    normal:    wr.Vec3,        // derived face normal
+    neighbors: [dynamic]i32,   // adjacent polygon indices
     mip_ref:   Ref,
 }
 

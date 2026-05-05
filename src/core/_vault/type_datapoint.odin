@@ -1,6 +1,6 @@
 package vault
 
-import math "core:math/linalg/glsl"
+import wr "../_wrappers"
 
 DataPointType :: enum {
     Vertex,
@@ -10,14 +10,14 @@ DataPointType :: enum {
 }
 
 DataPoint :: struct {
-    pos:    math.vec3,
-    normal: math.vec3,
+    pos:    wr.Vec3,
+    normal: wr.Vec3,
     //type:   DataPointType,
     metadata:    Metadata,
 }
 
 Transform :: struct {
-    pos:   math.vec3,
-    rot:   math.quat,
-    scale: math.vec3,
+    pos:   wr.Vec3,
+    rot:   wr.Quat,
+    scale: wr.Vec3,
 }

@@ -2,7 +2,7 @@ package testing
 
 import vault "../_vault"
 import data  "../modules/data"
-import math  "core:math/linalg/glsl"
+import wr "../_wrappers"
 
 ref_valid :: proc(ref: vault.Ref, version: u32) -> bool {
     return ref.index >= 0 && ref.version == version
@@ -33,13 +33,13 @@ field_query :: proc(
         for level in 0..=current.levels {
             grid_size := i32(1) << uint(level)
             half      := grid_size / 2
-            lx        := i32(math.floor_f32(nx * f32(grid_size))) - half
-            ly        := i32(math.floor_f32(ny * f32(grid_size))) - half
+            lx        := i32(wr.floor_f32(nx * f32(grid_size))) - half
+            ly        := i32(wr.floor_f32(ny * f32(grid_size))) - half
 
             if lx+half < 0 || lx+half >= grid_size || ly+half < 0 || ly+half >= grid_size do return false
 
             lz  := i32(0) - half
-            idx := cell_index(math.ivec3{lx, ly, lz}, level, current.dims)
+            idx := cell_index(wr.IVec3{lx, ly, lz}, level, current.dims)
 
             if level == current.levels {
                 // Check for child field to descend into
@@ -96,7 +96,7 @@ field_query :: proc(
                 if !flat && current.dims == 3 {
                     if current.bounds.z.min + f32(lz_u+1)*cell_z >= cam_z do continue
                 }
-                if cell_get(current.bits_any[:], level, cell_index(math.ivec3{lx, ly, lz2}, level, current.dims), current.dims) {
+                if cell_get(current.bits_any[:], level, cell_index(wr.IVec3{lx, ly, lz2}, level, current.dims), current.dims) {
                     any = true; break
                 }
             }
@@ -148,17 +148,17 @@ screen_field_coarse_bounds :: proc(px_min, py_min, px_max, py_max, screen_w, scr
         cell_w    := bw / f32(grid_size)
         cell_h    := bh / f32(grid_size)
 
-        cx_min := clamp(i32(math.floor_f32((f32(px_min) - current.bounds.x.min) / bw * f32(grid_size))) - half, -half, half-1)
-        cx_max := clamp(i32(math.floor_f32((f32(px_max) - current.bounds.x.min) / bw * f32(grid_size))) - half, -half, half-1)
-        cy_min := clamp(i32(math.floor_f32((f32(py_min) - current.bounds.y.min) / bh * f32(grid_size))) - half, -half, half-1)
-        cy_max := clamp(i32(math.floor_f32((f32(py_max) - current.bounds.y.min) / bh * f32(grid_size))) - half, -half, half-1)
+        cx_min := clamp(i32(wr.floor_f32((f32(px_min) - current.bounds.x.min) / bw * f32(grid_size))) - half, -half, half-1)
+        cx_max := clamp(i32(wr.floor_f32((f32(px_max) - current.bounds.x.min) / bw * f32(grid_size))) - half, -half, half-1)
+        cy_min := clamp(i32(wr.floor_f32((f32(py_min) - current.bounds.y.min) / bh * f32(grid_size))) - half, -half, half-1)
+        cy_max := clamp(i32(wr.floor_f32((f32(py_max) - current.bounds.y.min) / bh * f32(grid_size))) - half, -half, half-1)
 
         if cx_min != cx_max || cy_min != cy_max {
             if !cell_get(current.bits_any[:], 0, 0, current.dims) || len(current.data[0]) == 0 do return {}, false
             return (^vault.Bounds)(data.edit(data.resolve(current.data[0][0])))^, true
         }
 
-        idx := cell_index(math.ivec3{cx_min, cy_min, 0}, current.levels, current.dims)
+        idx := cell_index(wr.IVec3{cx_min, cy_min, 0}, current.levels, current.dims)
         if !cell_get(current.bits_any[:], current.levels, idx, current.dims) || len(current.data[idx]) == 0 do return {}, false
         if cell_w <= 1.0 && cell_h <= 1.0 do return (^vault.Bounds)(data.edit(data.resolve(current.data[idx][0])))^, true
         if len(current.data[idx]) >= 2 {
@@ -181,9 +181,9 @@ _propagate_bounds_recursive :: proc(field: ^vault.Field, px, py: int, z_min, z_m
     bh        := field.bounds.y.max - field.bounds.y.min
     nx        := (f32(px) + 0.5 - field.bounds.x.min) / bw
     ny        := (f32(py) + 0.5 - field.bounds.y.min) / bh
-    cx        := clamp(i32(math.floor_f32(nx * f32(grid_size))) - half, -half, half-1)
-    cy        := clamp(i32(math.floor_f32(ny * f32(grid_size))) - half, -half, half-1)
-    idx       := cell_index(math.ivec3{cx, cy, 0}, field.levels, field.dims)
+    cx        := clamp(i32(wr.floor_f32(nx * f32(grid_size))) - half, -half, half-1)
+    cy        := clamp(i32(wr.floor_f32(ny * f32(grid_size))) - half, -half, half-1)
+    idx       := cell_index(wr.IVec3{cx, cy, 0}, field.levels, field.dims)
 
     if len(field.data[idx]) == 0 {
         bm := data.add(.Bounds, vault.Bounds{z = {z_min, z_max}}, "screen_cell_bounds")
@@ -212,9 +212,9 @@ screen_field_get_pixel_cell :: proc(px, py, screen_w, screen_h: int) -> (leaf: ^
         cell_h    := bh / f32(grid_size)
         nx  := (f32(px) + 0.5 - current.bounds.x.min) / bw
         ny  := (f32(py) + 0.5 - current.bounds.y.min) / bh
-        cx  := clamp(i32(math.floor_f32(nx * f32(grid_size))) - half, -half, half-1)
-        cy  := clamp(i32(math.floor_f32(ny * f32(grid_size))) - half, -half, half-1)
-        idx := cell_index(math.ivec3{cx, cy, 0}, current.levels, current.dims)
+        cx  := clamp(i32(wr.floor_f32(nx * f32(grid_size))) - half, -half, half-1)
+        cy  := clamp(i32(wr.floor_f32(ny * f32(grid_size))) - half, -half, half-1)
+        idx := cell_index(wr.IVec3{cx, cy, 0}, current.levels, current.dims)
         if cell_w <= 1.0 && cell_h <= 1.0 do return current, idx, true
         if len(current.data[idx]) < 2 || data.resolve(current.data[idx][1]).type_id != .Field {
             levels     := (^int)(data.edit(vault.screen_field_levels))^

@@ -2,7 +2,7 @@ package testing
 
 import vault "../_vault"
 import data  "../modules/data"
-import math  "core:math/linalg/glsl"
+import wr "../_wrappers"
 
 // PREPASS — polygon-driven pixel fill
 //
@@ -17,9 +17,9 @@ import math  "core:math/linalg/glsl"
 // Fragment shader — stateless, no vault access
 
 prepass_run_old :: proc(screen_w, screen_h: int) {
-    cam_pos  := (^math.vec3)(data.edit(vault.cam_pos))^
+    cam_pos  := (^wr.Vec3)(data.edit(vault.cam_pos))^
     fov      := (^int)(data.edit(vault.fov))^
-    tan_hfov := math.tan(f64(fov) * f64(math.PI) / 180.0 / 2.0)
+    tan_hfov := wr.tan(f64(fov) * f64(wr.PI) / 180.0 / 2.0)
     aspect   := f64(screen_w) / f64(screen_h)
 
     screen_tex  := (^vault.Texture)(data.edit(vault.screen_texture))
@@ -52,9 +52,9 @@ prepass_run_old :: proc(screen_w, screen_h: int) {
                 if vc == 0 do continue
 
                 // Pre-fetch and pre-project verts once — no vault access in pixel loop
-                world_pos  := make([]math.vec3, vc); defer delete(world_pos)
-                normals    := make([]math.vec3, vc); defer delete(normals)
-                screen_pos := make([]math.vec3, vc); defer delete(screen_pos)
+                world_pos  := make([]wr.Vec3, vc); defer delete(world_pos)
+                normals    := make([]wr.Vec3, vc); defer delete(normals)
+                screen_pos := make([]wr.Vec3, vc); defer delete(screen_pos)
 
                 px_min, py_min := screen_w, screen_h
                 px_max, py_max := 0, 0
@@ -68,7 +68,7 @@ prepass_run_old :: proc(screen_w, screen_h: int) {
                     normals[vi]    = v.source.normal
 
                     px, py, ok    := project_to_screen(v.source.pos, cam_pos, tan_hfov, aspect, screen_w, screen_h)
-                    screen_pos[vi] = math.vec3{f32(px) + 0.5, f32(py) + 0.5, 0}
+                    screen_pos[vi] = wr.Vec3{f32(px) + 0.5, f32(py) + 0.5, 0}
                     if !ok do continue
 
                     any_visible = true
@@ -113,7 +113,7 @@ prepass_run_old :: proc(screen_w, screen_h: int) {
                         }
 
                         // NURBS interp — query in screen space, output in world space
-                        pq          := math.vec3{f32(px)+0.5, f32(py)+0.5, 0}
+                        pq          := wr.Vec3{f32(px)+0.5, f32(py)+0.5, 0}
                         wpos, wnorm := nurbs_interp(pq, screen_pos, world_pos, normals)
 
                         // Fragment shader — stateless, no vault access

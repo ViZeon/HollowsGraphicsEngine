@@ -1,13 +1,13 @@
 package vault
 
-import math "core:math/linalg/glsl"
+import wr "../_wrappers"
 
 // Raw vertex data — source of truth, loaded from file
 Vertex_Source :: struct {
-    pos:    math.vec3,
-    normal: math.vec3,
-    uv:     math.vec2, // TODO: material/texture sampling
-    color:  math.vec3,  // vertex color, defaults to {1,1,1} if not present
+    pos:    wr.Vec3,
+    normal: wr.Vec3,
+    uv:     wr.Vec2,      // TODO: material/texture sampling
+    color:  wr.Vec3,      // vertex color, defaults to {1,1,1} if not present
 }
 
 // Cached vertex — refs raw vert, holds topology and derived data

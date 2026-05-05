@@ -2,8 +2,7 @@ package testing
 
 import vault "../_vault"
 import data  "../modules/data"
-import math  "core:math/linalg/glsl"
-import "core:fmt"
+import wr "../_wrappers"
 
 WORLD_FIELD_LEVELS :: 4
 
@@ -17,7 +16,7 @@ scene_init :: proc() -> vault.Metadata {
     //
     dp_meta    := data.add(.DataPoint, vault.DataPoint{
         pos    = bounds_center(aligned),
-        normal = math.vec3{0, 1, 0},
+        normal = wr.Vec3{0, 1, 0},
         metadata    = field_meta,
     }, "world_dp")
 
@@ -30,12 +29,12 @@ scene_init :: proc() -> vault.Metadata {
     scene_add_model(model_meta, dp_meta)
 
     model := (^vault.Model)(data.edit(model_meta))
-    cam   := (^math.vec3)(data.edit(vault.cam_pos))
+    cam   := (^wr.Vec3)(data.edit(vault.cam_pos))
     cam.x  = bounds_center(model.cache.bounds).x
     cam.y  = bounds_center(model.cache.bounds).y
     cam.z  = model.cache.bounds.z.max + 5.0
 
-    fmt.println("scene_init: world field created, bounds:", aligned)
+    wr.fmt_println("scene_init: world field created, bounds:", aligned)
     return dp_meta
 }
 
@@ -62,5 +61,5 @@ scene_add_model :: proc(model_metadata: vault.Metadata, scene: vault.Metadata) {
     }
 
     field_update_parent(world_field, model_field, transform, &model.cache.occupied_cells, i32(model_metadata.index))
-    fmt.println("scene_add_model: model registered in world field")
+    wr.fmt_println("scene_add_model: model registered in world field")
 }

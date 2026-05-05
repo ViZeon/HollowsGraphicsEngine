@@ -3,10 +3,9 @@ package testing
 import vault "../_vault"
 import data  "../modules/data"
 import gltf  "../modules/model"
-import math  "core:math/linalg/glsl"
-import "core:fmt"
+import wr "../_wrappers"
 
-load_model :: proc(path: cstring) -> (model_meta: vault.Metadata, center: math.vec3, ok: bool) {
+load_model :: proc(path: cstring) -> (model_meta: vault.Metadata, center: wr.Vec3, ok: bool) {
     source, loaded := gltf.load_model_source(string(path))
     if !loaded do return {}, {}, false
     if len(source.verts) == 0 do return {}, {}, false
@@ -28,7 +27,7 @@ load_model :: proc(path: cstring) -> (model_meta: vault.Metadata, center: math.v
 
     transform := vault.Transform{
         pos   = {0, 0, 0},
-        rot   = transmute(math.quat)[4]f32{0, 0, 0, 1},
+        rot   = transmute(wr.Quat)[4]f32{0, 0, 0, 1},
         scale = {1, 1, 1},
     }
 
@@ -46,12 +45,12 @@ load_model :: proc(path: cstring) -> (model_meta: vault.Metadata, center: math.v
         },
     }, "model")
 
-    center = math.vec3{
+    center = wr.Vec3{
         (bounds.x.min + bounds.x.max) * 0.5,
         (bounds.y.min + bounds.y.max) * 0.5,
         (bounds.z.min + bounds.z.max) * 0.5,
     }
 
-    fmt.println("load_model: verts:", len(source.verts), "polys:", len(source.polys), "center:", center)
+    wr.fmt_println("load_model: verts:", len(source.verts), "polys:", len(source.polys), "center:", center)
     return model_meta, center, true
 }

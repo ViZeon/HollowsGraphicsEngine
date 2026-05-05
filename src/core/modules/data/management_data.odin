@@ -1,9 +1,7 @@
 package data
 
 import vault "../../_vault"
-import "core:mem"
-import "core:reflect"
-import "core:time"
+import wr "../../_wrappers"
 
 _debug_ptr :: proc() -> ^vault.Debug_Stats {
     if !vault.debug_stats.valid do return nil
@@ -14,7 +12,7 @@ _fetch_begin :: proc(meta: vault.Metadata, op: vault.Fetch_Op) -> i64 {
     stats := _debug_ptr()
     if stats == nil do return 0
     stats.fetch_counts[meta.type_id][op] += 1
-    if stats.timing_enabled do return time.now()._nsec
+    if stats.timing_enabled do return wr.time_now_nsec()
     return 0
 }
 
@@ -22,20 +20,20 @@ _fetch_end :: proc(meta: vault.Metadata, op: vault.Fetch_Op, start: i64) {
     if start == 0 do return
     stats := _debug_ptr()
     if stats == nil do return
-    stats.fetch_times[meta.type_id][op] += f64(time.now()._nsec - start)
+    stats.fetch_times[meta.type_id][op] += f64(wr.time_now_nsec() - start)
 }
 
 // Adds a value to the typed store, registers its Metadata, returns a Metadata copy
 add :: proc(type_id: vault.Type_ID, value: any, name: string = "") -> vault.Metadata {
-    size   := reflect.size_of_typeid(value.id)
-    ptr, _  := mem.alloc(size)
-    mem.copy(ptr, value.data, size)
+    size   := wr.size_of_typeid(value.id)
+    ptr, _  := wr.mem_alloc(size)
+    wr.mem_copy(ptr, value.data, size)
     stable := any{data = ptr, id = value.id}
 
     idx: int
     if len(vault.free_lists[type_id]) > 0 {
         idx = pop(&vault.free_lists[type_id])
-        mem.free(vault.arrays[type_id][idx].data)
+        wr.mem_free(vault.arrays[type_id][idx].data)
         vault.arrays[type_id][idx]      = stable
         vault.meta_arrays[type_id][idx] = vault.Metadata{index = idx, name = name, valid = true, type_id = type_id}
     } else {
@@ -49,8 +47,8 @@ add :: proc(type_id: vault.Type_ID, value: any, name: string = "") -> vault.Meta
     meta_id  := len(vault.arrays[.Metadata])
     meta.id   = meta_id
 
-    meta_ptr, _ := mem.alloc(size_of(vault.Metadata))
-    mem.copy(meta_ptr, &meta, size_of(vault.Metadata))
+    meta_ptr, _ := wr.mem_alloc(size_of(vault.Metadata))
+    wr.mem_copy(meta_ptr, &meta, size_of(vault.Metadata))
     append(&vault.arrays[.Metadata],      any{data = meta_ptr, id = typeid_of(vault.Metadata)})
     append(&vault.meta_arrays[.Metadata], vault.Metadata{id = meta_id, index = meta_id, name = name, valid = true, type_id = .Metadata})
 
@@ -69,10 +67,6 @@ resolve :: proc(id: i32) -> vault.Metadata {
 
 edit :: proc(meta: vault.Metadata) -> rawptr {
     start  := _fetch_begin(meta, .Edit)
-    
-
-
-
     result := vault.arrays[meta.type_id][meta.index].data
     _fetch_end(meta, .Edit, start)
     return result
@@ -92,7 +86,7 @@ set :: proc(meta: vault.Metadata, value: any) {
 }
 
 remove :: proc(meta: vault.Metadata) {
-    mem.free(vault.arrays[meta.type_id][meta.index].data)
+    wr.mem_free(vault.arrays[meta.type_id][meta.index].data)
     vault.meta_arrays[meta.type_id][meta.index].valid = false
     append(&vault.free_lists[meta.type_id], meta.index)
 }

@@ -2,8 +2,7 @@ package testing
 
 import vault "../../core/_vault"
 import data  "../modules/data"
-import math  "core:math/linalg/glsl"
-import "core:strings"
+import wr "../_wrappers"
 
 data_init :: proc() {
     vault.app_closed   = data.add(.Bool, false,  "app_closed")
@@ -18,7 +17,7 @@ data_init :: proc() {
     vault.window_height_percent = data.add(.F32,     f32(0.8),                 "window_height_percent")
     vault.window_title          = data.add(.CString, cstring("Compute Engine"), "window_title")
 
-    vault.cam_pos   = data.add(.Vec3, math.vec3{}, "cam_pos")
+    vault.cam_pos   = data.add(.Vec3, wr.Vec3{}, "cam_pos")
     vault.cam_speed = data.add(.F32,  f32(0.01),    "cam_speed")
 
     vault.screen_width  = data.add(.Int, 1920, "screen_width")
@@ -57,7 +56,7 @@ data_init :: proc() {
 
     vault.frame_data  = data.add(.FrameData,       vault.FrameData{},   "frame_data")
     vault.debug_stats = data.add(.Debug_Stats,     vault.Debug_Stats{}, "debug_stats")
-    vault.log_board   = data.add(.Strings_Builder, strings.Builder{},   "log_board")
+    vault.log_board   = data.add(.Strings_Builder, wr.Builder{},   "log_board")
 
 
 

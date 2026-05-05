@@ -2,7 +2,7 @@ package testing
 
 import vault "../_vault"
 import data  "../modules/data"
-import math  "core:math/linalg/glsl"
+import wr "../_wrappers"
 
 
 cam :Camera
@@ -17,17 +17,17 @@ target_pos : Vec3 = {0, 0, 0}
     rotation_speed : f32 = 10.0
 
 prepass_run :: proc(scene : vault.Metadata) {
-	scene_datapoint:= (^vault.DataPoint)(data.edit(scene))
-	scene_field:= (^vault.Field)(data.edit(scene_datapoint.metadata))
+    scene_datapoint:= (^vault.DataPoint)(data.edit(scene))
+    scene_field:= (^vault.Field)(data.edit(scene_datapoint.metadata))
 
-	cell_zero := cell_get(scene_field.bits_any[:], 0,0,3)
-	//debug_print( scene_field.data[0])
-		
-		screen_tex  := (^vault.Texture)(data.edit(vault.screen_texture))
-	prepass(screen_tex.source.pixels[:],int(g_screen_w),int(g_screen_h))
+    cell_zero := cell_get(scene_field.bits_any[:], 0,0,3)
+    //debug_print( scene_field.data[0])
+        
+        screen_tex  := (^vault.Texture)(data.edit(vault.screen_texture))
+    prepass(screen_tex.source.pixels[:],int(g_screen_w),int(g_screen_h))
 
-	//debug_print(scene_datapoint)
-	//debug_print(scene_field.bounds)
+    //debug_print(scene_datapoint)
+    //debug_print(scene_field.bounds)
 } 
 
 
@@ -64,14 +64,14 @@ make_test_polygon :: proc(center: Vec3, n: int, radius: f32) -> Polygon {
     verts   := make([]Vec3, n)
     normals := make([]Vec3, n)
     for i in 0..<n {
-        angle  := f32(i) / f32(n) * math.TAU
+        angle  := f32(i) / f32(n) * wr.TAU
         v := Vec3{
-            center.x + math.cos(angle) * radius,
+            center.x + wr.cos(angle) * radius,
             center.y,
-            center.z + math.sin(angle) * radius,
+            center.z + wr.sin(angle) * radius,
         }
         verts[i]   = v
-        normals[i] = math.normalize(Vec3{v.x - center.x, 1, v.z - center.z})
+        normals[i] = wr.normalize(Vec3{v.x - center.x, 1, v.z - center.z})
     }
     return Polygon{verts = verts, normals = normals}
 }
@@ -129,39 +129,39 @@ update_camera_orbit :: proc(cam: ^Camera, target: Vec3, mouse_delta: [2]f32, rad
     phi^   -= mouse_delta.y * 0.01
     
     // Clamp pitch to avoid breaking the neck (gimbal lock)
-    phi^ = clamp(phi^, -math.PI/2 + 0.01, math.PI/2 - 0.01)
+    phi^ = wr.clamp(phi^, -wr.PI/2 + 0.01, wr.PI/2 - 0.01)
 
-    cam.pos.x = target.x + radius * math.cos(phi^) * math.sin(theta^)
-    cam.pos.y = target.y + radius * math.sin(phi^)
-    cam.pos.z = target.z + radius * math.cos(phi^) * math.cos(theta^)
+    cam.pos.x = target.x + radius * wr.cos(phi^) * wr.sin(theta^)
+    cam.pos.y = target.y + radius * wr.sin(phi^)
+    cam.pos.z = target.z + radius * wr.cos(phi^) * wr.cos(theta^)
 
-    cam.dir = math.normalize(target - cam.pos)
+    cam.dir = wr.normalize(target - cam.pos)
 }
 
 // Replaces your old project function
 project :: proc(p: Vec3, cam: Camera, w, h: int) -> ([2]f32, bool) {
-    forward  := math.normalize(cam.dir)
+    forward  := wr.normalize(cam.dir)
     world_up := Vec3{0, 1, 0}
     
     // Fallback if looking straight down/up
-    if math.abs(math.dot(forward, world_up)) > 0.999 do world_up = {0, 0, -1}
+    if wr.abs(wr.dot(forward, world_up)) > 0.999 do world_up = {0, 0, -1}
     
-    right := math.normalize(math.cross(forward, world_up))
-    up    := math.cross(right, forward)
+    right := wr.normalize(wr.cross(forward, world_up))
+    up    := wr.cross(right, forward)
 
     // Transform point to camera space
     rel := p - cam.pos
     p_cam := Vec3{
-        math.dot(rel, right),
-        math.dot(rel, up),
-        math.dot(rel, forward), 
+        wr.dot(rel, right),
+        wr.dot(rel, up),
+        wr.dot(rel, forward), 
     }
 
     // Behind camera check
     if p_cam.z <= 0.1 do return {}, false
 
     aspect  := f32(w) / f32(h)
-    inv_tan := 1.0 / math.tan(cam.fov * 0.5)
+    inv_tan := 1.0 / wr.tan(cam.fov * 0.5)
 
     ndc_x := (p_cam.x / p_cam.z) * inv_tan / aspect
     ndc_y := (p_cam.y / p_cam.z) * inv_tan
@@ -187,9 +187,9 @@ write_splat :: proc(pixels: []u8, x, y, w, h: int, color: Vec3) {
 write_pixel :: proc(pixels: []u8, x, y, w, h: int, color: Vec3) {
     if x < 0 || x >= w || y < 0 || y >= h do return
     idx := (y * w + x) * 3
-    pixels[idx+0] = u8(clamp(color.x, 0, 255))
-    pixels[idx+1] = u8(clamp(color.y, 0, 255))
-    pixels[idx+2] = u8(clamp(color.z, 0, 255))
+    pixels[idx+0] = u8(wr.clamp(color.x, 0, 255))
+    pixels[idx+1] = u8(wr.clamp(color.y, 0, 255))
+    pixels[idx+2] = u8(wr.clamp(color.z, 0, 255))
 }
 
 // ----------------------------------------------------------------
@@ -233,20 +233,20 @@ mean_value_coords :: proc(p: [2]f32, verts: [][2]f32, out: []f32) {
         vj := [2]f32{verts[j].x - p.x, verts[j].y - p.y}
         vk := [2]f32{verts[k].x - p.x, verts[k].y - p.y}
 
-        ri := math.sqrt(vi.x*vi.x + vi.y*vi.y)
+        ri := wr.sqrt(vi.x*vi.x + vi.y*vi.y)
         if ri < 1e-6 {
             for idx in 0..<n do out[idx] = 0
             out[i] = 1
             return
         }
 
-        rj     := math.sqrt(vj.x*vj.x + vj.y*vj.y)
-        rk     := math.sqrt(vk.x*vk.x + vk.y*vk.y)
-        cos_a  := clamp((vi.x*vj.x + vi.y*vj.y) / (ri * rj), -1, 1)
-        cos_b  := clamp((vk.x*vi.x + vk.y*vi.y) / (rk * ri), -1, 1)
-        a      := math.acos(cos_a)
-        b      := math.acos(cos_b)
-        out[i]  = (math.tan(a * 0.5) + math.tan(b * 0.5)) / ri
+        rj     := wr.sqrt(vj.x*vj.x + vj.y*vj.y)
+        rk     := wr.sqrt(vk.x*vk.x + vk.y*vk.y)
+        cos_a  := wr.clamp((vi.x*vj.x + vi.y*vj.y) / (ri * rj), -1, 1)
+        cos_b  := wr.clamp((vk.x*vi.x + vk.y*vi.y) / (rk * ri), -1, 1)
+        a      := wr.acos(cos_a)
+        b      := wr.acos(cos_b)
+        out[i]  = (wr.tan(a * 0.5) + wr.tan(b * 0.5)) / ri
     }
 
     sum := f32(0)
@@ -290,12 +290,12 @@ eval_surface :: proc(
         ederiv := hermite_deriv(p0, t0, p1, t1, t)
 
         pos_sum  += edge_w * epos
-        norm_sum += edge_w * math.normalize(ederiv)
+        norm_sum += edge_w * wr.normalize(ederiv)
         w_total  += edge_w
     }
 
     if w_total < 1e-8 do return {}, {}
-    return pos_sum / w_total, math.normalize(norm_sum / w_total)
+    return pos_sum / w_total, wr.normalize(norm_sum / w_total)
 }
 
 // ----------------------------------------------------------------
@@ -325,7 +325,7 @@ sample_and_write :: proc(
     if valid == 0 do return
 
     avg_pos  /= f32(valid)
-    avg_norm  = math.normalize(avg_norm)
+    avg_norm  = wr.normalize(avg_norm)
 
     screen, ok := project(avg_pos, cam, width, height)
     if !ok do return
@@ -365,11 +365,11 @@ estimate_steps :: proc(
     su = PROBE; sv = PROBE
 
     if ok_c && ok_u {
-        d := math.length([2]f32{spu.x - sc.x, spu.y - sc.y})
+        d := wr.length([2]f32{spu.x - sc.x, spu.y - sc.y})
         if d > 0.0001 do su = PROBE / d
     }
     if ok_c && ok_v {
-        d := math.length([2]f32{spv.x - sc.x, spv.y - sc.y})
+        d := wr.length([2]f32{spv.x - sc.x, spv.y - sc.y})
         if d > 0.0001 do sv = PROBE / d
     }
     return
@@ -494,7 +494,7 @@ fill_edges :: proc(pixels: []u8, width, height: int, poly: Polygon, cam: Camera)
 
             screen, ok := project(pos, cam, width, height)
             if ok {
-                norm  := math.normalize(dpos)
+                norm  := wr.normalize(dpos)
                 color := Vec3{
                     (norm.x + 1) * 0.5 * 255,
                     (norm.y + 1) * 0.5 * 255,
@@ -508,7 +508,7 @@ fill_edges :: proc(pixels: []u8, width, height: int, poly: Polygon, cam: Camera)
             screen_next, ok2 := project(next_pos, cam, width, height)
 
             if ok && ok2 {
-                d := math.length([2]f32{screen_next.x - screen.x, screen_next.y - screen.y})
+                d := wr.length([2]f32{screen_next.x - screen.x, screen_next.y - screen.y})
                 if d > 0.0001 { t += DT_PROBE / d } else { t += 0.001 }
             } else {
                 t += 0.001
@@ -557,9 +557,9 @@ eval_coons :: proc(q: Internal_Quad, u, v: f32) -> (pos: Vec3, norm: Vec3) {
     dC3_dv := hermite_deriv(q.p[0], t0, q.p[3], t3, v)
 
     // Coons blending for position
-    lc_uv := math.lerp(C3_v, C1_v, u)          // linear blend between left and right curves
-    ld_uv := math.lerp(C0_u, C2_u, v)          // linear blend between bottom and top curves
-    b_uv  := math.lerp(math.lerp(q.p[0], q.p[1], u), math.lerp(q.p[3], q.p[2], u), v)
+    lc_uv := wr.lerp(C3_v, C1_v, u)          // linear blend between left and right curves
+    ld_uv := wr.lerp(C0_u, C2_u, v)          // linear blend between bottom and top curves
+    b_uv  := wr.lerp(wr.lerp(q.p[0], q.p[1], u), wr.lerp(q.p[3], q.p[2], u), v)
 
     pos = lc_uv + ld_uv - b_uv
 
@@ -570,23 +570,23 @@ eval_coons :: proc(q: Internal_Quad, u, v: f32) -> (pos: Vec3, norm: Vec3) {
     // ∂(lc_uv)/∂u = C1_v - C3_v   (since lerp derivative w.r.t u is difference)
     dlc_du := C1_v - C3_v
     // ∂(lc_uv)/∂v = lerp(dC3_dv, dC1_dv, u)
-    dlc_dv := math.lerp(dC3_dv, dC1_dv, u)
+    dlc_dv := wr.lerp(dC3_dv, dC1_dv, u)
 
     // ∂(ld_uv)/∂u = lerp(dC0_du, dC2_du, v)
-    dld_du := math.lerp(dC0_du, dC2_du, v)
+    dld_du := wr.lerp(dC0_du, dC2_du, v)
     // ∂(ld_uv)/∂v = C2_u - C0_u
     dld_dv := C2_u - C0_u
 
     // ∂(b_uv)/∂u = lerp(q.p[1] - q.p[0], q.p[2] - q.p[3], v)
-    db_du  := math.lerp(q.p[1] - q.p[0], q.p[2] - q.p[3], v)
+    db_du  := wr.lerp(q.p[1] - q.p[0], q.p[2] - q.p[3], v)
     // ∂(b_uv)/∂v = lerp(q.p[3] - q.p[0], q.p[2] - q.p[1], u)
-    db_dv  := math.lerp(q.p[3] - q.p[0], q.p[2] - q.p[1], u)
+    db_dv  := wr.lerp(q.p[3] - q.p[0], q.p[2] - q.p[1], u)
 
     dP_du := dlc_du + dld_du - db_du
     dP_dv := dlc_dv + dld_dv - db_dv
 
     // Normal = cross(dP_du, dP_dv)
-    norm = math.normalize(math.cross(dP_du, dP_dv))
+    norm = wr.normalize(wr.cross(dP_du, dP_dv))
 
     return
 }
@@ -604,7 +604,7 @@ fill_quad :: proc(pixels: []u8, w, h: int, q: Internal_Quad, cam: Camera) {
         p_v1, _ := eval_coons(q, 0, v + 0.001)
         s_v0, _ := project(p_v0, cam, w, h)
         s_v1, _ := project(p_v1, cam, w, h)
-        dv := 1.0 / (math.length(s_v1 - s_v0) / 0.001 + 0.01)
+        dv := 1.0 / (wr.length(s_v1 - s_v0) / 0.001 + 0.01)
 
         for u <= 1.0 {
             pos, norm := eval_coons(q, u, v)
@@ -616,7 +616,7 @@ fill_quad :: proc(pixels: []u8, w, h: int, q: Internal_Quad, cam: Camera) {
             s1, _   := project(p_u1, cam, w, h)
             
 // Inside your nested loop in fill_quad:
-            du := 1.0 / (math.length(s1 - s0) / eps + 0.01)
+            du := 1.0 / (wr.length(s1 - s0) / eps + 0.01)
             
             // Multiply step by 0.75 to overlap samples and prevent stretching gaps
             du *= 0.75 
@@ -658,11 +658,11 @@ subdivide_and_fill :: proc(pixels: []u8, w, h: int, poly: Polygon, cam: Camera) 
     for i in 0..<n {
         prev := (i + n - 1) % n
         m_prev_p := (poly.verts[i] + poly.verts[prev]) * 0.5
-        m_prev_n := math.normalize(poly.normals[i] + poly.normals[prev])
+        m_prev_n := wr.normalize(poly.normals[i] + poly.normals[prev])
         
         next := (i + 1) % n
         m_next_p := (poly.verts[i] + poly.verts[next]) * 0.5
-        m_next_n := math.normalize(poly.normals[i] + poly.normals[next])
+        m_next_n := wr.normalize(poly.normals[i] + poly.normals[next])
 
         q := Internal_Quad{
             p = { poly.verts[i], m_next_p, cp, m_prev_p },

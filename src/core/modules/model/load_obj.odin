@@ -1,78 +1,74 @@
 package model
 
 import vault "../../_vault"
-import "core:os"
-import "core:strings"
-import "core:strconv"
-import "core:fmt"
-import math "core:math/linalg/glsl"
+import wr "../../_wrappers"
 
 load_obj :: proc(path: string) -> (source: vault.Model_Source, ok: bool) {
-    data, err := os.read_entire_file_from_path(path, context.allocator)
-    if err != os.ERROR_NONE do return {}, false
+    data, err := wr.os_read_entire_file_from_path(path, context.allocator)
+    if err != wr.OS_ERROR_NONE do return {}, false
     defer delete(data, context.allocator)
 
     // Raw import buffers — OBJ stores positions/normals/uvs separately
-    positions: [dynamic]math.vec3; defer delete(positions)
-    normals:   [dynamic]math.vec3; defer delete(normals)
-    uvs:       [dynamic]math.vec2; defer delete(uvs)
-    colors:    [dynamic]math.vec3; defer delete(colors)
+    positions: [dynamic]wr.Vec3; defer delete(positions)
+    normals:   [dynamic]wr.Vec3; defer delete(normals)
+    uvs:       [dynamic]wr.Vec2; defer delete(uvs)
+    colors:    [dynamic]wr.Vec3; defer delete(colors)
 
-    source.name = strings.clone(strings.trim_suffix(path, ".obj"))
-    source.path = strings.clone(path)
+    source.name = wr.strings_clone(wr.strings_trim_suffix(path, ".obj"))
+    source.path = wr.strings_clone(path)
 
-    lines := strings.split_lines(string(data))
+    lines := wr.strings_split_lines(string(data))
     defer delete(lines)
 
     for line in lines {
-        line := strings.trim_space(line)
+        line := wr.strings_trim_space(line)
         if len(line) == 0 || line[0] == '#' do continue
 
-        parts := strings.fields(line)
+        parts := wr.strings_fields(line)
         if len(parts) == 0 do continue
 
         switch parts[0] {
         case "v":
-            x, _ := strconv.parse_f32(parts[1])
-            y, _ := strconv.parse_f32(parts[2])
-            z, _ := strconv.parse_f32(parts[3])
-            append(&positions, math.vec3{x, y, z})
+            x, _ := wr.parse_f32(parts[1])
+            y, _ := wr.parse_f32(parts[2])
+            z, _ := wr.parse_f32(parts[3])
+            append(&positions, wr.Vec3{x, y, z})
             if len(parts) >= 7 {
-                r, _ := strconv.parse_f32(parts[4])
-                g, _ := strconv.parse_f32(parts[5])
-                b, _ := strconv.parse_f32(parts[6])
-                append(&colors, math.vec3{r, g, b})
+                r, _ := wr.parse_f32(parts[4])
+                g, _ := wr.parse_f32(parts[5])
+                b, _ := wr.parse_f32(parts[6])
+                append(&colors, wr.Vec3{r, g, b})
             } else {
-                append(&colors, math.vec3{1, 1, 1})
+                append(&colors, wr.Vec3{1, 1, 1})
             }
 
         case "vn":
-            x, _ := strconv.parse_f32(parts[1])
-            y, _ := strconv.parse_f32(parts[2])
-            z, _ := strconv.parse_f32(parts[3])
-            append(&normals, math.vec3{x, y, z})
+            x, _ := wr.parse_f32(parts[1])
+            y, _ := wr.parse_f32(parts[2])
+            z, _ := wr.parse_f32(parts[3])
+            append(&normals, wr.Vec3{x, y, z})
 
         case "vt":
-            u, _ := strconv.parse_f32(parts[1])
-            v, _ := strconv.parse_f32(parts[2])
-            append(&uvs, math.vec2{u, v})
+            u, _ := wr.parse_f32(parts[1])
+            v, _ := wr.parse_f32(parts[2])
+            append(&uvs, wr.Vec2{u, v})
 
         case "f":
             poly: vault.Polygon
             for i in 1 ..< len(parts) {
-                sub := strings.split(parts[i], "/")
+                sub := wr.strings_split(parts[i], "/")
 
-                pos_idx, _ := strconv.parse_int(sub[0])
+                pos_idx, _ := wr.parse_int(sub[0])
                 pos_idx -= 1
 
                 uv_idx   := -1
                 norm_idx := -1
                 if len(sub) > 1 && len(sub[1]) > 0 {
-                    uv_idx, _ = strconv.parse_int(sub[1])
+                    uv_idx, _ = wr.parse_int(sub[1])
                     uv_idx -= 1
                 }
                 if len(sub) > 2 && len(sub[2]) > 0 {
-                    norm_idx, _ = strconv.parse_int(sub[2])
+                    norm_idx, _ = wr.parse_int(sub[2])
                     norm_idx -= 1
                 }
 
@@ -101,6 +97,6 @@ load_obj :: proc(path: string) -> (source: vault.Model_Source, ok: bool) {
     // TODO: compute face normals for polys missing normals
     // TODO: deduplicate verts
 
-    fmt.println("obj_load: verts:", len(source.verts), "polys:", len(source.polys))
+    wr.fmt_println("obj_load: verts:", len(source.verts), "polys:", len(source.polys))
     return source, true
 }

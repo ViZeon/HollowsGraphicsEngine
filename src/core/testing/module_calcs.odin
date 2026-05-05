@@ -1,7 +1,6 @@
 package testing
 
-import math  "core:math/linalg/glsl"
-import rl    "vendor:raylib"
+import wr "../_wrappers"
 import vault "../_vault"
 import data  "../modules/data"
 
@@ -18,15 +17,15 @@ trilinear_interp :: proc(c: [8]f32, fx, fy, fz: f32) -> f32 {
 }
 
 // Future: orthographic projection mode
-ortho_pixel_to_world :: proc(pixel_coords: math.vec2, width, height: int) -> math.vec3 {
-    uv := math.vec2{pixel_coords.x / f32(width), pixel_coords.y / f32(height)}
-    return math.vec3{uv.x, uv.y, (^math.vec3)(data.edit(vault.cam_pos)).z}
+ortho_pixel_to_world :: proc(pixel_coords: wr.Vec2, width, height: int) -> wr.Vec3 {
+    uv := wr.Vec2{pixel_coords.x / f32(width), pixel_coords.y / f32(height)}
+    return wr.Vec3{uv.x, uv.y, (^wr.Vec3)(data.edit(vault.cam_pos)).z}
 }
 
 // ---- Bounds math ----
 
-bounds_center :: proc(b: vault.Bounds) -> math.vec3 {
-    return math.vec3{(b.x.min+b.x.max)*0.5, (b.y.min+b.y.max)*0.5, (b.z.min+b.z.max)*0.5}
+bounds_center :: proc(b: vault.Bounds) -> wr.Vec3 {
+    return wr.Vec3{(b.x.min+b.x.max)*0.5, (b.y.min+b.y.max)*0.5, (b.z.min+b.z.max)*0.5}
 }
 
 bounds_contains :: proc(outer, inner: vault.Bounds) -> bool {
@@ -45,8 +44,8 @@ bounds_expand_parent :: proc(b: vault.Bounds) -> vault.Bounds {
 
 bounds_align_to_grid :: proc(b: vault.Bounds, levels: int) -> vault.Bounds {
     cell_size := (b.x.max - b.x.min) / f32(i32(1) << uint(levels))
-    snap_down := proc(v, cell: f32) -> f32 { return math.floor_f32(v / cell) * cell }
-    snap_up   :: proc(v, cell: f32) -> f32 { return math.ceil_f32(v  / cell) * cell }
+    snap_down := proc(v, cell: f32) -> f32 { return wr.floor_f32(v / cell) * cell }
+    snap_up   :: proc(v, cell: f32) -> f32 { return wr.ceil_f32(v  / cell) * cell }
     return vault.Bounds{
         x = {snap_down(b.x.min, cell_size), snap_up(b.x.max, cell_size)},
         y = {snap_down(b.y.min, cell_size), snap_up(b.y.max, cell_size)},
@@ -55,7 +54,7 @@ bounds_align_to_grid :: proc(b: vault.Bounds, levels: int) -> vault.Bounds {
 }
 
 // Tight bounds from a slice of world positions
-bounds_from_positions :: proc(positions: []math.vec3) -> vault.Bounds {
+bounds_from_positions :: proc(positions: []wr.Vec3) -> vault.Bounds {
     if len(positions) == 0 do return {}
     b := vault.Bounds{x = {positions[0].x, positions[0].x}, y = {positions[0].y, positions[0].y}, z = {positions[0].z, positions[0].z}}
     for p in positions[1:] {
@@ -81,7 +80,7 @@ bits_slots  :: proc(bit_count: i32)                   -> i32 { return (bit_count
 
 // ---- Cell indexing ----
 
-cell_index :: proc(xyz: math.ivec3, level: int, dims: int) -> i32 {
+cell_index :: proc(xyz: wr.IVec3, level: int, dims: int) -> i32 {
     g := i32(1) << uint(level); h := g / 2
     x, y, z := xyz.x+h, xyz.y+h, xyz.z+h
     switch dims {
@@ -93,7 +92,7 @@ cell_index :: proc(xyz: math.ivec3, level: int, dims: int) -> i32 {
 }
 
 // dims-aware index → xyz
-index_to_xyz :: proc(index: i32, level: int, dims: int) -> (xyz: math.ivec3) {
+index_to_xyz :: proc(index: i32, level: int, dims: int) -> (xyz: wr.IVec3) {
     g: i32 = 1 << uint(level); h := g / 2
     switch dims {
     case 1: xyz.x = index - h
@@ -133,18 +132,18 @@ field_bbox_to_cell_range :: proc(field: ^vault.Field, bbox: vault.Bounds) -> (
     bz := field.bounds.z.max - field.bounds.z.min
     cell_x = bx / f32(grid_size); cell_y = by / f32(grid_size); cell_z = bz / f32(grid_size)
 
-    cx_min = clamp(i32(math.floor_f32((bbox.x.min - field.bounds.x.min) / bx * f32(grid_size))) - half, -half, half-1)
-    cx_max = clamp(i32(math.ceil_f32( (bbox.x.max - field.bounds.x.min) / bx * f32(grid_size))) - half, -half, half-1)
-    cy_min = clamp(i32(math.floor_f32((bbox.y.min - field.bounds.y.min) / by * f32(grid_size))) - half, -half, half-1)
-    cy_max = clamp(i32(math.ceil_f32( (bbox.y.max - field.bounds.y.min) / by * f32(grid_size))) - half, -half, half-1)
-    cz_min = clamp(i32(math.floor_f32((bbox.z.min - field.bounds.z.min) / bz * f32(grid_size))) - half, -half, half-1)
-    cz_max = clamp(i32(math.ceil_f32( (bbox.z.max - field.bounds.z.min) / bz * f32(grid_size))) - half, -half, half-1)
+    cx_min = clamp(i32(wr.floor_f32((bbox.x.min - field.bounds.x.min) / bx * f32(grid_size))) - half, -half, half-1)
+    cx_max = clamp(i32(wr.ceil_f32( (bbox.x.max - field.bounds.x.min) / bx * f32(grid_size))) - half, -half, half-1)
+    cy_min = clamp(i32(wr.floor_f32((bbox.y.min - field.bounds.y.min) / by * f32(grid_size))) - half, -half, half-1)
+    cy_max = clamp(i32(wr.ceil_f32( (bbox.y.max - field.bounds.y.min) / by * f32(grid_size))) - half, -half, half-1)
+    cz_min = clamp(i32(wr.floor_f32((bbox.z.min - field.bounds.z.min) / bz * f32(grid_size))) - half, -half, half-1)
+    cz_max = clamp(i32(wr.ceil_f32( (bbox.z.max - field.bounds.z.min) / bz * f32(grid_size))) - half, -half, half-1)
     return
 }
 
 // World center position of a cell at finest level
-field_cell_center :: proc(field: ^vault.Field, cx, cy, cz, half: i32, cell_x, cell_y, cell_z: f32) -> math.vec3 {
-    return math.vec3{
+field_cell_center :: proc(field: ^vault.Field, cx, cy, cz, half: i32, cell_x, cell_y, cell_z: f32) -> wr.Vec3 {
+    return wr.Vec3{
         field.bounds.x.min + (f32(cx+half) + 0.5) * cell_x,
         field.bounds.y.min + (f32(cy+half) + 0.5) * cell_y,
         field.bounds.z.min + (f32(cz+half) + 0.5) * cell_z,
@@ -192,18 +191,18 @@ field_cache_warm :: proc(field: ^vault.Field) { for b in field.bits_any { _ = b 
 
 // ---- Transform ----
 
-world_to_local :: proc(pos: math.vec3, t: vault.Transform) -> math.vec3 { return (pos - t.pos) / t.scale }
-local_to_world :: proc(pos: math.vec3, t: vault.Transform) -> math.vec3 { return pos * t.scale + t.pos  }
+world_to_local :: proc(pos: wr.Vec3, t: vault.Transform) -> wr.Vec3 { return (pos - t.pos) / t.scale }
+local_to_world :: proc(pos: wr.Vec3, t: vault.Transform) -> wr.Vec3 { return pos * t.scale + t.pos  }
 
 // ---- Interpolation ----
 
 // Generic NURBS-style inverse distance weighting
 // query and sample_pos in same coordinate space
 // out_pos and out_normal can be in a different space (e.g. world pos from screen-space query)
-nurbs_interp :: proc(query: math.vec3, sample_pos, out_pos, out_normal: []math.vec3) -> (pos, normal: math.vec3) {
+nurbs_interp :: proc(query: wr.Vec3, sample_pos, out_pos, out_normal: []wr.Vec3) -> (pos, normal: wr.Vec3) {
     total_weight := f32(0)
     for i in 0 ..< len(sample_pos) {
-        d := math.length(query - sample_pos[i])
+        d := wr.length(query - sample_pos[i])
         w := 1.0 / max(d*d, 1e-6)
         pos    += out_pos[i]    * w
         normal += out_normal[i] * w
@@ -211,7 +210,7 @@ nurbs_interp :: proc(query: math.vec3, sample_pos, out_pos, out_normal: []math.v
     }
     if total_weight > 0 {
         pos    /= total_weight
-        normal  = math.normalize_vec3(normal / total_weight)
+        normal  = wr.normalize_vec3(normal / total_weight)
     }
     return
 }
@@ -219,7 +218,7 @@ nurbs_interp :: proc(query: math.vec3, sample_pos, out_pos, out_normal: []math.v
 // ---- Projection ----
 
 // Projects world position to screen pixel — ok=false if behind cam or out of bounds
-project_to_screen :: proc(world_pos, cam_pos: math.vec3, tan_hfov, aspect: f64, screen_w, screen_h: int) -> (px, py: int, ok: bool) {
+project_to_screen :: proc(world_pos, cam_pos: wr.Vec3, tan_hfov, aspect: f64, screen_w, screen_h: int) -> (px, py: int, ok: bool) {
     if world_pos.z >= cam_pos.z do return 0, 0, false
     dist        := f64(cam_pos.z - world_pos.z)
     view_height := 2.0 * tan_hfov * dist
@@ -235,8 +234,8 @@ project_to_screen :: proc(world_pos, cam_pos: math.vec3, tan_hfov, aspect: f64, 
 // ---- Surface ops ----
 
 // Tests whether a surface (point + normal) passes through a cell of given size
-surface_covers_cell :: proc(interp_pos, interp_normal, cell_center: math.vec3, cell_size: f32) -> bool {
-    return abs(math.dot(cell_center - interp_pos, interp_normal)) <= cell_size * 0.5
+surface_covers_cell :: proc(interp_pos, interp_normal, cell_center: wr.Vec3, cell_size: f32) -> bool {
+    return abs(wr.dot(cell_center - interp_pos, interp_normal)) <= cell_size * 0.5
 }
 
 // Populates a field from a polygon surface source
@@ -248,9 +247,9 @@ field_model_populate :: proc(field: ^vault.Field, source: ^vault.Model_Source, t
         if vc == 0 do continue
 
         // Pre-fetch vert data — all in world space
-        world_pos := make([]math.vec3, vc); defer delete(world_pos)
-        normals   := make([]math.vec3, vc); defer delete(normals)
-        local_pos := make([]math.vec3, vc); defer delete(local_pos)
+        world_pos := make([]wr.Vec3, vc); defer delete(world_pos)
+        normals   := make([]wr.Vec3, vc); defer delete(normals)
+        local_pos := make([]wr.Vec3, vc); defer delete(local_pos)
         for j in 0 ..< vc {
             v            := &source.verts[poly.source.vert_indices[j]]
             world_pos[j]  = v.source.pos
@@ -274,7 +273,7 @@ field_model_populate :: proc(field: ^vault.Field, source: ^vault.Model_Source, t
                     ip, in_ := nurbs_interp(wp, world_pos, world_pos, normals)
                     if !surface_covers_cell(ip, in_, wp, cell_size) do continue
 
-                    flat_idx := cell_index(math.ivec3{cx, cy, cz}, field.levels, field.dims)
+                    flat_idx := cell_index(wr.IVec3{cx, cy, cz}, field.levels, field.dims)
                     cell_set(field.bits_any[:], field.levels, flat_idx, field.dims, true)
 
                     if cache {
@@ -355,7 +354,7 @@ field_update_parent :: proc(parent: ^vault.Field, child: ^vault.Field, child_tra
         if !cell_get(child.bits_any[:], child_level, idx, child.dims) do continue
 
         xyz := index_to_xyz(idx, child_level, child.dims)
-        lp  := math.vec3{
+        lp  := wr.Vec3{
             child.bounds.x.min + (f32(xyz.x+child_half) + 0.5) * child_cell_x,
             child.bounds.y.min + (f32(xyz.y+child_half) + 0.5) * child_cell_y,
             child.bounds.z.min + (f32(xyz.z+child_half) + 0.5) * child_cell_z,
@@ -366,12 +365,12 @@ field_update_parent :: proc(parent: ^vault.Field, child: ^vault.Field, child_tra
         ny := (wp.y - parent.bounds.y.min) / pby
         nz := (wp.z - parent.bounds.z.min) / pbz
 
-        cx := clamp(i32(math.floor_f32(nx * f32(parent_grid))) - parent_half, -parent_half, parent_half-1)
-        cy := clamp(i32(math.floor_f32(ny * f32(parent_grid))) - parent_half, -parent_half, parent_half-1)
-        cz := clamp(i32(math.floor_f32(nz * f32(parent_grid))) - parent_half, -parent_half, parent_half-1)
+        cx := clamp(i32(wr.floor_f32(nx * f32(parent_grid))) - parent_half, -parent_half, parent_half-1)
+        cy := clamp(i32(wr.floor_f32(ny * f32(parent_grid))) - parent_half, -parent_half, parent_half-1)
+        cz := clamp(i32(wr.floor_f32(nz * f32(parent_grid))) - parent_half, -parent_half, parent_half-1)
         if parent.dims < 3 do cz = -parent_half
 
-        pidx := cell_index(math.ivec3{cx, cy, cz}, parent.levels, parent.dims)
+        pidx := cell_index(wr.IVec3{cx, cy, cz}, parent.levels, parent.dims)
         cell_set(parent.bits_any[:], parent.levels, pidx, parent.dims, true)
 
         if len(parent.data[pidx]) == 0 {

@@ -1,0 +1,156 @@
+package API
+
+// =========================================================================
+// Internal API – re‑export all internal modules
+// =========================================================================
+
+// Import internal packages (paths relative to this file)
+import data_mod   "../modules/data"
+import model_mod  "../modules/model"
+import window_mod "../modules/window"
+import testing    "../testing"
+
+// ── Data management (global state mutators) ──
+data_add         :: data_mod.add
+data_resolve     :: data_mod.resolve
+data_edit        :: data_mod.edit
+data_copy        :: data_mod.copy
+data_set         :: data_mod.set
+data_remove      :: data_mod.remove
+data_preallocate :: data_mod.preallocate
+data_check_occupancy :: data_mod.data_check_occupancy
+
+// ── Model loading ──
+load_model_source :: model_mod.load_model_source
+load_gltf         :: model_mod.load_gltf
+load_obj          :: model_mod.load_obj
+
+// ── Window management ──
+init_window       :: window_mod.init_window
+title_display_FPS :: window_mod.title_display_FPS
+
+// ── Testing / Core logic ──
+// We deliberately expose everything from the testing package,
+// but we can alias the most important ones for clarity.
+load_model            :: testing.load_model
+calc_FPS              :: testing.calc_FPS
+trilinear_interp      :: testing.trilinear_interp
+ortho_pixel_to_world  :: testing.ortho_pixel_to_world
+bounds_center         :: testing.bounds_center
+bounds_contains       :: testing.bounds_contains
+bounds_expand_parent  :: testing.bounds_expand_parent
+bounds_align_to_grid  :: testing.bounds_align_to_grid
+bounds_from_positions :: testing.bounds_from_positions
+level_offset          :: testing.level_offset
+total_cells           :: testing.total_cells
+bits_slots            :: testing.bits_slots
+cell_index            :: testing.cell_index
+index_to_xyz          :: testing.index_to_xyz
+cell_get              :: testing.cell_get
+cell_set              :: testing.cell_set
+field_bbox_to_cell_range :: testing.field_bbox_to_cell_range
+field_cell_center     :: testing.field_cell_center
+field_create          :: testing.field_create
+field_propagate       :: testing.field_propagate
+field_cache_warm      :: testing.field_cache_warm
+world_to_local        :: testing.world_to_local
+local_to_world        :: testing.local_to_world
+nurbs_interp          :: testing.nurbs_interp
+project_to_screen     :: testing.project_to_screen
+surface_covers_cell   :: testing.surface_covers_cell
+field_model_populate  :: testing.field_model_populate
+field_update_parent   :: testing.field_update_parent
+
+debug_init            :: testing.debug_init
+debug_frame_begin     :: testing.debug_frame_begin
+debug_frame_end       :: testing.debug_frame_end
+debug_build_snapshot  :: testing.debug_build_snapshot
+debug_print_snapshot  :: testing.debug_print_snapshot
+debug_field_occupancy :: testing.debug_field_occupancy
+debug_toggle_timing   :: testing.debug_toggle_timing
+debug_write_image     :: testing.debug_write_image
+debug_print           :: testing.debug_print
+debug_time_input      :: testing.debug_time_input
+debug_time_pixels     :: testing.debug_time_pixels
+debug_time_texture    :: testing.debug_time_texture
+clear_screen          :: testing.clear_screen
+save_screen_pos       :: testing.save_screen_pos
+
+lua_start             :: testing.lua_start
+
+session_init          :: testing.session_init
+session_log_append    :: testing.session_log_append
+debug_log_save        :: testing.debug_log_save
+frame_write_to_image  :: testing.frame_write_to_image
+
+prepass_run           :: testing.prepass_run
+prepass               :: testing.prepass
+update_turntable      :: testing.update_turntable
+update_camera_orbit   :: testing.update_camera_orbit
+project               :: testing.project
+write_splat           :: testing.write_splat
+write_pixel           :: testing.write_pixel
+to_local2d            :: testing.to_local2d
+point_in_polygon      :: testing.point_in_polygon
+mean_value_coords     :: testing.mean_value_coords
+eval_surface          :: testing.eval_surface
+sample_and_write      :: testing.sample_and_write
+estimate_steps        :: testing.estimate_steps
+fill_interior_scanline:: testing.fill_interior_scanline
+fill_interior_uv      :: testing.fill_interior_uv
+fill_edges            :: testing.fill_edges
+eval_coons            :: testing.eval_coons
+fill_quad             :: testing.fill_quad
+subdivide_and_fill    :: testing.subdivide_and_fill
+
+prepass_run_old       :: testing.prepass_run_old   // if needed
+
+field_query                 :: testing.field_query
+field_clear                 :: testing.field_clear
+screen_field_get_root       :: testing.screen_field_get_root
+screen_field_coarse_bounds  :: testing.screen_field_coarse_bounds
+screen_field_propagate_bounds :: testing.screen_field_propagate_bounds
+screen_field_get_pixel_cell :: testing.screen_field_get_pixel_cell
+
+generate_pixels         :: testing.generate_pixels
+generate_pixels_inplace :: testing.generate_pixels_inplace
+buffer_render           :: testing.buffer_render
+
+scene_init              :: testing.scene_init
+scene_add_model         :: testing.scene_add_model
+WORLD_FIELD_LEVELS      :: testing.WORLD_FIELD_LEVELS
+
+start_functions         :: testing.start_functions
+update_fuctions         :: testing.update_fuctions   // typo preserved
+cpu_fragment_shader     :: testing.cpu_fragment_shader
+
+data_init               :: testing.data_init
+
+raylib_render_frame     :: testing.raylib_render_frame
+raylib_render           :: testing.raylib_render
+raylib_start_functions  :: testing.raylib_start_functions
+raylib_update_functions :: testing.raylib_update_functions
+debug_draw_overlay      :: testing.debug_draw_overlay
+raylib_handle_camera_input :: testing.raylib_handle_camera_input
+
+// ── Re‑export types defined in testing ──
+Camera         :: testing.Camera
+Polygon        :: testing.Polygon   //(internal prepass type, beware of name clash; rename if needed)
+Internal_Quad  :: testing.Internal_Quad
+Vec3           :: testing.Vec3
+
+// ── Re‑export globals that other files use ──
+screen_tex     :: testing.screen_tex
+g_screen_w     :: testing.g_screen_w
+g_screen_h     :: testing.g_screen_h
+scene          :: testing.scene
+
+// Camera globals (from prepass)
+cam            :: testing.cam
+cam_theta      :: testing.cam_theta
+cam_phi        :: testing.cam_phi
+cam_radius     :: testing.cam_radius
+target_pos     :: testing.target_pos
+INTERIOR_MODE  :: testing.INTERIOR_MODE
+rotation_speed :: testing.rotation_speed
+TANGENT_SCALE  :: testing.TANGENT_SCALE

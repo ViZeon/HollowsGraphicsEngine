@@ -1,6 +1,6 @@
 package vault
 
-import math "core:math/linalg/glsl"
+import wr "../_wrappers"
 
 Fetch_Op :: enum { Edit, Copy, Set }
 
@@ -10,7 +10,7 @@ Debug_Stats :: struct {
     input_time:      f64,
     texture_time:    f64,
     last_print_time: f64,
-    last_cam_pos:    math.vec3,
+    last_cam_pos:    wr.Vec3,
 
     // Fetch counts since last print — reset each print cycle
     fetch_counts: [Type_ID][Fetch_Op]int,
